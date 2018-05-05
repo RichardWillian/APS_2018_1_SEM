@@ -49,7 +49,7 @@ public class ServidorDois {
 
 			private void receberArquivo(String caminhoArquivo) throws IOException {
 				
-				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; // Memória temporária é o BUFFER
+				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024; // Memória temporária é o BUFFER
 			    byte[] memoriaTemporaria;
 			    
 			    memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];

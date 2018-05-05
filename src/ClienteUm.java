@@ -55,7 +55,7 @@ public class ClienteUm {
 
 			private void enviarArquivo(String caminhoArquivo) throws IOException, ClassNotFoundException, InterruptedException{
 				
-				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; // Memória temporária é o BUFFER
+				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024; // Memória temporária é o BUFFER
 			    byte[] memoriaTemporaria;
 			    
 			    memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];
