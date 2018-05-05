@@ -1,11 +1,23 @@
 
-
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 //import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
+
+import com.sun.jndi.cosnaming.IiopUrl.Address;
 
 public class ClienteUm {
 
@@ -15,25 +27,12 @@ public class ClienteUm {
 
 		try {
 			socket = new Socket("127.0.0.1", 12345);
-			
-			//DataInputStream fluxoEntradaDados = new DataInputStream(socket.getInputStream());
+
 			DataOutputStream fluxoSaidaDados = new DataOutputStream(socket.getOutputStream());
 
 			BufferedReader leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
 
-			// while (true) {
-
 			escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
-
-			// new Thread() {
-
-			// public void run() {
-
-			//lerMensagemDoServidor(fluxoEntradaDados);
-			// }
-
-			// }.start();
-			// }
 
 		} catch (IOException iec) {
 			System.out.println(iec.getMessage());
@@ -45,36 +44,40 @@ public class ClienteUm {
 
 		new Thread() {
 			public void run() {
-				String mensagemSaida;
-				try {
-					while (true) {
-						mensagemSaida = leitorBuffered.readLine();
-						fluxoSaidaDados.writeUTF("Mensagem do Cliente (1): " + mensagemSaida);
+
+					try {
+					enviarArquivo("C:\\Users\\Seven\\Desktop\\Cliente\\VideoCliente.mp4");
+					} catch (Exception e) {
+						
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			}
+
+			private void enviarArquivo(String caminhoArquivo) throws IOException, ClassNotFoundException, InterruptedException{
+				
+				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; // Memória temporária é o BUFFER
+			    byte[] memoriaTemporaria;
+			    
+			    memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];
+
+			     
+			          BufferedInputStream fluxoEntradaBuffer = new BufferedInputStream(new FileInputStream(caminhoArquivo));
+
+			          BufferedOutputStream fluxoSaidaBuffer = new BufferedOutputStream(socket.getOutputStream());
+			               
+			          
+			          int tamanho = 0;
+			          while ((tamanho = fluxoEntradaBuffer.read(memoriaTemporaria)) > 0) {
+			        	  fluxoSaidaBuffer.write(memoriaTemporaria, 0, tamanho);
+			          }
+			          fluxoEntradaBuffer.close();
+			          fluxoSaidaBuffer.flush();
+			          fluxoSaidaBuffer.close();
+			          socket.close();
+			          socket.close();
+			          System.out.println("\nEnviado com Sucesso!");
 			}
 		}.start();
 
 	}
-
-//	private static void lerMensagemDoServidor(DataInputStream fluxoEntradaDados) {
-//
-//		new Thread() {
-//			public void run() {
-//				String mensagemEntrada = "";
-//				while (true) {
-//					try {
-//						mensagemEntrada = fluxoEntradaDados.readUTF();
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					System.out.println(mensagemEntrada);
-//				}
-//			}
-//		}.start();
-//	}
 }
