@@ -1,19 +1,11 @@
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-
-import javax.imageio.ImageIO;
 
 public class ServidorDois {
 
@@ -49,7 +41,7 @@ public class ServidorDois {
 
 			private void receberArquivo(String caminhoArquivo) throws IOException {
 				
-				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024; // Memória temporária é o BUFFER
+				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; // Memória temporária é o BUFFER
 			    byte[] memoriaTemporaria;
 			    
 			    memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];

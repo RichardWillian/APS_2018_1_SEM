@@ -1,6 +1,7 @@
 
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 //import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,33 +15,39 @@ public class ClienteDois {
 	public static void main(String[] args) {
 
 		try {
-			socket = new Socket("127.0.0.1", 12346);
+			socket = new Socket("127.0.0.2", 12345);
 			
-			//DataInputStream fluxoEntradaDados = new DataInputStream(socket.getInputStream());
 			DataOutputStream fluxoSaidaDados = new DataOutputStream(socket.getOutputStream());
 
 			BufferedReader leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
-
-			// while (true) {
-
+			
 			escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
-
-			// new Thread() {
-
-			// public void run() {
-
-			//.lerMensagemDoServidor(fluxoEntradaDados);
-			// }
-
-			// }.start();
-			// }
+			lerMensagemServidor();
 
 		} catch (IOException iec) {
 			System.out.println(iec.getMessage());
 		}
 	}
 
-	private static void escreverMensagemAoServidor(DataOutputStream fluxoSaidaDados, BufferedReader leitorBuffered)
+	private static void lerMensagemServidor() {
+		new Thread(){
+			public void run(){
+				try {
+					DataInputStream fluxoEntradaDados = new DataInputStream(socket.getInputStream());
+					while(true){
+					
+						String mensagemOutroClienteQueVeioPeloServidor = fluxoEntradaDados.readUTF();
+						System.out.println(mensagemOutroClienteQueVeioPeloServidor);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+
+	private static void escreverMensagemAoServidor(final DataOutputStream fluxoSaidaDados, final BufferedReader leitorBuffered)
 			throws IOException {
 
 		new Thread() {
@@ -49,7 +56,7 @@ public class ClienteDois {
 				try {
 					while (true) {
 						mensagemSaida = leitorBuffered.readLine();
-						fluxoSaidaDados.writeUTF("Mensagem do Cliente (2): " + mensagemSaida);
+						fluxoSaidaDados.writeUTF("Mensagem do Cliente (2): " + mensagemSaida + "=127.0.0.3");
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -57,24 +64,5 @@ public class ClienteDois {
 				}
 			}
 		}.start();
-
 	}
-
-//	private static void lerMensagemDoServidor(DataInputStream fluxoEntradaDados) {
-//
-//		new Thread() {
-//			public void run() {
-//				String mensagemEntrada = "";
-//				while (true) {
-//					try {
-//						mensagemEntrada = fluxoEntradaDados.readUTF();
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					System.out.println(mensagemEntrada);
-//				}
-//			}
-//		}.start();
-//	}
 }
