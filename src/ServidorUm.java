@@ -42,7 +42,6 @@ public class ServidorUm {
 						String[] teste = mensagemEntrada.split("=");
 						String mensagem = teste[0];
 						String paraQuemEnviar = teste[1];
-						//System.out.println("\n" + mensagem);
 						
 						Socket socketQueReceberaMensagem = null; //socketsConectados.stream()
 						//.filter(x -> x.getLocalAddress().getHostAddress().equals(paraQuemEnviar))
