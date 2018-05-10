@@ -1,26 +1,30 @@
 
-
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-//import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class ClienteDois {
 
 	private static Socket socket;
+	private static ObjectOutputStream fluxoSaidaDados;
+	private static BufferedReader leitorBuffered;
 
 	public static void main(String[] args) {
 
 		try {
 			socket = new Socket("127.0.0.2", 12345);
 
-			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 
-			BufferedReader leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
 
 			escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
 			lerMensagemServidor();
@@ -31,42 +35,64 @@ public class ClienteDois {
 	}
 
 	private static void lerMensagemServidor() {
-		new Thread(){
-			public void run(){
+		new Thread() {
+
+			public void run() {
 				try {
-					DataInputStream fluxoEntradaDados = new DataInputStream(socket.getInputStream());
-					while(true){
-					
-						String mensagemOutroClienteQueVeioPeloServidor = fluxoEntradaDados.readUTF();
-						System.out.println(mensagemOutroClienteQueVeioPeloServidor);
+					while (true) {
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
+						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+						System.out.println(dadoCompatilhado.getMensagem());
+
+						if (dadoCompatilhado.getArquivo() != null) {
+							InputStream entradaArquivo = null;
+							OutputStream saidaArquivo = null;
+
+							try {
+								entradaArquivo = new FileInputStream(dadoCompatilhado.getArquivo());
+								saidaArquivo = new FileOutputStream(
+										new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extratoTres.mp4"));
+
+								byte[] memoriaTemporaria = new byte[1024 * 50];
+								int tamanho;
+								while ((tamanho = entradaArquivo.read(memoriaTemporaria)) > 0) {
+									saidaArquivo.write(memoriaTemporaria, 0, tamanho);
+								}
+								System.out.println("Recebido com sucesso!");
+							} catch (Exception ex) {
+								System.err.println(ex.getMessage());
+							}
+						}
 					}
-				} catch (IOException e) {
+				} catch (IOException | ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (Exception ex) {
+					System.out.println("Maior que meus erros");
 				}
 			}
 		}.start();
 	}
 
-	private static void escreverMensagemAoServidor(final ObjectOutputStream fluxoSaidaDados, final BufferedReader leitorBuffered)
-			throws IOException {
+	private static void escreverMensagemAoServidor(final ObjectOutputStream fluxoSaidaDados,
+			final BufferedReader leitorBuffered) throws IOException {
 
 		new Thread() {
 			public void run() {
 				String mensagemSaida;
 				try {
 					while (true) {
-//						mensagemSaida = leitorBuffered.readLine();
-//						fluxoSaidaDados.writeUTF("Mensagem do Cliente (2): " + mensagemSaida + "=127.0.0.3");
-						
 						mensagemSaida = leitorBuffered.readLine();
 						DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
-						//fluxoSaidaDados.writeUTF("Mensagem do Cliente (1): " + mensagemSaida + "=127.0.0.2");
 						dadoCompartilhado.setEmailEntrega("127.0.0.3");
 						dadoCompartilhado.setMensagem("Mensagem do Cliente (2): " + mensagemSaida);
-						
+						if (mensagemSaida.equals("Enviar")){
+							dadoCompartilhado
+									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extrato.mp4"));
+							System.out.println("Arquivo enviado com sucesso!");
+						}
+
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
-						
 						fluxoSaidaDados.flush();
 					}
 				} catch (IOException e) {

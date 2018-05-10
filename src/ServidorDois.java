@@ -40,26 +40,26 @@ public class ServidorDois {
 			}
 
 			private void receberArquivo(String caminhoArquivo) throws IOException {
-				
-				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; // Memória temporária é o BUFFER
-			    byte[] memoriaTemporaria;
-			    
-			    memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];
-			    
-		          BufferedInputStream fluxoEntradaBuffer = new BufferedInputStream(socket.getInputStream());
 
-		          BufferedOutputStream fluxoSaidaBuffer = 
-		               new BufferedOutputStream(new FileOutputStream(caminhoArquivo));
-		               
-		          int tamanho = 0;
-		          while ((tamanho = fluxoEntradaBuffer.read(memoriaTemporaria)) > 0) {
-		        	  fluxoSaidaBuffer.write(memoriaTemporaria, 0, tamanho);
-		          }
-		          fluxoEntradaBuffer.close();
-		          fluxoSaidaBuffer.flush();
-		          fluxoSaidaBuffer.close();
-		          socket.close();
-		          System.out.println("\nRecebido com Sucesso!");
+				final int TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA = 1024 * 50; 
+				
+				byte[] memoriaTemporaria;
+
+				memoriaTemporaria = new byte[TAMANHO_MEMORIA_TEMPORARIA_TRANSFERENCIA];
+
+				BufferedInputStream fluxoEntradaBuffer = new BufferedInputStream(socket.getInputStream());
+
+				BufferedOutputStream fluxoSaidaBuffer = new BufferedOutputStream(new FileOutputStream(caminhoArquivo));
+
+				int tamanho = 0;
+				while ((tamanho = fluxoEntradaBuffer.read(memoriaTemporaria)) > 0) {
+					fluxoSaidaBuffer.write(memoriaTemporaria, 0, tamanho);
+				}
+				fluxoEntradaBuffer.close();
+				fluxoSaidaBuffer.flush();
+				fluxoSaidaBuffer.close();
+				socket.close();
+				System.out.println("\nRecebido com Sucesso!");
 			}
 		}.start();
 	}
