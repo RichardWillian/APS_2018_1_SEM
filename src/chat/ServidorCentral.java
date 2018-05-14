@@ -34,20 +34,17 @@ public class ServidorCentral {
 
 			socketServidorCentral = new ServerSocket(12345);
 			socketsConectados = new ArrayList<Socket>();
-
+			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			do {
-				
-				if (!socketServidorCentral.isClosed()) {
-					
-					UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
-					Socket socket = socketServidorCentral.accept();
-					
-					ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
-					UIJanelaServidorCentralChat.getInstance().mostrarMensagem("Cliente "+ socket.getLocalAddress().getHostAddress() + " se conectou!\n");
-					socketsConectados.add(socket);
+				Socket socket = socketServidorCentral.accept();
+
+				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
+				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getLocalAddress().getHostAddress());
+				socketsConectados.add(socket);
+
+				if (!socketServidorCentral.isClosed())
 					lerMensagemDoCliente(fluxoEntradaDados);
-				}
-				
+
 			} while (true);
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
@@ -56,8 +53,14 @@ public class ServidorCentral {
 
 	public void desligarServidor() {
 		try {
+
+			for (Socket socketConectado : socketsConectados) {
+				socketConectado.close();
+			}
+			
 			socketServidorCentral.close();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem(" ---===== Servidor Desconectado =====---");
+
 		} catch (IOException ioE) {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());
 		}
@@ -65,32 +68,29 @@ public class ServidorCentral {
 
 	private static void lerMensagemDoCliente(final ObjectInputStream fluxoEntradaDados) {
 		new Thread() {
-			@SuppressWarnings("unused")
+
 			public void run() {
-				String mensagemEntrada = "";
 
 				try {
 					while (true) {
 
-						if (!socketServidorCentral.isClosed()) {
-							Socket socketQueReceberaMensagem = null; // socketsConectados.stream()
-							// .filter(x ->
-							// x.getLocalAddress().getHostAddress().equals(paraQuemEnviar))
-							// .findFirst().get();
+						Socket socketQueReceberaMensagem = null; // socketsConectados.stream()
+						// .filter(x ->
+						// x.getLocalAddress().getHostAddress().equals(paraQuemEnviar))
+						// .findFirst().get();
 
-							DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
-							for (Socket socketConectado : socketsConectados) {
-								if (socketConectado.getLocalAddress().getHostAddress()
-										.equals(dadoCompartilhado.getEmailEntrega())) {
-									socketQueReceberaMensagem = socketConectado;
-								}
+						for (Socket socketConectado : socketsConectados) {
+							if (socketConectado.getLocalAddress().getHostAddress()
+									.equals(dadoCompartilhado.getEmailEntrega())) {
+								socketQueReceberaMensagem = socketConectado;
 							}
-
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketQueReceberaMensagem.getOutputStream());
-							fluxoSaidaDados.writeObject(dadoCompartilhado);
 						}
+
+						ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
+								socketQueReceberaMensagem.getOutputStream());
+						fluxoSaidaDados.writeObject(dadoCompartilhado);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

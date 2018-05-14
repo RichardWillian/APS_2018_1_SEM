@@ -7,7 +7,6 @@ public class DadoCompartilhado implements Serializable {
 
 	private String mensagem;
 	private String emailEntrega;
-	// private BufferedInputStream arquivo;
 	private File arquivo;
 
 	public String getMensagem() {

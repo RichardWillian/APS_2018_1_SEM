@@ -18,7 +18,7 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 	private JButton botaoDesligarServidor;
 	private JTextArea txtAreaUsuariosConectados;
 
-	public UIJanelaServidorCentralChat() {
+	private UIJanelaServidorCentralChat() {
 
 		instanciarComponentes();
 		setProriedadesJanela();
@@ -79,7 +79,8 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 	public void actionPerformed(ActionEvent ae) {
 
 		if (ae.getSource() == botaoIniciarServidor) {
-
+			botaoDesligarServidor.setEnabled(true);
+			botaoIniciarServidor.setEnabled(false);
 			new Thread() {
 				public void run() {
 					ServidorCentral.getInstance().iniciarServidor();
@@ -92,8 +93,12 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 			int desligar = JOptionPane.showConfirmDialog(null,
 					"Se desligar o servidor todos os usuários serão desconctados instantaneamente.\n\n"
 							+ "Deseja realmente fazer isso?");
-
+			
 			if (desligar == 0) {
+				
+				botaoDesligarServidor.setEnabled(false);
+				botaoIniciarServidor.setEnabled(true);
+				
 				new Thread() {
 					public void run() {
 						ServidorCentral.getInstance().desligarServidor();
@@ -103,14 +108,16 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 		}
 	}
 	
-	public void mostrarMensagem(String mensagem){
-		txtAreaUsuariosConectados.setText(txtAreaUsuariosConectados.getText() + mensagem + "\n");
+	public void mostrarConectados(String ipConectado){
+		txtAreaUsuariosConectados.append("           Cliente " + ipConectado + " se conectou!\n");
 	}
-	
-
 	
 	@Override
 	public void windowClosing(WindowEvent we) {
 		ServidorCentral.getInstance().desligarServidor();
+	}
+
+	public void mostrarMensagem(String mensagem) {
+		txtAreaUsuariosConectados.append(mensagem + "\n");
 	}
 }
