@@ -10,9 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
 import entidades.DadoCompartilhado;
-
 public class ClienteDois {
 
 	private static Socket socket;
