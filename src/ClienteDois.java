@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import entidades.DadoCompartilhado;
 public class ClienteDois {
@@ -20,7 +21,8 @@ public class ClienteDois {
 	public static void main(String[] args) {
 
 		try {
-			socket = new Socket("127.0.0.2", 12345);
+																			// Aqui vai GetHost()
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
 
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 

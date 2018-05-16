@@ -3,6 +3,7 @@ package chat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -32,14 +33,15 @@ public class ServidorCentral {
 
 		try {
 
-			socketServidorCentral = new ServerSocket(12345);
+			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName("127.0.0.1"));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			do {
 				Socket socket = socketServidorCentral.accept();
 
 				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
-				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getLocalAddress().getHostAddress());
+				
+				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
 				socketsConectados.add(socket);
 
 				if (!socketServidorCentral.isClosed())
@@ -82,7 +84,7 @@ public class ServidorCentral {
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
 						for (Socket socketConectado : socketsConectados) {
-							if (socketConectado.getLocalAddress().getHostAddress()
+							if (socketConectado.getInetAddress().getHostAddress()
 									.equals(dadoCompartilhado.getEmailEntrega())) {
 								socketQueReceberaMensagem = socketConectado;
 							}
