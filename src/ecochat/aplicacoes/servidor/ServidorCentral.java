@@ -44,6 +44,7 @@ public class ServidorCentral {
 				Socket socket = socketServidorCentral.accept();
 
 				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
+
 				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
 				socketsConectados.add(socket);
 

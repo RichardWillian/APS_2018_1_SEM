@@ -24,6 +24,7 @@ public class ClienteDois {
 	public static void main(String[] args) {
 
 		try {
+			
 			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
 
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
