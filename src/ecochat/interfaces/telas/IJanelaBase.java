@@ -1,4 +1,4 @@
-package interfaces;
+package ecochat.interfaces.telas;
 
 public interface IJanelaBase {
 

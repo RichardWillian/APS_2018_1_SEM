@@ -1,4 +1,4 @@
-package telas;
+package ecochat.aplicacoes.telas.servidor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -7,8 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import chat.ServidorCentral;
-import interfaces.IJanelaBase;
+import ecochat.aplicacoes.servidor.ServidorCentral;
+import ecochat.aplicacoes.telas.JanelaBase;
+import ecochat.interfaces.telas.IJanelaBase;
+import ecochat.aplicacoes.telas.*;
 
 @SuppressWarnings("serial")
 public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBase {

@@ -1,4 +1,4 @@
-package entidades;
+package ecochat.entidades;
 import java.io.File;
 import java.io.Serializable;
 

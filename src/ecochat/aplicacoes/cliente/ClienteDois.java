@@ -1,3 +1,4 @@
+package ecochat.aplicacoes.cliente;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,8 +10,11 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
-import entidades.DadoCompartilhado;
+
+import ecochat.entidades.DadoCompartilhado;
+
 public class ClienteDois {
 
 	private static Socket socket;
@@ -20,7 +24,7 @@ public class ClienteDois {
 	public static void main(String[] args) {
 
 		try {
-			socket = new Socket("127.0.0.2", 12345);
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
 
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 
@@ -65,7 +69,6 @@ public class ClienteDois {
 						}
 					}
 				} catch (IOException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (Exception ex) {
 					System.out.println("Maior que meus erros");
@@ -86,7 +89,7 @@ public class ClienteDois {
 						DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
 						dadoCompartilhado.setEmailEntrega("127.0.0.3");
 						dadoCompartilhado.setMensagem("Mensagem do Cliente (2): " + mensagemSaida);
-						if (mensagemSaida.equals("Enviar")){
+						if (mensagemSaida.equals("Enviar")) {
 							dadoCompartilhado
 									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extrato.mp4"));
 							System.out.println("Arquivo enviado com sucesso!");

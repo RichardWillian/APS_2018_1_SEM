@@ -1,4 +1,4 @@
-package telas;
+package ecochat.aplicacoes.telas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package chat;
+package ecochat.aplicacoes.cliente;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,9 +10,10 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
-import entidades.DadoCompartilhado;
+import ecochat.entidades.DadoCompartilhado;
 
 public class ClienteUm {
 
@@ -95,7 +96,7 @@ public class ClienteUm {
 
 	public static void entrarChat() {
 		try {
-			socket = new Socket("127.0.0.3", 12345);
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
 
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 
