@@ -13,18 +13,57 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import ecochat.entidades.DadoAutenticacao;
 import ecochat.entidades.DadoCompartilhado;
 
 public class ClienteUm {
 
 	private static Socket socket;
+	private static ObjectOutputStream fluxoSaidaDados;
+	private static BufferedReader leitorBuffered;
 
 	public static void main(String[] args) {
-		entrarChat();
+
+		try {
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
+			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+
+		if (verificarAutenticacaoUsuario())
+			entrarChat();
 	}
 
-	private static void escreverMensagemAoServidor(final ObjectOutputStream fluxoSaidaDados,
-			final BufferedReader leitorBuffered) throws IOException {
+	@SuppressWarnings("resource")
+	private static boolean verificarAutenticacaoUsuario() {
+
+		try {
+			Socket socketAutenticacao = new Socket(InetAddress.getByName("127.255.255.254"), 12346,
+					InetAddress.getByName("127.0.0.3"), 0);
+			ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(
+					socketAutenticacao.getOutputStream());
+
+			DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
+			dadoAutenticacao.setEmail("127.0.0.2");
+
+			fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
+			fluxoSaidaDadosAutenticacao.flush();
+
+			ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
+			boolean isUsuarioAutenticado = fluxoEntradaDados.readBoolean();
+
+			return isUsuarioAutenticado;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private static void escreverMensagemAoServidor() throws IOException {
 
 		new Thread() {
 			public void run() {
@@ -60,6 +99,7 @@ public class ClienteUm {
 			public void run() {
 				try {
 					while (true) {
+
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 						System.out.println(dadoCompatilhado.getMensagem());
@@ -96,13 +136,8 @@ public class ClienteUm {
 
 	public static void entrarChat() {
 		try {
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
 
-			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-
-			BufferedReader leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
-
-			escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
+			escreverMensagemAoServidor();
 			lerMensagemServidor();
 
 		} catch (IOException e) {

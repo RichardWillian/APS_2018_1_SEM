@@ -35,33 +35,6 @@ public class ServidorCentral {
 		try {
 
 			UIJanelaServidorCentralChat.getInstance();
-			Configuration config = new Configuration();
-			
-			config.configure("ecochat\\hibernate\\configuracoes\\hibernate.cfg.xml");
-			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-			
-			SessionFactory factory = config.buildSessionFactory();
-			
-			Session session = factory.openSession();
-			@SuppressWarnings("unused")
-			Transaction trns = null;
-			trns = session.beginTransaction();
-
-			Usuario usuario = new Usuario();
-
-			usuario.setNome("Willian");
-			usuario.setEmail("willian@hotmail.com");
-			usuario.setSenha("clock");
-			
-			session.save(usuario);
-			
-			session.getTransaction().commit();
-			
-			@SuppressWarnings({ "unchecked", "unused" })
-			List<Usuario> usuarios = session.createCriteria(Usuario.class).list();
-			
-			session.getTransaction().begin();
-
 		} 
 		catch(HibernateException exception){
 		     exception.printStackTrace();
@@ -73,11 +46,12 @@ public class ServidorCentral {
 	public void iniciarServidor() {
 
 		try {
-
+			
+			ServidorAutenticacao.getInstance().iniciarServidor();
 			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName("127.0.0.1"));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
-			enviarMensagensPendentes();
+			//enviarMensagensPendentes();
 			do {
 				Socket socket = socketServidorCentral.accept();
 
@@ -149,14 +123,14 @@ public class ServidorCentral {
 		}.start();
 	}
 
-	private void enviarMensagensPendentes() {
-
-		for (Map.Entry<Socket, DadoCompartilhado> elementoMap : socketsMensagensPendentes.entrySet()) {
-			if (!elementoMap.getKey().isClosed()) {
-				enviarMensagem(elementoMap.getKey(), elementoMap.getValue());
-			}
-		}
-	}
+//	private void enviarMensagensPendentes() {
+//
+//		for (Map.Entry<Socket, DadoCompartilhado> elementoMap : socketsMensagensPendentes.entrySet()) {
+//			if (!elementoMap.getKey().isClosed()) {
+//				enviarMensagem(elementoMap.getKey(), elementoMap.getValue());
+//			}
+//		}
+//	}
 
 	public void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
 

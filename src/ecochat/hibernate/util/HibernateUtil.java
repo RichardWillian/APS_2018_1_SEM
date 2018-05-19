@@ -1,5 +1,8 @@
 package ecochat.hibernate.util;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -7,12 +10,16 @@ import org.hibernate.cfg.Configuration;
  * Esta classe encapsula as operações básicas que envolvem o Hibernate
  * quanto a inicialização, criação de sessões e encerramento.
  * 
- * @author Leandro Fernandes
+ * @author Professor Leandro Fernandes
  */
 public class HibernateUtil {
 	
 	// Referência para a fábrica de sessões (do padrão Singleton)
 	private static SessionFactory sessionFactory = null;
+	
+	private HibernateUtil(){
+		Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+	}
 
 	// Método para inicialização e criação de uma fábrica de sessões
 	private static SessionFactory buildSessionFactory() {
