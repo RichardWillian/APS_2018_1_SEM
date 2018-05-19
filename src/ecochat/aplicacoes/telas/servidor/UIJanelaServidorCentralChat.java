@@ -10,7 +10,6 @@ import javax.swing.JTextArea;
 import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.interfaces.telas.IJanelaBase;
-import ecochat.aplicacoes.telas.*;
 
 @SuppressWarnings("serial")
 public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBase {

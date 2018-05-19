@@ -10,9 +10,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import ecochat.aplicacoes.telas.servidor.UIJanelaServidorCentralChat;
 import ecochat.entidades.DadoCompartilhado;
+import ecochat.entidades.modelos.Usuario;
 
 public class ServidorCentral {
 
@@ -26,9 +35,38 @@ public class ServidorCentral {
 		try {
 
 			UIJanelaServidorCentralChat.getInstance();
+			Configuration config = new Configuration();
+			
+			config.configure("ecochat\\hibernate\\configuracoes\\hibernate.cfg.xml");
+			Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+			
+			SessionFactory factory = config.buildSessionFactory();
+			
+			Session session = factory.openSession();
+			@SuppressWarnings("unused")
+			Transaction trns = null;
+			trns = session.beginTransaction();
 
-		} catch (Exception e) {
-			System.err.println("Ops! " + e.getMessage());
+			Usuario usuario = new Usuario();
+
+			usuario.setNome("Willian");
+			usuario.setEmail("willian@hotmail.com");
+			usuario.setSenha("clock");
+			
+			session.save(usuario);
+			
+			session.getTransaction().commit();
+			
+			@SuppressWarnings({ "unchecked", "unused" })
+			List<Usuario> usuarios = session.createCriteria(Usuario.class).list();
+			
+			session.getTransaction().begin();
+
+		} 
+		catch(HibernateException exception){
+		     exception.printStackTrace();
+		}catch (Exception e) {
+			System.err.println("Ops! " + e.getMessage() + "\n");
 		}
 	}
 
@@ -93,7 +131,8 @@ public class ServidorCentral {
 
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
-									ServidorCentral.getInstance().enviarMensagem(socketQueReceberaMensagem, dadoCompartilhado);
+									ServidorCentral.getInstance().enviarMensagem(socketQueReceberaMensagem,
+											dadoCompartilhado);
 								} else {
 									Socket socketDesconectado = socketConectado;
 									socketsMensagensPendentes.put(socketDesconectado, dadoCompartilhado);
@@ -104,7 +143,6 @@ public class ServidorCentral {
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -119,16 +157,14 @@ public class ServidorCentral {
 			}
 		}
 	}
-	
+
 	public void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
 
 		try {
-			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-					socketQueReceberaMensagem.getOutputStream());
+			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
 
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
