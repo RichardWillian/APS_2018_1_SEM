@@ -24,20 +24,21 @@ public class ClienteUm {
 
 	public static void main(String[] args) {
 
-		try {
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
-			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if (verificarAutenticacaoUsuario()) {
+			try {
+				socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
+				fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
 
-		if (verificarAutenticacaoUsuario())
 			entrarChat();
+		}
 	}
 
-	@SuppressWarnings("resource")
+	@SuppressWarnings({ "resource" })
 	private static boolean verificarAutenticacaoUsuario() {
 
 		try {
@@ -47,13 +48,21 @@ public class ClienteUm {
 					socketAutenticacao.getOutputStream());
 
 			DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
-			dadoAutenticacao.setEmail("127.0.0.2");
+
+			dadoAutenticacao.setEmail("Jorginho@hotmail.com");
+			dadoAutenticacao.setSenha("kli");
 
 			fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
 			fluxoSaidaDadosAutenticacao.flush();
 
 			ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
-			boolean isUsuarioAutenticado = fluxoEntradaDados.readBoolean();
+			boolean isUsuarioAutenticado = false;
+			try {
+				isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			return isUsuarioAutenticado;
 

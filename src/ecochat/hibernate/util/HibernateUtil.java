@@ -25,7 +25,7 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			// Cria uma SessionFactory a partir do arquivo hibernate.cfg.xml
-			return new Configuration().configure().buildSessionFactory();
+			return new Configuration().configure("ecochat\\hibernate\\configuracoes\\hibernate.cfg.xml").buildSessionFactory();
 		} catch (Throwable ex) {
 			// Garantindo o registro da exceção assim como sua exibição na console
 			System.err.println("Falha na criação da SessionFactory inicial.\n" + ex);

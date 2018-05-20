@@ -1,6 +1,9 @@
 package ecochat.entidades;
 
-public class DadoAutenticacao {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class DadoAutenticacao implements Serializable{
 
 	private String nome;
 	private String email;

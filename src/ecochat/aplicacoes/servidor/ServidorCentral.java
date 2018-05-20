@@ -136,8 +136,8 @@ public class ServidorCentral {
 
 		try {
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
-
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
