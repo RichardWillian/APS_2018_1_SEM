@@ -15,30 +15,32 @@ import java.net.Socket;
 
 import ecochat.entidades.DadoAutenticacao;
 import ecochat.entidades.DadoCompartilhado;
+import ecochat.interfaces.telas.JanelaChat;
 
 public class ClienteUm {
 
 	private static Socket socket;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static BufferedReader leitorBuffered;
+	private static ClienteUm instancia;
 
 	public static void main(String[] args) {
 
-		//if (verificarAutenticacaoUsuario()) {
-			try {
-				socket = new Socket(InetAddress.getByName("192.168.1.79"), 12347, InetAddress.getByName("127.0.0.3"), 0);
-				fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		// if (verificarAutenticacaoUsuario()) {
+		try {
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
+			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
 
-			entrarChat();
-		//}
+		entrarChat();
+		// }
 	}
 
-	@SuppressWarnings({ "resource" })
+	@SuppressWarnings({ "resource", "unused" })
 	private static boolean verificarAutenticacaoUsuario() {
 
 		try {
@@ -72,33 +74,35 @@ public class ClienteUm {
 		}
 	}
 
-	private static void escreverMensagemAoServidor() throws IOException {
+	public static void escreverMensagemAoServidor(final String mensagemDigitada ) {
 
 		new Thread() {
 			public void run() {
-				String mensagemSaida;
-				try {
-					while (true) {
-						mensagemSaida = leitorBuffered.readLine();
-						DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
-						dadoCompartilhado.setEmailEntrega("127.0.0.2");
-						dadoCompartilhado.setMensagem("Mensagem do Cliente (1): " + mensagemSaida);
+				String mensagemSaida = mensagemDigitada;
+				//try {
+					//while (true) {
+						
+						//mensagemSaida = leitorBuffered.readLine();
+						JanelaChat.getInstance().adicionarMensagemDireita(mensagemSaida);
+						//DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
+//						dadoCompartilhado.setEmailEntrega("127.0.0.2");
+//						dadoCompartilhado.setMensagem("Mensagem do Cliente (1): " + mensagemSaida);
 
-						if (mensagemSaida.equals("Enviar")) {
-							dadoCompartilhado
-									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extrato.mp4"));
-							System.out.println("Arquivo enviado com sucesso!");
-						}
+//						if (mensagemSaida.equals("Enviar")) {
+//							dadoCompartilhado
+//									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extrato.mp4"));
+//							System.out.println("Arquivo enviado com sucesso!");
+//						}
 
-						fluxoSaidaDados.writeObject(dadoCompartilhado);
+						//fluxoSaidaDados.writeObject(dadoCompartilhado);
 
-						fluxoSaidaDados.flush();
+						//fluxoSaidaDados.flush();
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			//}
 		}.start();
 	}
 
@@ -143,15 +147,23 @@ public class ClienteUm {
 		}.start();
 	}
 
-	public static void entrarChat() {
-		try {
+	private static void entrarChat() {
+		//try {
 
-			escreverMensagemAoServidor();
+			//escreverMensagemAoServidor();
 			lerMensagemServidor();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
+	
+	public static ClienteUm getInstance(){
+		
+		if(instancia == null)
+			return instancia = new ClienteUm();
+		
+		return instancia;
 	}
 }

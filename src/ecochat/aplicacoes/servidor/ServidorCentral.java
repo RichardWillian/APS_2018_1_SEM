@@ -41,7 +41,7 @@ public class ServidorCentral {
 		try {
 			
 			ServidorAutenticacao.getInstance().iniciarServidor();
-			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName("192.168.1.79"));
+			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName("127.0.0.1"));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			//enviarMensagensPendentes();
