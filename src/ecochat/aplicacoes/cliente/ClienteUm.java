@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -21,6 +20,7 @@ public class ClienteUm {
 
 	private static Socket socket;
 	private static ObjectOutputStream fluxoSaidaDados;
+	@SuppressWarnings("unused")
 	private static BufferedReader leitorBuffered;
 	private static ClienteUm instancia;
 
@@ -28,13 +28,15 @@ public class ClienteUm {
 
 		// if (verificarAutenticacaoUsuario()) {
 		try {
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+			JanelaChat.getInstance();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+		// leitorBuffered = new BufferedReader(new
+		// InputStreamReader(System.in));
 
 		entrarChat();
 		// }
@@ -74,35 +76,30 @@ public class ClienteUm {
 		}
 	}
 
-	public static void escreverMensagemAoServidor(final String mensagemDigitada ) {
+	public static void escreverMensagemAoServidor(final String mensagemDigitada) {
 
 		new Thread() {
 			public void run() {
-				String mensagemSaida = mensagemDigitada;
-				//try {
-					//while (true) {
-						
-						//mensagemSaida = leitorBuffered.readLine();
-						JanelaChat.getInstance().adicionarMensagemDireita(mensagemSaida);
-						//DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
-//						dadoCompartilhado.setEmailEntrega("127.0.0.2");
-//						dadoCompartilhado.setMensagem("Mensagem do Cliente (1): " + mensagemSaida);
+				try {
 
-//						if (mensagemSaida.equals("Enviar")) {
-//							dadoCompartilhado
-//									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extrato.mp4"));
-//							System.out.println("Arquivo enviado com sucesso!");
-//						}
+					DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
+					dadoCompartilhado.setEmailEntrega("127.0.0.3");
+					dadoCompartilhado.setMensagem("Mensagem do Cliente (1): " + mensagemDigitada);
 
-						//fluxoSaidaDados.writeObject(dadoCompartilhado);
-
-						//fluxoSaidaDados.flush();
+					if (mensagemDigitada.equals("Enviar")) {
+						dadoCompartilhado
+								.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extrato.mp4"));
+						System.out.println("Arquivo enviado com sucesso!");
 					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-			//}
+
+					fluxoSaidaDados.writeObject(dadoCompartilhado);
+
+					fluxoSaidaDados.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}.start();
 	}
 
@@ -115,7 +112,8 @@ public class ClienteUm {
 
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
-						System.out.println(dadoCompatilhado.getMensagem());
+
+						JanelaChat.getInstance().adicionarMensagemEsquerda(dadoCompatilhado.getMensagem());
 
 						if (dadoCompatilhado.getArquivo() != null) {
 							InputStream entradaArquivo = null;
@@ -148,22 +146,22 @@ public class ClienteUm {
 	}
 
 	private static void entrarChat() {
-		//try {
+		// try {
 
-			//escreverMensagemAoServidor();
-			lerMensagemServidor();
-//
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// escreverMensagemAoServidor();
+		lerMensagemServidor();
+		//
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 	}
-	
-	public static ClienteUm getInstance(){
-		
-		if(instancia == null)
+
+	public static ClienteUm getInstance() {
+
+		if (instancia == null)
 			return instancia = new ClienteUm();
-		
+
 		return instancia;
 	}
 }

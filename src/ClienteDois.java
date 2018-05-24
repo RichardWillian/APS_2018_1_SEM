@@ -25,7 +25,7 @@ public class ClienteDois {
 
 		try {
 			
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
 
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 
@@ -88,8 +88,8 @@ public class ClienteDois {
 					while (true) {
 						mensagemSaida = leitorBuffered.readLine();
 						DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
-						dadoCompartilhado.setEmailEntrega("127.0.0.3");
-						dadoCompartilhado.setMensagem("Mensagem do Cliente (2): " + mensagemSaida);
+						dadoCompartilhado.setEmailEntrega("127.0.0.2");
+						dadoCompartilhado.setMensagem(mensagemSaida);
 						if (mensagemSaida.equals("Enviar")) {
 							dadoCompartilhado
 									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extrato.mp4"));
