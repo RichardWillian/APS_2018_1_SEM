@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -26,7 +27,7 @@ public class ClienteUm {
 
 	public static void main(String[] args) {
 
-		// if (verificarAutenticacaoUsuario()) {
+		if (verificarAutenticacaoUsuario()) {
 		try {
 			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
@@ -35,11 +36,11 @@ public class ClienteUm {
 			e.printStackTrace();
 		}
 
-		// leitorBuffered = new BufferedReader(new
-		// InputStreamReader(System.in));
+		 leitorBuffered = new BufferedReader(new
+		 InputStreamReader(System.in));
 
 		entrarChat();
-		// }
+}
 	}
 
 	@SuppressWarnings({ "resource", "unused" })
