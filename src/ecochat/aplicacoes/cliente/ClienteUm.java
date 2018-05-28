@@ -76,7 +76,7 @@ public class ClienteUm {
 		}
 	}
 
-	public static void escreverMensagemAoServidor(DadoCompartilhado dadoCompartilhado) {
+	public static void escreverMensagemAoServidor(final DadoCompartilhado dadoCompartilhado) {
 
 		new Thread() {
 			public void run() {
@@ -84,6 +84,8 @@ public class ClienteUm {
 					dadoCompartilhado.setEmailEntrega("127.0.0.3");
 
 					fluxoSaidaDados.writeObject(dadoCompartilhado);
+					
+					JanelaChat.getInstance().trocarProgressBarPorImagem();
 
 					fluxoSaidaDados.flush();
 				} catch (IOException e) {

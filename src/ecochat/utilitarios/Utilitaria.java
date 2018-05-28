@@ -1,12 +1,16 @@
 package ecochat.utilitarios;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import javax.swing.JLabel;
 
 public class Utilitaria {
 
 	public static JLabel quebrarLinhas(String mensagem) {
 		JLabel lblMensagem;
-		
+
 		if (mensagem.length() > 40) {
 
 			StringBuilder stringFormatada = new StringBuilder();
@@ -98,5 +102,20 @@ public class Utilitaria {
 			lblMensagem = new JLabel("<html><p>" + mensagem + "</html>");
 
 		return lblMensagem;
+	}
+
+	public static boolean identificarTipoArquivo(File arquivoEnvio) {
+
+		String tipoMIMEArquivo = null;
+		try {
+			tipoMIMEArquivo = Files.probeContentType(arquivoEnvio.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String tipoArquivo = tipoMIMEArquivo.split("/")[0];
+		if (tipoArquivo.equals("image"))
+			return true;
+		else
+			return false;
 	}
 }
