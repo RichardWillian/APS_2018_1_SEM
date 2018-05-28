@@ -28,22 +28,21 @@ public class ClienteUm {
 	public static void main(String[] args) {
 
 		if (verificarAutenticacaoUsuario()) {
-		try {
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
-			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-			JanelaChat.getInstance();
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
+				fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+				JanelaChat.getInstance();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+
+			entrarChat();
 		}
-
-		 leitorBuffered = new BufferedReader(new
-		 InputStreamReader(System.in));
-
-		entrarChat();
-}
 	}
 
-	@SuppressWarnings({ "resource", "unused" })
+	@SuppressWarnings({ "resource" })
 	private static boolean verificarAutenticacaoUsuario() {
 
 		try {
@@ -77,21 +76,12 @@ public class ClienteUm {
 		}
 	}
 
-	public static void escreverMensagemAoServidor(final String mensagemDigitada) {
+	public static void escreverMensagemAoServidor(DadoCompartilhado dadoCompartilhado) {
 
 		new Thread() {
 			public void run() {
 				try {
-
-					DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
 					dadoCompartilhado.setEmailEntrega("127.0.0.3");
-					dadoCompartilhado.setMensagem("Mensagem do Cliente (1): " + mensagemDigitada);
-
-					if (mensagemDigitada.equals("Enviar")) {
-						dadoCompartilhado
-								.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extrato.mp4"));
-						System.out.println("Arquivo enviado com sucesso!");
-					}
 
 					fluxoSaidaDados.writeObject(dadoCompartilhado);
 
@@ -147,15 +137,7 @@ public class ClienteUm {
 	}
 
 	private static void entrarChat() {
-		// try {
-
-		// escreverMensagemAoServidor();
 		lerMensagemServidor();
-		//
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 	}
 
 	public static ClienteUm getInstance() {
