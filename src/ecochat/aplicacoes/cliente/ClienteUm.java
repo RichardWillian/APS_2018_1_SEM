@@ -83,12 +83,19 @@ public class ClienteUm {
 				try {
 					dadoCompartilhado.setEmailEntrega("127.0.0.3");
 
-					fluxoSaidaDados.writeObject(dadoCompartilhado);
+					if (dadoCompartilhado.getArquivo() != null) {
+						Thread.sleep(2000);
+						fluxoSaidaDados.writeObject(dadoCompartilhado);
+						JanelaChat.getInstance().trocarLoadingPorImagemArquivo();
+					} else {
+						fluxoSaidaDados.writeObject(dadoCompartilhado);
+					}
 					
-					JanelaChat.getInstance().trocarProgressBarPorImagem();
-
 					fluxoSaidaDados.flush();
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

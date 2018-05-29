@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.KeyAdapter;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 
@@ -51,7 +53,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLayeredPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JProgressBar;
 
 @SuppressWarnings({ "serial", "unused" })
 public class JanelaChat extends JanelaBase {
@@ -70,8 +71,8 @@ public class JanelaChat extends JanelaBase {
 	private JPanel panelVisorChat;
 	private JFileChooser exploradorArquivos;
 	private File arquivoEnvio = null;
-	private JProgressBar progressBar;
 	private JLabel lblArquivo;
+	private JLabel lblLoading;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -99,12 +100,12 @@ public class JanelaChat extends JanelaBase {
 		janelaChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janelaChat.getContentPane().setLayout(null);
 
-		lblEnviarArquivo = carregarImagemDinamizada(this.getClass().getResource("imagens\\anexo_icon_5.png"), 65, 45);
+		lblEnviarArquivo = criarLabelComImagem(this.getClass().getResource("imagens\\anexo_icon_5.png"));
 		lblEnviarArquivo.setBounds(10, 392, 45, 40);
 		lblEnviarArquivo.addMouseListener(this);
 		janelaChat.getContentPane().add(lblEnviarArquivo);
 
-		lblEnviarMensagem = carregarImagemDinamizada(this.getClass().getResource("imagens\\botao_enviar.gif"), 80, 60);
+		lblEnviarMensagem = criarLabelComImagem(this.getClass().getResource("imagens\\botao_enviar.gif"));
 		lblEnviarMensagem.setBounds(280, 390, 60, 40);
 		lblEnviarMensagem.addMouseListener(this);
 		janelaChat.getContentPane().add(lblEnviarMensagem);
@@ -142,21 +143,6 @@ public class JanelaChat extends JanelaBase {
 		janelaChat.setVisible(true);
 	}
 
-	private JLabel carregarImagemDinamizada(URL caminho, int larguraLabel, int alturaLabel) {
-		
-		BufferedImage imagem = null;
-		try {
-			imagem = ImageIO.read(caminho);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Image imagemDinamizada = imagem.getScaledInstance(larguraLabel, alturaLabel, Image.SCALE_SMOOTH);
-
-		
-		return new JLabel(new ImageIcon(imagemDinamizada));
-	}
-
 	public static JanelaChat getInstance() {
 
 		if (instancia == null)
@@ -180,6 +166,8 @@ public class JanelaChat extends JanelaBase {
 	}
 
 	private void adicionarMensagemVisor(JLabel lblMensagem) {
+	
+		panelVisorChat.add(Box.createRigidArea(new Dimension(20,20)));
 		panelVisorChat.add(lblMensagem);
 		repintarTela();
 	}
@@ -191,6 +179,7 @@ public class JanelaChat extends JanelaBase {
 		lblMensagem = Utilitaria.quebrarLinhas(mensagem);
 
 		lblMensagem.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMensagem.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		lblMensagem.setForeground(Color.BLACK);
 		lblMensagem.setBackground(new Color(195, 223, 255));
 		lblMensagem.setOpaque(true);
@@ -224,29 +213,24 @@ public class JanelaChat extends JanelaBase {
 
 		DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
 		dadoCompartilhado.setMensagem(textAreaCampoEscritaChat.getText());
-		adicionarAnimacaoEnvioArquivo();
-		
+
 		if (arquivoEnvio != null) {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
-			//adicionarAnimacaoEnvioArquivo(); // Esse código fica aqui
+			adicionarAnimacaoEnvioArquivo(); // Esse código fica aqui
 		}
-		// ClienteUm.getInstance();
+		ClienteUm.getInstance();
 		adicionarMensagemDireita(textAreaCampoEscritaChat.getText());
-		// ClienteUm.escreverMensagemAoServidor(dadoCompartilhado);
+		ClienteUm.escreverMensagemAoServidor(dadoCompartilhado);
 
 		textAreaCampoEscritaChat.setText(null);
 	}
 
 	private void adicionarAnimacaoEnvioArquivo() {
 
-		//trocarProgressBarPorImagem();
-		lblArquivo = new JLabel();
-		progressBar = new JProgressBar();
-		progressBar.setForeground(Color.green);
-		progressBar.setBackground(Color.white);
-		progressBar.setIndeterminate(true);
-		
-		panelVisorChat.add(progressBar);
+		lblLoading = criarLabelComImagem(this.getClass().getResource("imagens/loading_icon.gif"));
+		lblLoading.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
+
+		panelVisorChat.add(lblLoading);
 	}
 
 	protected void repintarTela() {
@@ -256,37 +240,46 @@ public class JanelaChat extends JanelaBase {
 		janelaChat.getContentPane().repaint();
 	}
 
-	public void trocarProgressBarPorImagem() {
+	public void trocarLoadingPorImagemArquivo() {
 
-		panelVisorChat.remove(lblArquivo);
-		
+		panelVisorChat.remove(lblLoading);
+
 		lblArquivo = new JLabel();
 		lblArquivo.setSize(100, 60);
 
+		BufferedImage imagem = null;
 		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivoEnvio);
-
+		
 		if (isImagem) {
-			BufferedImage imagem = null;
-			try {
+			
+			try{
 				imagem = ImageIO.read(arquivoEnvio);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(),
-					Image.SCALE_SMOOTH);
+			catch(IOException io){
+				System.out.println(io.getMessage());
+			}
+			
+			Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(), Image.SCALE_SMOOTH);
 
 			lblArquivo.setIcon(new ImageIcon(imagemDinamizada));
 			lblArquivo.setLocation(new Point(110, 100));
 			lblArquivo.setOpaque(true);
 			lblArquivo.setBackground(Color.RED);
-			
+
 			lblArquivo.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
 
 			panelVisorChat.add(lblArquivo);
 			arquivoEnvio = null;
 			repintarTela();
-			
 		}
+	}
+
+	private JLabel criarLabelComImagem(URL caminho) {
+
+		Image imagem = null;
+		imagem = Toolkit.getDefaultToolkit().createImage(caminho);
+
+		return new JLabel(new ImageIcon(imagem));
+
 	}
 }
