@@ -13,8 +13,8 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 
-import ecochat.aplicacoes.telas.servidor.UIJanelaServidorCentralChat;
 import ecochat.entidades.DadoCompartilhado;
+import ecochat.interfaces.telas.UIJanelaServidorCentralChat;
 
 public class ServidorCentral {
 

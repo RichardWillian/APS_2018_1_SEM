@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ecochat.aplicacoes.cliente.ClienteUm;
+import ecochat.aplicacoes.cliente.Aplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
@@ -56,10 +56,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings({ "serial", "unused" })
-public class JanelaChat extends JanelaBase {
+public class UIJanelaChat extends JanelaBase {
 
 	private JFrame janelaChat;
-	private static JanelaChat instancia;
+	private static UIJanelaChat instancia;
 	private JLabel lblEnviarArquivo;
 	private JLabel lblEnviarMensagem;
 	private JTextArea textAreaCampoEscritaChat;
@@ -79,7 +79,7 @@ public class JanelaChat extends JanelaBase {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JanelaChat.getInstance().janelaChat.setVisible(true);
+					UIJanelaChat.getInstance().janelaChat.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -87,7 +87,7 @@ public class JanelaChat extends JanelaBase {
 		});
 	}
 
-	public JanelaChat() {
+	public UIJanelaChat() {
 		initialize();
 	}
 
@@ -147,10 +147,10 @@ public class JanelaChat extends JanelaBase {
 		janelaChat.setVisible(true);
 	}
 
-	public static JanelaChat getInstance() {
+	public static UIJanelaChat getInstance() {
 
 		if (instancia == null)
-			return instancia = new JanelaChat();
+			return instancia = new UIJanelaChat();
 
 		return instancia;
 	}
@@ -218,9 +218,9 @@ public class JanelaChat extends JanelaBase {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
 			adicionarAnimacaoEnvioArquivo(); // Esse código fica aqui
 		}
-		ClienteUm.getInstance();
+		Aplicacao.getInstance();
 		adicionarMensagemDireita(textAreaCampoEscritaChat.getText());
-		ClienteUm.escreverMensagemAoServidor(dadoCompartilhado);
+		Aplicacao.escreverMensagemAoServidor(dadoCompartilhado);
 
 		textAreaCampoEscritaChat.setText(null);
 	}

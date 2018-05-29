@@ -15,31 +15,31 @@ import java.net.Socket;
 
 import ecochat.entidades.DadoAutenticacao;
 import ecochat.entidades.DadoCompartilhado;
-import ecochat.interfaces.telas.JanelaChat;
+import ecochat.interfaces.telas.UIJanelaChat;
 
-public class ClienteUm {
+public class Aplicacao {
 
 	private static Socket socket;
 	private static ObjectOutputStream fluxoSaidaDados;
 	@SuppressWarnings("unused")
 	private static BufferedReader leitorBuffered;
-	private static ClienteUm instancia;
+	private static Aplicacao instancia;
 
 	public static void main(String[] args) {
 
-		// if (verificarAutenticacaoUsuario()) {
-		try {
-			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
-			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-			JanelaChat.getInstance();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (verificarAutenticacaoUsuario()) {
+			try {
+				socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
+				fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+				UIJanelaChat.getInstance();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+
+			entrarChat();
 		}
-
-		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
-
-		entrarChat();
-		// }
 	}
 
 	@SuppressWarnings({ "resource", "unused" })
@@ -86,7 +86,7 @@ public class ClienteUm {
 					if (dadoCompartilhado.getArquivo() != null) {
 						Thread.sleep(2000);
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
-						JanelaChat.getInstance().trocarLoadingPorImagemArquivo();
+						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo();
 					} else {
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
 					}
@@ -111,7 +111,7 @@ public class ClienteUm {
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
-						JanelaChat.getInstance().adicionarMensagemEsquerda(dadoCompatilhado.getMensagem());
+						UIJanelaChat.getInstance().adicionarMensagemEsquerda(dadoCompatilhado.getMensagem());
 
 						if (dadoCompatilhado.getArquivo() != null) {
 							InputStream entradaArquivo = null;
@@ -146,10 +146,10 @@ public class ClienteUm {
 		lerMensagemServidor();
 	}
 
-	public static ClienteUm getInstance() {
+	public static Aplicacao getInstance() {
 
 		if (instancia == null)
-			return instancia = new ClienteUm();
+			return instancia = new Aplicacao();
 
 		return instancia;
 	}
