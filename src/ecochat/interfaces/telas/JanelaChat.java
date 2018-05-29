@@ -1,5 +1,6 @@
 package ecochat.interfaces.telas;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -124,15 +125,18 @@ public class JanelaChat extends JanelaBase {
 
 		janelaChat.getContentPane().add(scrollPaneCampoEscritaChat);
 
-		panelVisorChat = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelVisorChat = new JPanel();
 		panelVisorChat.setBackground(Color.WHITE);
 		panelVisorChat.setBorder(new EmptyBorder(0, 10, 0, 0));
 		panelVisorChat.setBounds(0, 0, 344, 385);
+		panelVisorChat.setEnabled(false);
 		panelVisorChat.setLayout(new BoxLayout(panelVisorChat, BoxLayout.PAGE_AXIS));
 
 		scrollPaneVisorChat = new JScrollPane(panelVisorChat);
-		scrollPaneVisorChat.setViewportBorder(new EmptyBorder(0, 15, 0, 15));
-		scrollPaneVisorChat.setBackground(Color.WHITE);
+		scrollPaneVisorChat.setViewportBorder(new EmptyBorder(2, 10, 2, 10));
+		// scrollPaneVisorChat.setOpaque(true);
+		// scrollPaneVisorChat.setBackground(Color.lightGray);
+		scrollPaneVisorChat.setEnabled(false);
 		scrollPaneVisorChat.setBounds(0, 0, 344, 385);
 
 		janelaChat.getContentPane().add(scrollPaneVisorChat);
@@ -157,17 +161,17 @@ public class JanelaChat extends JanelaBase {
 
 		lblMensagem = Utilitaria.quebrarLinhas(mensagem);
 
+		// lblMensagem.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
 		lblMensagem.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMensagem.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
-		lblMensagem.setForeground(Color.BLACK);
+
 		lblMensagem.setOpaque(true);
+		lblMensagem.setBackground(new Color(198, 255, 215));
+		lblMensagem.setForeground(Color.BLACK);
 
 		adicionarMensagemVisor(lblMensagem);
 	}
 
 	private void adicionarMensagemVisor(JLabel lblMensagem) {
-	
-		panelVisorChat.add(Box.createRigidArea(new Dimension(20,20)));
 		panelVisorChat.add(lblMensagem);
 		repintarTela();
 	}
@@ -177,15 +181,11 @@ public class JanelaChat extends JanelaBase {
 		JLabel lblMensagem = null;
 
 		lblMensagem = Utilitaria.quebrarLinhas(mensagem);
-
-		lblMensagem.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMensagem.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		lblMensagem.setForeground(Color.BLACK);
-		lblMensagem.setBackground(new Color(195, 223, 255));
 		lblMensagem.setOpaque(true);
+		lblMensagem.setBackground(new Color(249, 255, 198));
+		lblMensagem.setForeground(Color.BLACK);
 
 		adicionarMensagemVisor(lblMensagem);
-
 	}
 
 	@Override
@@ -228,7 +228,7 @@ public class JanelaChat extends JanelaBase {
 	private void adicionarAnimacaoEnvioArquivo() {
 
 		lblLoading = criarLabelComImagem(this.getClass().getResource("imagens/loading_icon.gif"));
-		lblLoading.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
+		lblLoading.setLocation(100, 150);
 
 		panelVisorChat.add(lblLoading);
 	}
@@ -249,24 +249,23 @@ public class JanelaChat extends JanelaBase {
 
 		BufferedImage imagem = null;
 		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivoEnvio);
-		
+
 		if (isImagem) {
-			
-			try{
+
+			try {
 				imagem = ImageIO.read(arquivoEnvio);
-			}
-			catch(IOException io){
+			} catch (IOException io) {
 				System.out.println(io.getMessage());
 			}
-			
-			Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(), Image.SCALE_SMOOTH);
+
+			Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(),
+					Image.SCALE_SMOOTH);
 
 			lblArquivo.setIcon(new ImageIcon(imagemDinamizada));
 			lblArquivo.setLocation(new Point(110, 100));
 			lblArquivo.setOpaque(true);
-			lblArquivo.setBackground(Color.RED);
-
-			lblArquivo.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
+			lblArquivo.setBackground(new Color(210, 253, 255, Color.TRANSLUCENT));
+			lblArquivo.setText("Você Enviou");
 
 			panelVisorChat.add(lblArquivo);
 			arquivoEnvio = null;

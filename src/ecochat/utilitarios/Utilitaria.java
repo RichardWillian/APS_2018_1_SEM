@@ -14,7 +14,6 @@ public class Utilitaria {
 		if (mensagem.length() > 40) {
 
 			StringBuilder stringFormatada = new StringBuilder();
-
 			StringBuilder caractesMensagem = new StringBuilder(mensagem);
 			StringBuilder caracteresAteAqui = new StringBuilder();
 			StringBuilder caracteresJaConcatenados = new StringBuilder();
@@ -33,16 +32,13 @@ public class Utilitaria {
 
 				if (i != 0 && i % 30 == 0) {
 
-					char caracterCorrenteUm = caractesMensagem.charAt(i);
-					if (caracterCorrenteUm != ' ') {
+					if (caractesMensagem.charAt(i) != ' ') {
 
 						for (int j = i + 1; j < mensagem.length(); j++) {
 
 							caracteresAteAqui.append(caractesMensagem.charAt(j));
-
-							char caracterCorrenteDois = caractesMensagem.charAt(j);
-
-							if (caracterCorrenteDois == ' ') {
+							
+							if (caractesMensagem.charAt(j) == ' ') {
 
 								stringFormatada.append(caracteresAteAqui + "<br>");
 								caracteresJaConcatenados.append(caracteresAteAqui);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project EcoChat with libraries in sub-folder">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="C:/Users/richard.divino/Desktop/StackOverFlow"/>
+    <property name="dir.jarfile" value="C:/Users/richard.divino/Desktop"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/ServidorCentral.jar">
+            <manifest>
+                <attribute name="Main-Class" value="ecochat.aplicacoes.servidor.ServidorCentral"/>
+                <attribute name="Class-Path" value=". ServidorCentral_lib/antlr-2.7.7.jar ServidorCentral_lib/dom4j-1.6.1.jar ServidorCentral_lib/geronimo-jta_1.1_spec-1.1.1.jar ServidorCentral_lib/hibernate-commons-annotations-5.0.0.Final.jar ServidorCentral_lib/hibernate-core-5.0.2.Final.jar ServidorCentral_lib/hibernate-jpa-2.1-api-1.0.0.Final.jar ServidorCentral_lib/jandex-1.2.2.Final.jar ServidorCentral_lib/javassist-3.18.1-GA.jar ServidorCentral_lib/jboss-logging-3.3.0.Final.jar ServidorCentral_lib/gradle-ivyxml-plugin-0.3.2.jar ServidorCentral_lib/gradle-javaPropFile-plugin-0.6.0.jar ServidorCentral_lib/gradle-wrapper.jar ServidorCentral_lib/hsqldb.jar ServidorCentral_lib/sqltool.jar ServidorCentral_lib/jgoodies-common-1.8.0-sources.jar ServidorCentral_lib/jgoodies-common-1.8.0.jar ServidorCentral_lib/jgoodies-forms-1.8.0-sources.jar ServidorCentral_lib/jgoodies-forms-1.8.0.jar ServidorCentral_lib/miglayout15-swing.jar"/>
+            </manifest>
+            <fileset dir="${dir.buildfile}/bin"/>
+        </jar>
+        <delete dir="${dir.jarfile}/ServidorCentral_lib"/>
+        <mkdir dir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/antlr-2.7.7.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/dom4j-1.6.1.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/geronimo-jta_1.1_spec-1.1.1.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/hibernate-commons-annotations-5.0.0.Final.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/hibernate-core-5.0.2.Final.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/hibernate-jpa-2.1-api-1.0.0.Final.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/jandex-1.2.2.Final.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/javassist-3.18.1-GA.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hibernate/jboss-logging-3.3.0.Final.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hsqldb/build/gradle-ivyxml-plugin-0.3.2.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hsqldb/build/gradle-javaPropFile-plugin-0.6.0.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hsqldb/build/gradle/wrapper/gradle-wrapper.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hsqldb/lib/hsqldb.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/Bibliotecas/hsqldb/lib/sqltool.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/jgoodies-common-1.8.0-sources.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/jgoodies-common-1.8.0.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/jgoodies-forms-1.8.0-sources.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/jgoodies-forms-1.8.0.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+        <copy file="${dir.buildfile}/miglayout15-swing.jar" todir="${dir.jarfile}/ServidorCentral_lib"/>
+    </target>
+</project>

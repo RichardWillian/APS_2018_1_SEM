@@ -27,27 +27,28 @@ public class ClienteUm {
 
 	public static void main(String[] args) {
 
-		if (verificarAutenticacaoUsuario()) {
-			try {
-				socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
-				fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
-				JanelaChat.getInstance();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
-
-			entrarChat();
+		// if (verificarAutenticacaoUsuario()) {
+		try {
+			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
+			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+			JanelaChat.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+
+		entrarChat();
+		// }
 	}
 
-	@SuppressWarnings({ "resource" })
+	@SuppressWarnings({ "resource", "unused" })
 	private static boolean verificarAutenticacaoUsuario() {
 
 		try {
 			Socket socketAutenticacao = new Socket(InetAddress.getByName("127.255.255.254"), 12346,
 					InetAddress.getByName("127.0.0.3"), 0);
+
 			ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(
 					socketAutenticacao.getOutputStream());
 
@@ -64,7 +65,6 @@ public class ClienteUm {
 			try {
 				isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -90,13 +90,11 @@ public class ClienteUm {
 					} else {
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
 					}
-					
+
 					fluxoSaidaDados.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -136,7 +134,6 @@ public class ClienteUm {
 						}
 					}
 				} catch (IOException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (Exception ex) {
 					System.out.println("Maior que meus erros");
