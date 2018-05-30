@@ -49,24 +49,24 @@ public class UIJanelaLogin extends JanelaBase {
 		cadastrar = new JButton("Cadastrar");
 
 		// image.setBounds(200, 50, 150, 150);
-		login.setBounds(20, 50, 50, 20);
+		login.setBounds(20, 30, 50, 20);
 		senha.setBounds(20, 75, 50, 20);
-		tlg.setBounds(70, 50, 150, 20);
+		tlg.setBounds(70, 30, 150, 20);
 		psenha.setBounds(70, 75, 150, 20);
-		ok.setBounds(20, 100, 90, 20);
-		exit.setBounds(120, 100, 90, 20);
-		cadastrar.setBounds(220, 100, 100, 20);
+		ok.setBounds(20, 129, 90, 20);
+		exit.setBounds(120, 129, 90, 20);
+		cadastrar.setBounds(220, 129, 100, 20);
 
-		this.setLayout(null);
+		getContentPane().setLayout(null);
 
-		this.add(login);
-		this.add(senha);
-		this.add(psenha);
-		this.add(tlg);
-		this.add(ok);
-		this.add(exit);
-		this.add(cadastrar);
-		this.add(image);
+		getContentPane().add(login);
+		getContentPane().add(senha);
+		getContentPane().add(psenha);
+		getContentPane().add(tlg);
+		getContentPane().add(ok);
+		getContentPane().add(exit);
+		getContentPane().add(cadastrar);
+		getContentPane().add(image);
 
 		ok.addActionListener(this);
 		exit.addActionListener(this);
@@ -90,11 +90,12 @@ public class UIJanelaLogin extends JanelaBase {
 			String email = tlg.getText();
 			String senha = new String(psenha.getPassword());
 			
-			if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
+			//TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+			//if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
 				// TODO CHAMAR A TELA DO VITOR
 				this.dispose();
 				ServidorChatAplicacao.getInstance();
-			}
+			//}
 		}
 		
 		if (a.getSource() == exit) {

@@ -100,7 +100,6 @@ public class ClienteDois {
 						fluxoSaidaDados.flush();
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

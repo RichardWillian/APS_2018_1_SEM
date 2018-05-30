@@ -73,6 +73,7 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 		txtAreaUsuariosConectados.setVisible(true);
 		txtAreaUsuariosConectados.setBounds(30, 30, 230, 260);
 		txtAreaUsuariosConectados.setEnabled(false);
+		txtAreaUsuariosConectados.setAutoscrolls(true);
 	}
 
 	@Override

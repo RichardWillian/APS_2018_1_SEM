@@ -21,7 +21,7 @@ public class UIJanelaCadastrar extends JanelaBase {
 
 	public UIJanelaCadastrar() {
 
-		this.setBounds(500, 500, 350, 350);
+		this.setBounds(500, 500, 251, 350);
 		this.setLocationRelativeTo(null);
 
 		nome = new JLabel("Nome:");
@@ -33,25 +33,25 @@ public class UIJanelaCadastrar extends JanelaBase {
 		ok = new JButton("OK");
 		exit = new JButton("Sair");
 
-		email.setBounds(20, 50, 50, 20);
-		senha.setBounds(20, 75, 50, 20);
-		temail.setBounds(70, 50, 150, 20);
-		nome.setBounds(20, 25, 50, 20);
-		tnome.setBounds(70, 25, 150, 20);
-		psenha.setBounds(70, 75, 150, 20);
-		ok.setBounds(20, 100, 90, 20);
-		exit.setBounds(120, 100, 90, 20);
+		email.setBounds(20, 84, 50, 20);
+		senha.setBounds(20, 132, 50, 20);
+		temail.setBounds(70, 84, 150, 20);
+		nome.setBounds(20, 42, 50, 20);
+		tnome.setBounds(70, 42, 150, 20);
+		psenha.setBounds(70, 132, 150, 20);
+		ok.setBounds(26, 183, 90, 20);
+		exit.setBounds(130, 183, 90, 20);
 
-		this.setLayout(null);
+		getContentPane().setLayout(null);
 
-		this.add(nome);
-		this.add(senha);
-		this.add(psenha);
-		this.add(tnome);
-		this.add(temail);
-		this.add(ok);
-		this.add(exit);
-		this.add(email);
+		getContentPane().add(nome);
+		getContentPane().add(senha);
+		getContentPane().add(psenha);
+		getContentPane().add(tnome);
+		getContentPane().add(temail);
+		getContentPane().add(ok);
+		getContentPane().add(exit);
+		getContentPane().add(email);
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
 		// fundo = fundolg.getImage();

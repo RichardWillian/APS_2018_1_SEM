@@ -23,6 +23,7 @@ public class ServidorChatAplicacao {
 
 	private ServidorChatAplicacao() {
 
+		// TODO PRECISA DESCOMENTAR AQUI
 		try {
 			inicializarSockets();
 			UIJanelaChat.getInstance();
@@ -36,8 +37,12 @@ public class ServidorChatAplicacao {
 
 	private void inicializarSockets() throws UnknownHostException, IOException {
 
-		socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.2"), 0);
-		fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+		String ipMaquina = "127.0.0.2";//Inet4Address.getLocalHost().getHostAddress();
+		
+		 socket = new Socket(InetAddress.getByName("127.0.0.1"), 
+				 								   12345, 
+				 								   InetAddress.getByName(ipMaquina), 0);
+		 fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 	}
 
 	public void enviarMensagemAoServidor(final DadoCompartilhado dadoCompartilhado) {

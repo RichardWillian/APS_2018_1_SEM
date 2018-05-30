@@ -22,6 +22,7 @@ public class ServidorCentral {
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
 	private static Map<Socket, DadoCompartilhado> socketsMensagensPendentes = new HashMap<Socket, DadoCompartilhado>();
+	private static final String IP_SERVIDOR = "127.0.0.1";
 
 	public static void main(String[] args) {
 
@@ -38,9 +39,8 @@ public class ServidorCentral {
 	public void iniciarServidor() {
 
 		try {
-			
 			ServidorAutenticacao.getInstance().iniciarServidor();
-			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName("127.0.0.1"));
+			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName(IP_SERVIDOR));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			//enviarMensagensPendentes();
