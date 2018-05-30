@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ecochat.aplicacoes.cliente.Aplicacao;
+import ecochat.aplicacoes.servidor.ServidorChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
@@ -75,17 +76,17 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblArquivo;
 	private JLabel lblLoading;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIJanelaChat.getInstance().janelaChat.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					UIJanelaChat.getInstance().janelaChat.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	public UIJanelaChat() {
 		initialize();
@@ -134,8 +135,6 @@ public class UIJanelaChat extends JanelaBase {
 
 		scrollPaneVisorChat = new JScrollPane(panelVisorChat);
 		scrollPaneVisorChat.setViewportBorder(new EmptyBorder(2, 10, 2, 10));
-		// scrollPaneVisorChat.setOpaque(true);
-		// scrollPaneVisorChat.setBackground(Color.lightGray);
 		scrollPaneVisorChat.setEnabled(false);
 		scrollPaneVisorChat.setBounds(0, 0, 344, 385);
 
@@ -155,13 +154,12 @@ public class UIJanelaChat extends JanelaBase {
 		return instancia;
 	}
 
-	public void adicionarMensagemDireita(String mensagem) {
+	public void adicionarMensagemEnviada(String mensagem) {
 
 		JLabel lblMensagem = null;
 
 		lblMensagem = Utilitaria.quebrarLinhas(mensagem);
 
-		// lblMensagem.setAlignmentX(JLabel.RIGHT_ALIGNMENT);
 		lblMensagem.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		lblMensagem.setOpaque(true);
@@ -176,7 +174,7 @@ public class UIJanelaChat extends JanelaBase {
 		repintarTela();
 	}
 
-	public void adicionarMensagemEsquerda(String mensagem) {
+	public void adicionarMensagemRecebida(String mensagem) {
 
 		JLabel lblMensagem = null;
 
@@ -216,12 +214,10 @@ public class UIJanelaChat extends JanelaBase {
 
 		if (arquivoEnvio != null) {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
-			adicionarAnimacaoEnvioArquivo(); // Esse código fica aqui
+			adicionarAnimacaoEnvioArquivo();
 		}
-		Aplicacao.getInstance();
-		adicionarMensagemDireita(textAreaCampoEscritaChat.getText());
-		Aplicacao.escreverMensagemAoServidor(dadoCompartilhado);
-
+		adicionarMensagemEnviada(textAreaCampoEscritaChat.getText());
+		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 		textAreaCampoEscritaChat.setText(null);
 	}
 
