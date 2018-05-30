@@ -20,8 +20,7 @@ public class ServidorChatAplicacao {
 	private static Socket socket;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static ServidorChatAplicacao instancia;
-	
-	
+
 	private ServidorChatAplicacao() {
 
 		try {

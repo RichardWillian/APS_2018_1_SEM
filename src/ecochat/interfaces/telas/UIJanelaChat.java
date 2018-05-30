@@ -90,7 +90,7 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janelaChat.getContentPane().setLayout(null);
 
-		lblEnviarArquivo = criarLabelComImagem(this.getClass().getResource("imagens\\anexo_icon_5.png"));
+		lblEnviarArquivo = criarLabelComImagem(this.getClass().getResource("imagens\\anexo_icon.png"));
 		lblEnviarArquivo.setBounds(10, 392, 45, 40);
 		lblEnviarArquivo.addMouseListener(this);
 		janelaChat.getContentPane().add(lblEnviarArquivo);
@@ -174,7 +174,23 @@ public class UIJanelaChat extends JanelaBase {
 		adicionarMensagemVisor(lblMensagem);
 	}
 
-	@Override
+	public void mouseEntered(MouseEvent me) {
+
+		if (me.getSource() == lblEnviarMensagem) {
+			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\gif_botao_enviar.gif")));
+			repintarTela();
+		}
+	}
+	
+	public void mouseExited(MouseEvent me) {
+		
+		if (me.getSource() == lblEnviarMensagem) {
+			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\botao_enviar.gif")));
+			repintarTela();
+		}
+		
+	}
+
 	public void mouseClicked(MouseEvent me) {
 
 		if (me.getSource() == lblEnviarMensagem) {
@@ -204,7 +220,7 @@ public class UIJanelaChat extends JanelaBase {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
 			adicionarAnimacaoEnvioArquivo();
 		}
-		
+
 		adicionarMensagemEnviada(textAreaCampoEscritaChat.getText());
 		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 		textAreaCampoEscritaChat.setText(null);
