@@ -55,7 +55,7 @@ public class ServidorChatAplicacao {
 					if (dadoCompartilhado.getArquivo() != null) {
 						Thread.sleep(2000);
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
-						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo();
+						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou");
 					} else {
 						fluxoSaidaDados.writeObject(dadoCompartilhado);
 					}
@@ -78,16 +78,15 @@ public class ServidorChatAplicacao {
 					while (true) {
 
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
-						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado);
 
-						UIJanelaChat.getInstance().adicionarMensagemRecebida(dadoCompatilhado.getMensagem());
-
-						if (dadoCompatilhado.getArquivo() != null) {
+						if (dadoCompartilhado.getArquivo() != null) {
 							InputStream entradaArquivo = null;
 							OutputStream saidaArquivo = null;
 
 							try {
-								entradaArquivo = new FileInputStream(dadoCompatilhado.getArquivo());
+								entradaArquivo = new FileInputStream(dadoCompartilhado.getArquivo());
 								saidaArquivo = new FileOutputStream(
 										new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extratoTres.mp4"));
 

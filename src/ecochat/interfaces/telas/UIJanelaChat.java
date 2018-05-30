@@ -142,7 +142,7 @@ public class UIJanelaChat extends JanelaBase {
 		return instancia;
 	}
 
-	public void adicionarMensagemEnviada(String mensagem) {
+	private void adicionarMensagemEnviada(String mensagem) {
 
 		JLabel lblMensagem = null;
 
@@ -157,12 +157,7 @@ public class UIJanelaChat extends JanelaBase {
 		adicionarMensagemVisor(lblMensagem);
 	}
 
-	private void adicionarMensagemVisor(JLabel lblMensagem) {
-		panelVisorChat.add(lblMensagem);
-		repintarTela();
-	}
-
-	public void adicionarMensagemRecebida(String mensagem) {
+	private void adicionarMensagemRecebida(String mensagem) {
 
 		JLabel lblMensagem = null;
 
@@ -174,64 +169,33 @@ public class UIJanelaChat extends JanelaBase {
 		adicionarMensagemVisor(lblMensagem);
 	}
 
-	public void mouseEntered(MouseEvent me) {
-
-		if (me.getSource() == lblEnviarMensagem) {
-			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\gif_botao_enviar.gif")));
-			repintarTela();
-		}
-	}
-	
-	public void mouseExited(MouseEvent me) {
-		
-		if (me.getSource() == lblEnviarMensagem) {
-			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\botao_enviar.gif")));
-			repintarTela();
-		}
-		
-	}
-
-	public void mouseClicked(MouseEvent me) {
-
-		if (me.getSource() == lblEnviarMensagem) {
-			enviarMensagem();
-		} else if (me.getSource() == lblEnviarArquivo) {
-			int valorRetornado = exploradorArquivos.showOpenDialog(this);
-			if (valorRetornado == JFileChooser.APPROVE_OPTION) {
-				arquivoEnvio = exploradorArquivos.getSelectedFile();
-			} else {
-				System.out.println("Nenhum arquivo selecionado");
-			}
-		}
-	}
-
-	public void keyPressed(KeyEvent ke) {
-		if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
-			enviarMensagem();
-		}
-	}
-
 	private void enviarMensagem() {
 
 		DadoCompartilhado dadoCompartilhado = new DadoCompartilhado();
-		dadoCompartilhado.setMensagem(textAreaCampoEscritaChat.getText());
+
+		if (textAreaCampoEscritaChat.getText() != null && textAreaCampoEscritaChat.getText() != "") {
+			dadoCompartilhado.setMensagem(textAreaCampoEscritaChat.getText());
+			adicionarMensagemEnviada(textAreaCampoEscritaChat.getText());
+			textAreaCampoEscritaChat.setText(null);
+		}
 
 		if (arquivoEnvio != null) {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
-			adicionarAnimacaoEnvioArquivo();
+			adicionarAnimacaoArquivo();
 		}
 
-		adicionarMensagemEnviada(textAreaCampoEscritaChat.getText());
 		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
-		textAreaCampoEscritaChat.setText(null);
 	}
 
-	private void adicionarAnimacaoEnvioArquivo() {
+	public void receberMensagem(DadoCompartilhado dadoCompartilhado) {
 
-		lblLoading = criarLabelComImagem(this.getClass().getResource("imagens/loading_icon.gif"));
-		lblLoading.setLocation(100, 150);
-
-		panelVisorChat.add(lblLoading);
+		if (dadoCompartilhado.getArquivo() != null) {
+			adicionarAnimacaoArquivo();
+			trocarLoadingPorImagemArquivo("Você recebeu");
+			adicionarMensagemRecebida(dadoCompartilhado.getMensagem());
+		} else {
+			adicionarMensagemRecebida(dadoCompartilhado.getMensagem());
+		}
 	}
 
 	protected void repintarTela() {
@@ -241,7 +205,15 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.getContentPane().repaint();
 	}
 
-	public void trocarLoadingPorImagemArquivo() {
+	private void adicionarAnimacaoArquivo() {
+
+		lblLoading = criarLabelComImagem(this.getClass().getResource("imagens/loading_icon.gif"));
+		lblLoading.setLocation(100, 150);
+
+		panelVisorChat.add(lblLoading);
+	}
+
+	public void trocarLoadingPorImagemArquivo(String mensagem) {
 
 		panelVisorChat.remove(lblLoading);
 
@@ -266,12 +238,17 @@ public class UIJanelaChat extends JanelaBase {
 			lblArquivo.setLocation(new Point(110, 100));
 			lblArquivo.setOpaque(true);
 			lblArquivo.setBackground(new Color(210, 253, 255, Color.TRANSLUCENT));
-			lblArquivo.setText("Você Enviou");
+			lblArquivo.setText(mensagem);
 
 			panelVisorChat.add(lblArquivo);
 			arquivoEnvio = null;
 			repintarTela();
 		}
+	}
+
+	private void adicionarMensagemVisor(JLabel lblMensagem) {
+		panelVisorChat.add(lblMensagem);
+		repintarTela();
 	}
 
 	private JLabel criarLabelComImagem(URL caminho) {
@@ -280,6 +257,42 @@ public class UIJanelaChat extends JanelaBase {
 		imagem = Toolkit.getDefaultToolkit().createImage(caminho);
 
 		return new JLabel(new ImageIcon(imagem));
+	}
 
+	public void mouseEntered(MouseEvent me) {
+
+		if (me.getSource() == lblEnviarMensagem) {
+			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\gif_botao_enviar.gif")));
+			repintarTela();
+		}
+	}
+
+	public void mouseExited(MouseEvent me) {
+
+		if (me.getSource() == lblEnviarMensagem) {
+			lblEnviarMensagem.setIcon(new ImageIcon(this.getClass().getResource("imagens\\botao_enviar.gif")));
+			repintarTela();
+		}
+	}
+
+	public void mouseClicked(MouseEvent me) {
+
+		if (me.getSource() == lblEnviarMensagem) {
+			if (textAreaCampoEscritaChat.getText() != "" || arquivoEnvio != null)
+				enviarMensagem();
+		} else if (me.getSource() == lblEnviarArquivo) {
+			int valorRetornado = exploradorArquivos.showOpenDialog(this);
+			if (valorRetornado == JFileChooser.APPROVE_OPTION) {
+				arquivoEnvio = exploradorArquivos.getSelectedFile();
+			} else {
+				System.out.println("Nenhum arquivo selecionado");
+			}
+		}
+	}
+
+	public void keyPressed(KeyEvent ke) {
+		if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+			enviarMensagem();
+		}
 	}
 }
