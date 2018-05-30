@@ -10,15 +10,7 @@ import ecochat.hibernate.util.HibernateUtil;
 
 public class UsuarioDAO {
 
-	/**
-	 * Adiciona um novo usuário
-	 * 
-	 * @param nome
-	 *            primeiro nome do usuário
-	 * @param sobrenome
-	 *            último nome (sobrenome) do usuário
-	 */
-	public static void addUsuario(String nome, String email, String senha) {
+	public static void cadastrarUsuario(String nome, String email, String senha) {
 
 		Transaction transacao = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -42,13 +34,7 @@ public class UsuarioDAO {
 			session.close();
 		}
 	}
-
-	/**
-	 * Atualiza as informações de um usuário
-	 * 
-	 * @param user
-	 *            instância de usuário a ser modificada
-	 */
+	
 	public static void updateUsuario(Usuario user) {
 		Transaction trns = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -68,12 +54,6 @@ public class UsuarioDAO {
 		}
 	}
 
-	/**
-	 * Remove um usuário da base de dados
-	 * 
-	 * @param user
-	 *            usuário a ser removido
-	 */
 	public static void deleteUsuario(Usuario user) {
 		Transaction trns = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();

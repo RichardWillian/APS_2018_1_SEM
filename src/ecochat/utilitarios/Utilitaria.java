@@ -157,7 +157,6 @@ public class Utilitaria {
 	}
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {
-		
-		UsuarioDAO.addUsuario(nome, email, senha);
+		UsuarioDAO.cadastrarUsuario(nome, email, senha);
 	}
 }
