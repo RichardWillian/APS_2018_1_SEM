@@ -18,6 +18,7 @@ public class JanelaBase extends JFrame implements KeyListener, ActionListener, W
 		
 		super("this is the JFrame");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultLookAndFeelDecorated(true);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		setBounds(350, 100, 640, 480);

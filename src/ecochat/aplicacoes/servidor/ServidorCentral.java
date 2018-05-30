@@ -26,7 +26,6 @@ public class ServidorCentral {
 	public static void main(String[] args) {
 
 		try {
-
 			UIJanelaServidorCentralChat.getInstance();
 		} 
 		catch(HibernateException exception){

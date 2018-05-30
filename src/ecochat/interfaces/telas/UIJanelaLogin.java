@@ -6,7 +6,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -35,8 +34,6 @@ public class UIJanelaLogin extends JanelaBase {
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
 		
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("EcoLx Login");
 		this.setBounds(300, 300, 350, 200);
 		this.setVisible(true);
@@ -91,13 +88,12 @@ public class UIJanelaLogin extends JanelaBase {
 		if (a.getSource() == ok) {
 			
 			String email = tlg.getText();
-			char[] caracteresSenha = psenha.getPassword();
-			String senha = new String(caracteresSenha);
+			String senha = new String(psenha.getPassword());
 			
 			if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
 				// TODO CHAMAR A TELA DO VITOR
 				this.dispose();
-				ServidorChatAplicacao.getInstance().entrarChat();
+				ServidorChatAplicacao.getInstance();
 			}
 		}
 		

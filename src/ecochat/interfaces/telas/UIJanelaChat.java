@@ -76,18 +76,6 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblArquivo;
 	private JLabel lblLoading;
 
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					UIJanelaChat.getInstance().janelaChat.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	public UIJanelaChat() {
 		initialize();
 	}
@@ -95,8 +83,8 @@ public class UIJanelaChat extends JanelaBase {
 	private void initialize() {
 
 		janelaChat = new JFrame();
-		janelaChat.setResizable(false);
 		janelaChat.setAlwaysOnTop(true);
+		janelaChat.setResizable(false);
 		janelaChat.setAutoRequestFocus(false);
 		janelaChat.setBounds(100, 100, 350, 472);
 		janelaChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -216,6 +204,7 @@ public class UIJanelaChat extends JanelaBase {
 			dadoCompartilhado.setArquivo(arquivoEnvio);
 			adicionarAnimacaoEnvioArquivo();
 		}
+		
 		adicionarMensagemEnviada(textAreaCampoEscritaChat.getText());
 		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 		textAreaCampoEscritaChat.setText(null);
