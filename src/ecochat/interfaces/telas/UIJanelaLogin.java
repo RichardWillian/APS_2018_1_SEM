@@ -6,12 +6,15 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ecochat.aplicacoes.servidor.ServidorChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
+import ecochat.utilitarios.Utilitaria;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -24,11 +27,21 @@ public class UIJanelaLogin extends JanelaBase {
 	private Image fundo;
 	@SuppressWarnings("unused")
 	private String log;
+	
+	private static UIJanelaLogin instancia;
 
 	public UIJanelaLogin() {
 
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
+		
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("EcoLx Login");
+		this.setBounds(300, 300, 350, 200);
+		this.setVisible(true);
+		this.setLocationRelativeTo(null);
+		
 		image = new JLabel(new ImageIcon("/fundo.jpg"));
 		login = new JLabel("Login:");
 		senha = new JLabel("Senha: ");
@@ -76,12 +89,16 @@ public class UIJanelaLogin extends JanelaBase {
 	public void actionPerformed(ActionEvent a) {
 		
 		if (a.getSource() == ok) {
-			// verificar se o usuario esta no banco de dados
-			// passa o usuario para o banco
-			String log = tlg.getText();
-			char[] pass = psenha.getPassword();
-			System.out.println(log);
-			System.out.println(pass);
+			
+			String email = tlg.getText();
+			char[] caracteresSenha = psenha.getPassword();
+			String senha = new String(caracteresSenha);
+			
+			if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
+				// TODO CHAMAR A TELA DO VITOR
+				this.dispose();
+				ServidorChatAplicacao.getInstance().entrarChat();
+			}
 		}
 		
 		if (a.getSource() == exit) {
@@ -93,7 +110,6 @@ public class UIJanelaLogin extends JanelaBase {
 
 		if (a.getSource() == cadastrar) {
 			UIJanelaCadastrar cadastro = new UIJanelaCadastrar();
-			System.out.println("Cadastrar");
 			cadastro.setVisible(true);
 		}
 	}
@@ -103,5 +119,13 @@ public class UIJanelaLogin extends JanelaBase {
 		if (b == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
+	}
+
+	public static UIJanelaLogin getInstance() {
+		
+		if(instancia == null)
+			return instancia = new UIJanelaLogin();
+		
+		return instancia;
 	}
 }

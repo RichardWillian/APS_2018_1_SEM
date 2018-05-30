@@ -9,6 +9,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ecochat.aplicacoes.telas.JanelaBase;
+import ecochat.utilitarios.Utilitaria;
 
 @SuppressWarnings("serial")
 public class UIJanelaCadastrar extends JanelaBase {
@@ -68,19 +69,19 @@ public class UIJanelaCadastrar extends JanelaBase {
 			if (b == JOptionPane.YES_OPTION) {
 				this.setVisible(false);
 			}
-		}
-		// passa o dados para o banco de um novo usuario
-		if (e.getSource() == ok) {
+		} else if (e.getSource() == ok) {
+
 			int b = JOptionPane.showConfirmDialog(null, "Cadastro realizado com sucesso! ", null,
 					JOptionPane.OK_CANCEL_OPTION);
 			if (b == JOptionPane.OK_OPTION) {
-				String log = tnome.getText();
+
+				String nome = tnome.getText();
 				String email = temail.getText();
-				char[] pass = psenha.getPassword();
-				System.out.println(log);
-				System.out.println(email);
-				System.out.println(pass);
-				this.setVisible(false);
+				String senha = new String(psenha.getPassword());
+
+				Utilitaria.cadastrarUsuario(nome, email, senha);
+				UIJanelaLogin.getInstance();
+				this.dispose();
 			}
 		}
 	}
