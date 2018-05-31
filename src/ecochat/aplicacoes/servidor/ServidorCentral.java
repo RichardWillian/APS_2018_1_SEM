@@ -43,7 +43,6 @@ public class ServidorCentral {
 			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName(IP_SERVIDOR));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
-			//enviarMensagensPendentes();
 			do {
 				Socket socket = socketServidorCentral.accept();
 
@@ -111,15 +110,6 @@ public class ServidorCentral {
 			}
 		}.start();
 	}
-
-//	private void enviarMensagensPendentes() {
-//
-//		for (Map.Entry<Socket, DadoCompartilhado> elementoMap : socketsMensagensPendentes.entrySet()) {
-//			if (!elementoMap.getKey().isClosed()) {
-//				enviarMensagem(elementoMap.getKey(), elementoMap.getValue());
-//			}
-//		}
-//	}
 
 	public void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
 

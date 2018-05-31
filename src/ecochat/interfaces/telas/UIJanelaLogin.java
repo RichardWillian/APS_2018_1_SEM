@@ -91,14 +91,14 @@ public class UIJanelaLogin extends JanelaBase {
 			String senha = new String(psenha.getPassword());
 			
 			//TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-			//if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
+			if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
 				// TODO CHAMAR A TELA DO VITOR
 				this.dispose();
 				ServidorChatAplicacao.getInstance();
-			//}
-//			else{
-//				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-//			}
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+			}
 				
 		}
 		

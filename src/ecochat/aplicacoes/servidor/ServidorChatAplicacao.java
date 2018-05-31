@@ -28,7 +28,7 @@ public class ServidorChatAplicacao {
 		try {
 			inicializarSockets();
 			UIJanelaChat.getInstance();
-			iniciarLeituraMensagemServidor();
+			lerMensagemServidor();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -69,7 +69,7 @@ public class ServidorChatAplicacao {
 		}.start();
 	}
 
-	private static void iniciarLeituraMensagemServidor() {
+	private static void lerMensagemServidor() {
 		new Thread() {
 			@SuppressWarnings("static-access")
 			public void run() {
@@ -77,9 +77,9 @@ public class ServidorChatAplicacao {
 				try {
 					while (true) {
 
-						// TODO MEXER AQUI
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 
 						if (dadoCompartilhado.getArquivo() != null) {
 
@@ -89,20 +89,20 @@ public class ServidorChatAplicacao {
 							OutputStream saidaArquivo = null;
 
 							try {
-								File arquivo =dadoCompartilhado.getArquivo(); 
+								File arquivo = dadoCompartilhado.getArquivo(); 
 								
 								arquivo.createTempFile(Utilitaria.recuperarPastaDownload(), "");
 								entradaArquivo = new FileInputStream(arquivo);
 								saidaArquivo = new FileOutputStream(new File(Utilitaria.recuperarPastaDownload() 
 																		   + Utilitaria.gerarNomeArquivo()
 																		   + Utilitaria.recuperarExtensaoArquivo(arquivo) ));
-								
+								this.sleep(2000);
 								byte[] memoriaTemporaria = new byte[1024 * 50];
 								int tamanho;
 								while ((tamanho = entradaArquivo.read(memoriaTemporaria)) > 0) {
 									saidaArquivo.write(memoriaTemporaria, 0, tamanho);
 								}
-
+								
 								UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Recebeu",
 										dadoCompartilhado.getArquivo());
 							} catch (Exception ex) {
@@ -114,8 +114,6 @@ public class ServidorChatAplicacao {
 								saidaArquivo.close();
 							}
 						}
-
-						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 					}
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
