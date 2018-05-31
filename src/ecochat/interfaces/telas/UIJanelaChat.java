@@ -223,20 +223,26 @@ public class UIJanelaChat extends JanelaBase {
 			} catch (IOException io) {
 				System.out.println(io.getMessage());
 			}
-
-			Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(),
-					Image.SCALE_SMOOTH);
-
-			lblArquivo.setIcon(new ImageIcon(imagemDinamizada));
-			lblArquivo.setLocation(new Point(110, 100));
-			lblArquivo.setOpaque(true);
-			lblArquivo.setBackground(new Color(210, 253, 255, Color.TRANSLUCENT));
-			lblArquivo.setText(mensagem);
-
-			panelVisorChat.add(lblArquivo);
-			arquivoEnvio = null;
-			repintarTela();
+		}else{
+			try {
+				imagem = ImageIO.read(this.getClass().getResource("imagens/arquivo_icon.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+
+		Image imagemDinamizada = imagem.getScaledInstance(lblArquivo.getWidth(), lblArquivo.getHeight(),
+				Image.SCALE_SMOOTH);
+
+		lblArquivo.setIcon(new ImageIcon(imagemDinamizada));
+		lblArquivo.setLocation(new Point(110, 100));
+		lblArquivo.setOpaque(true);
+		lblArquivo.setBackground(new Color(210, 253, 255, Color.TRANSLUCENT));
+		lblArquivo.setText(mensagem);
+
+		panelVisorChat.add(lblArquivo);
+		arquivoEnvio = null;
+		repintarTela();
 	}
 
 	private void adicionarMensagemVisor(JLabel lblMensagem) {
