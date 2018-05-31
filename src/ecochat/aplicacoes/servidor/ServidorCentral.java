@@ -84,10 +84,7 @@ public class ServidorCentral {
 				try {
 					while (true) {
 
-						Socket socketQueReceberaMensagem = null; // socketsConectados.stream()
-						// .filter(x ->
-						// x.getLocalAddress().getHostAddress().equals(paraQuemEnviar))
-						// .findFirst().get();
+						Socket socketQueReceberaMensagem = null;
 
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 

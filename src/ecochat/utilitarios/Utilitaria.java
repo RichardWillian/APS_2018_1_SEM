@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.Random;
 
 import javax.swing.JLabel;
 
@@ -107,11 +108,26 @@ public class Utilitaria {
 		return lblMensagem;
 	}
 
-	public static boolean identificarTipoArquivo(File arquivoEnvio) {
+	public static String recuperarExtensaoArquivo(File arquivo) {
+
+		String caminhoArquivo = arquivo.getAbsolutePath();
+		String extensao = "";
+
+		int i = caminhoArquivo.lastIndexOf('.');
+		int p = Math.max(caminhoArquivo.lastIndexOf('/'), caminhoArquivo.lastIndexOf('\\'));
+
+		if (i > p) {
+			extensao = caminhoArquivo.substring(i + 1);
+		}
+
+		return "." + extensao;
+	}
+
+	public static boolean identificarTipoArquivo(File arquivo) {
 
 		String tipoMIMEArquivo = null;
 		try {
-			tipoMIMEArquivo = Files.probeContentType(arquivoEnvio.toPath());
+			tipoMIMEArquivo = Files.probeContentType(arquivo.toPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -158,5 +174,32 @@ public class Utilitaria {
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {
 		UsuarioDAO.cadastrarUsuario(nome, email, senha);
+	}
+
+	public static void CriarDiretorio(String caminho) {
+		File diretorio = new File(caminho);
+
+		if (!diretorio.exists())
+			diretorio.mkdirs();
+
+	}
+
+	public static String recuperarPastaDownload() {
+		return System.getProperty("user.dir") + "\\DownloadsEcochat\\";
+	}
+
+	public static String gerarNomeArquivo() {
+
+		int tamanhoNome = new Random().nextInt(30) + 5;
+		Random rand = new Random();
+		char[] caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+
+		StringBuffer nomeArquivo = new StringBuffer();
+		for (int i = 0; i <= tamanhoNome; i++) {
+			int posicaoCaracater = rand.nextInt(caracteres.length);
+			nomeArquivo.append(caracteres[posicaoCaracater]);
+		}
+
+		return nomeArquivo.toString();
 	}
 }

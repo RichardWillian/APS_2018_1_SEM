@@ -11,9 +11,11 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
+import ecochat.utilitarios.Utilitaria;
 
 public class ServidorChatAplicacao {
 
@@ -37,12 +39,11 @@ public class ServidorChatAplicacao {
 
 	private void inicializarSockets() throws UnknownHostException, IOException {
 
-		String ipMaquina = "127.0.0.2";//Inet4Address.getLocalHost().getHostAddress();
-		
-		 socket = new Socket(InetAddress.getByName("127.0.0.1"), 
-				 								   12345, 
-				 								   InetAddress.getByName(ipMaquina), 0);
-		 fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+		String ipMaquina = "127.0.0.2";// Inet4Address.getLocalHost().getHostAddress();
+
+		socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName(ipMaquina), 0);
+
+		fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 	}
 
 	public void enviarMensagemAoServidor(final DadoCompartilhado dadoCompartilhado) {
@@ -54,12 +55,11 @@ public class ServidorChatAplicacao {
 
 					if (dadoCompartilhado.getArquivo() != null) {
 						Thread.sleep(2000);
-						fluxoSaidaDados.writeObject(dadoCompartilhado);
-						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou");
-					} else {
-						fluxoSaidaDados.writeObject(dadoCompartilhado);
+						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou",
+								dadoCompartilhado.getArquivo());
 					}
 
+					fluxoSaidaDados.writeObject(dadoCompartilhado);
 					fluxoSaidaDados.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -72,34 +72,51 @@ public class ServidorChatAplicacao {
 
 	private static void iniciarLeituraMensagemServidor() {
 		new Thread() {
+			@SuppressWarnings("static-access")
 			public void run() {
 
 				try {
 					while (true) {
 
+						// TODO MEXER AQUI
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
-						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado);
 
 						if (dadoCompartilhado.getArquivo() != null) {
+
+							UIJanelaChat.getInstance().adicionarAnimacaoArquivo();
+
 							InputStream entradaArquivo = null;
 							OutputStream saidaArquivo = null;
 
 							try {
-								entradaArquivo = new FileInputStream(dadoCompartilhado.getArquivo());
-								saidaArquivo = new FileOutputStream(
-										new File("C:\\Users\\richard.divino\\Desktop\\Cliente\\extratoTres.mp4"));
-
+								File arquivo =dadoCompartilhado.getArquivo(); 
+								
+								arquivo.createTempFile(Utilitaria.recuperarPastaDownload(), "");
+								entradaArquivo = new FileInputStream(arquivo);
+								saidaArquivo = new FileOutputStream(new File(Utilitaria.recuperarPastaDownload() 
+																		   + Utilitaria.gerarNomeArquivo()
+																		   + Utilitaria.recuperarExtensaoArquivo(arquivo) ));
+								
 								byte[] memoriaTemporaria = new byte[1024 * 50];
 								int tamanho;
 								while ((tamanho = entradaArquivo.read(memoriaTemporaria)) > 0) {
 									saidaArquivo.write(memoriaTemporaria, 0, tamanho);
 								}
-								System.out.println("Recebido com sucesso!");
+
+								UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Recebeu",
+										dadoCompartilhado.getArquivo());
 							} catch (Exception ex) {
 								System.err.println(ex.getMessage());
+							} finally {
+
+								entradaArquivo.close();
+								saidaArquivo.flush();
+								saidaArquivo.close();
 							}
 						}
+
+						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 					}
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();

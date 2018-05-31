@@ -96,6 +96,10 @@ public class UIJanelaLogin extends JanelaBase {
 				this.dispose();
 				ServidorChatAplicacao.getInstance();
 			//}
+//			else{
+//				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//			}
+				
 		}
 		
 		if (a.getSource() == exit) {

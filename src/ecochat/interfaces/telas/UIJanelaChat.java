@@ -187,15 +187,8 @@ public class UIJanelaChat extends JanelaBase {
 		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 	}
 
-	public void receberMensagem(DadoCompartilhado dadoCompartilhado) {
-
-		if (dadoCompartilhado.getArquivo() != null) {
-			adicionarAnimacaoArquivo();
-			trocarLoadingPorImagemArquivo("Você recebeu");
-			adicionarMensagemRecebida(dadoCompartilhado.getMensagem());
-		} else {
-			adicionarMensagemRecebida(dadoCompartilhado.getMensagem());
-		}
+	public void receberMensagem(String mensagemRecebida) {
+		adicionarMensagemRecebida(mensagemRecebida);
 	}
 
 	protected void repintarTela() {
@@ -205,7 +198,7 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.getContentPane().repaint();
 	}
 
-	private void adicionarAnimacaoArquivo() {
+	public void adicionarAnimacaoArquivo() {
 
 		lblLoading = criarLabelComImagem(this.getClass().getResource("imagens/loading_icon.gif"));
 		lblLoading.setLocation(100, 150);
@@ -213,7 +206,7 @@ public class UIJanelaChat extends JanelaBase {
 		panelVisorChat.add(lblLoading);
 	}
 
-	public void trocarLoadingPorImagemArquivo(String mensagem) {
+	public void trocarLoadingPorImagemArquivo(String mensagem, File arquivo) {
 
 		panelVisorChat.remove(lblLoading);
 
@@ -221,12 +214,12 @@ public class UIJanelaChat extends JanelaBase {
 		lblArquivo.setSize(100, 60);
 
 		BufferedImage imagem = null;
-		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivoEnvio);
+		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivo);
 
 		if (isImagem) {
 
 			try {
-				imagem = ImageIO.read(arquivoEnvio);
+				imagem = ImageIO.read(arquivo);
 			} catch (IOException io) {
 				System.out.println(io.getMessage());
 			}
@@ -283,7 +276,7 @@ public class UIJanelaChat extends JanelaBase {
 		} else if (me.getSource() == lblEnviarArquivo) {
 			int valorRetornado = exploradorArquivos.showOpenDialog(this);
 			if (valorRetornado == JFileChooser.APPROVE_OPTION) {
-				arquivoEnvio = exploradorArquivos.getSelectedFile();
+				arquivoEnvio = new File(exploradorArquivos.getSelectedFile(), "");
 			} else {
 				System.out.println("Nenhum arquivo selecionado");
 			}

@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +23,7 @@ public class ClienteDois {
 	public static void main(String[] args) {
 
 		try {
-			
+
 			socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName("127.0.0.3"), 0);
 
 			fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
@@ -42,6 +41,7 @@ public class ClienteDois {
 	private static void lerMensagemServidor() {
 		new Thread() {
 
+			@SuppressWarnings("static-access")
 			public void run() {
 				try {
 					while (true) {
@@ -54,9 +54,10 @@ public class ClienteDois {
 							OutputStream saidaArquivo = null;
 
 							try {
+								dadoCompatilhado.getArquivo().createTempFile("C:\\Desktop\\", "Cliente");
 								entradaArquivo = new FileInputStream(dadoCompatilhado.getArquivo());
 								saidaArquivo = new FileOutputStream(
-										new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extratoTres.mp4"));
+										new File("C:\\Users\\Seven\\Desktop\\Cliente\\PQPDeuCerto.jpg"));
 
 								byte[] memoriaTemporaria = new byte[1024 * 50];
 								int tamanho;
@@ -66,6 +67,10 @@ public class ClienteDois {
 								System.out.println("Recebido com sucesso!");
 							} catch (Exception ex) {
 								System.err.println(ex.getMessage());
+							} finally {
+								entradaArquivo.close();
+								saidaArquivo.flush();
+								saidaArquivo.close();
 							}
 						}
 					}
@@ -92,7 +97,7 @@ public class ClienteDois {
 						dadoCompartilhado.setMensagem(mensagemSaida);
 						if (mensagemSaida.equals("Enviar")) {
 							dadoCompartilhado
-									.setArquivo(new File("C:\\Users\\richard.divino\\Desktop\\Servidor\\extrato.mp4"));
+									.setArquivo(new File("C:\\Users\\Seven\\Desktop\\Cliente\\ImagemCliente.jpg"));
 							System.out.println("Arquivo enviado com sucesso!");
 						}
 
