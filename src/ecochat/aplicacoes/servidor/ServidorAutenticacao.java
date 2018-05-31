@@ -10,6 +10,7 @@ import java.net.Socket;
 import ecochat.dao.modelos.usuario.UsuarioDAO;
 import ecochat.entidades.DadoAutenticacao;
 import ecochat.entidades.modelos.Usuario;
+import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorAutenticacao {
 
@@ -30,7 +31,10 @@ public class ServidorAutenticacao {
 			public void run() {
 
 				try {
-					socketServidorAutenticacao = new ServerSocket(12346, 20, InetAddress.getByName("127.255.255.254"));
+					socketServidorAutenticacao = new ServerSocket(
+							ConstantesGerais.PORTA_SERVIDOR_AUTENTICACAO, 
+							ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS, 
+							InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_AUTENTICACAO));
 
 					while (true) {
 

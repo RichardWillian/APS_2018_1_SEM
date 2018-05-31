@@ -15,6 +15,7 @@ import org.hibernate.HibernateException;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaServidorCentralChat;
+import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorCentral {
 
@@ -22,7 +23,6 @@ public class ServidorCentral {
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
 	private static Map<Socket, DadoCompartilhado> socketsMensagensPendentes = new HashMap<Socket, DadoCompartilhado>();
-	private static final String IP_SERVIDOR = "127.0.0.1";
 
 	public static void main(String[] args) {
 
@@ -40,7 +40,9 @@ public class ServidorCentral {
 
 		try {
 			ServidorAutenticacao.getInstance().iniciarServidor();
-			socketServidorCentral = new ServerSocket(12345, 20, InetAddress.getByName(IP_SERVIDOR));
+			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
+													 ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS, 
+													 InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			do {

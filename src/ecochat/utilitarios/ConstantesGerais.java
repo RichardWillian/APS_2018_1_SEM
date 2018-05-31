@@ -1,0 +1,12 @@
+package ecochat.utilitarios;
+
+public class ConstantesGerais {
+
+	public static int QUANTIDADE_MAXIMA_CONECTADOS = 20;
+	
+	public static String IP_SERVIDOR_CENTRAL = "127.0.0.1"; 
+	public static int PORTA_SERVIDOR_CENTRAL = 12345;
+	
+	public static String IP_SERVIDOR_AUTENTICACAO = "127.255.255.254";
+	public static int PORTA_SERVIDOR_AUTENTICACAO = 12346;
+}

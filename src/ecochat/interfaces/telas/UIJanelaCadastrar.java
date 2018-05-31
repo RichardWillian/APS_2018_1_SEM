@@ -1,6 +1,7 @@
 package ecochat.interfaces.telas;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -60,29 +61,35 @@ public class UIJanelaCadastrar extends JanelaBase {
 		exit.addActionListener(this);
 		// cadastrar.addActionListener(this);
 		this.addWindowListener(this);
+		this.addKeyListener(this);
 		repaint();
+	}
+
+	public void keyPressed(KeyEvent ke) {
+
+		if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+			cadastrarUsuario();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == exit) {
 			int b = JOptionPane.showConfirmDialog(null, "Deseja Sair?", null, JOptionPane.YES_NO_OPTION);
 			if (b == JOptionPane.YES_OPTION) {
-				this.setVisible(false);
-			}
-		} else if (e.getSource() == ok) {
-
-			int b = JOptionPane.showConfirmDialog(null, "Cadastro realizado com sucesso! ", null,
-					JOptionPane.OK_CANCEL_OPTION);
-			if (b == JOptionPane.OK_OPTION) {
-
-				String nome = tnome.getText();
-				String email = temail.getText();
-				String senha = new String(psenha.getPassword());
-
-				Utilitaria.cadastrarUsuario(nome, email, senha);
-				UIJanelaLogin.getInstance();
 				this.dispose();
 			}
+		} else if (e.getSource() == ok) {
+			cadastrarUsuario();
 		}
+	}
+
+	private void cadastrarUsuario() {
+		String nome = tnome.getText();
+		String email = temail.getText();
+		String senha = new String(psenha.getPassword());
+		Utilitaria.cadastrarUsuario(nome, email, senha);
+		UIJanelaLogin.getInstance();
+		JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+		this.dispose();
 	}
 }

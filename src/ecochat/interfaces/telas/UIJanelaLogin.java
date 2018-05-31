@@ -2,6 +2,7 @@ package ecochat.interfaces.telas;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
@@ -26,19 +27,19 @@ public class UIJanelaLogin extends JanelaBase {
 	private Image fundo;
 	@SuppressWarnings("unused")
 	private String log;
-	
+
 	private static UIJanelaLogin instancia;
 
 	public UIJanelaLogin() {
 
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
-		
+
 		this.setTitle("EcoLx Login");
 		this.setBounds(300, 300, 350, 200);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
-		
+
 		image = new JLabel(new ImageIcon("/fundo.jpg"));
 		login = new JLabel("Login:");
 		senha = new JLabel("Senha: ");
@@ -83,36 +84,41 @@ public class UIJanelaLogin extends JanelaBase {
 	//
 	// }
 
+	public void keyPressed(KeyEvent ke) {
+
+		if (ke.getKeyCode() == KeyEvent.VK_ENTER)
+			entrarAplicacao();
+	}
+
 	public void actionPerformed(ActionEvent a) {
-		
+
 		if (a.getSource() == ok) {
-			
-			String email = tlg.getText();
-			String senha = new String(psenha.getPassword());
-			
-			//TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-			if(Utilitaria.verificarAutenticacaoUsuario(email, senha)){
-				// TODO CHAMAR A TELA DO VITOR
-				this.dispose();
-				ServidorChatAplicacao.getInstance();
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-			}
-				
-		}
-		
-		if (a.getSource() == exit) {
+			entrarAplicacao();
+		} else if (a.getSource() == exit) {
 			int b = JOptionPane.showConfirmDialog(null, "Deseja Sair?", null, JOptionPane.YES_NO_OPTION);
 			if (b == JOptionPane.YES_OPTION) {
 				System.exit(0);
 			}
-		}
-
-		if (a.getSource() == cadastrar) {
+		} else if (a.getSource() == cadastrar) {
 			UIJanelaCadastrar cadastro = new UIJanelaCadastrar();
 			cadastro.setVisible(true);
 		}
+	}
+
+	private void entrarAplicacao() {
+
+		String email = tlg.getText();
+		String senha = new String(psenha.getPassword());
+
+		// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+		if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+			// TODO CHAMAR A TELA DO VITOR
+			this.dispose();
+			ServidorChatAplicacao.getInstance();
+		} else {
+			JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+		}
+
 	}
 
 	public void windowClosing(WindowEvent e) {
@@ -123,10 +129,10 @@ public class UIJanelaLogin extends JanelaBase {
 	}
 
 	public static UIJanelaLogin getInstance() {
-		
-		if(instancia == null)
+
+		if (instancia == null)
 			return instancia = new UIJanelaLogin();
-		
+
 		return instancia;
 	}
 }

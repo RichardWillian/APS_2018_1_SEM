@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
+import ecochat.utilitarios.ConstantesGerais;
 import ecochat.utilitarios.Utilitaria;
 
 public class ServidorChatAplicacao {
@@ -40,7 +41,9 @@ public class ServidorChatAplicacao {
 
 		String ipMaquina = "127.0.0.2";// Inet4Address.getLocalHost().getHostAddress();
 
-		socket = new Socket(InetAddress.getByName("127.0.0.1"), 12345, InetAddress.getByName(ipMaquina), 0);
+		socket = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
+												  ConstantesGerais.PORTA_SERVIDOR_CENTRAL, 
+												  InetAddress.getByName(ipMaquina), 0);
 
 		fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
 	}
