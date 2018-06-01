@@ -34,13 +34,11 @@ public class ServidorCentral {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private Object ObjectOutputStream;
-
 	public void iniciarServidor() {
 
 		try {
 			ServidorAutenticacao.getInstance().iniciarServidor();
+			ServidorChat.getInstance().iniciarServidor();
 			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
 					ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS,
 					InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
@@ -55,10 +53,7 @@ public class ServidorCentral {
 
 				UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
 				socketsConectados.add(socket);
-
-				if (!socketServidorCentral.isClosed())
-					lerMensagemDoCliente(fluxoEntradaDados);
-
+				
 			} while (true);
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
@@ -79,56 +74,7 @@ public class ServidorCentral {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());
 		}
 	}
-
-	private static void lerMensagemDoCliente(final ObjectInputStream fluxoEntradaDados) {
-		new Thread() {
-
-			public void run() {
-
-				try {
-					while (true) {
-
-						Socket socketQueReceberaMensagem = null;
-
-						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
-
-						for (Socket socketConectado : socketsConectados) {
-							if (socketConectado.getInetAddress().getHostAddress()
-									.equals(dadoCompartilhado.getEmailEntrega())) {
-
-								if (!socketConectado.isClosed()) {
-									socketQueReceberaMensagem = socketConectado;
-									ServidorCentral.getInstance().enviarMensagem(socketQueReceberaMensagem,
-											dadoCompartilhado);
-								} else {
-									// Socket socketDesconectado =
-									// socketConectado;
-									// socketsMensagensPendentes.put(socketDesconectado,
-									// dadoCompartilhado);
-								}
-							}
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
-
-	public void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
-
-		try {
-			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
-			fluxoSaidaDados.writeObject(dadoCompartilhado);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public void atualizarUsuariosOnlines(final String ipSocketConectado) {
 
 		new Thread() {
