@@ -12,7 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import ecochat.aplicacoes.servidor.ServidorChatAplicacao;
+import ecochat.aplicacoes.servidor.ControleChatAplicacao;
+import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.utilitarios.Utilitaria;
 
@@ -75,7 +76,7 @@ public class UIJanelaLogin extends JanelaBase {
 		cadastrar.addActionListener(this);
 		login.addKeyListener(this);
 		senha.addKeyListener(this);
-		
+
 		this.addWindowListener(this);
 		this.addKeyListener(this);
 		repaint();
@@ -115,16 +116,17 @@ public class UIJanelaLogin extends JanelaBase {
 		String email = tlg.getText();
 		String senha = new String(psenha.getPassword());
 
-		if ( !(email == null || email.equals("")) && !(senha == null || senha.equals(""))){
-			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+//		if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
+//			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+//			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
 				// TODO CHAMAR A TELA DO VITOR
+				ServidorPainelPrincipalAnuncios.getInstance();
 				this.dispose();
-				ServidorChatAplicacao.getInstance();
-			} else {
-				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-			}
-		}
+				//ControleChatAplicacao.getInstance();
+//			} else {
+//				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//			}
+//		}
 	}
 
 	public void windowClosing(WindowEvent e) {

@@ -17,14 +17,6 @@ public class ServidorAutenticacao {
 	private static ServerSocket socketServidorAutenticacao;
 	private static ServidorAutenticacao instancia;
 
-	public static ServidorAutenticacao getInstance() {
-
-		if (instancia == null)
-			return instancia = new ServidorAutenticacao();
-
-		return instancia;
-	}
-
 	public void iniciarServidor() {
 
 		new Thread() {
@@ -87,5 +79,13 @@ public class ServidorAutenticacao {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static ServidorAutenticacao getInstance() {
+
+		if (instancia == null)
+			return instancia = new ServidorAutenticacao();
+
+		return instancia;
 	}
 }

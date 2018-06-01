@@ -1,5 +1,6 @@
 package ecochat.aplicacoes.servidor;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,9 +8,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.HibernateException;
 
@@ -22,31 +21,35 @@ public class ServidorCentral {
 	private static ServerSocket socketServidorCentral;
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
-	private static Map<Socket, DadoCompartilhado> socketsMensagensPendentes = new HashMap<Socket, DadoCompartilhado>();
+	// private static Map<Socket, DadoCompartilhado>
+	// informacoesSocketsConectados = new HashMap<Socket, DadoCompartilhado>();
 
 	public static void main(String[] args) {
 
 		try {
 			UIJanelaServidorCentralChat.getInstance();
-		} 
-		catch(HibernateException exception){
-		     exception.printStackTrace();
-		}catch (Exception e) {
+		} catch (HibernateException exception) {
+			exception.printStackTrace();
+		} catch (Exception e) {
 			System.err.println("Ops! " + e.getMessage() + "\n");
 		}
 	}
+
+	private Object ObjectOutputStream;
 
 	public void iniciarServidor() {
 
 		try {
 			ServidorAutenticacao.getInstance().iniciarServidor();
 			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
-													 ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS, 
-													 InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
+					ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS,
+					InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
+
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			do {
 				Socket socket = socketServidorCentral.accept();
+				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
 
 				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 
@@ -98,8 +101,10 @@ public class ServidorCentral {
 									ServidorCentral.getInstance().enviarMensagem(socketQueReceberaMensagem,
 											dadoCompartilhado);
 								} else {
-									Socket socketDesconectado = socketConectado;
-									socketsMensagensPendentes.put(socketDesconectado, dadoCompartilhado);
+									// Socket socketDesconectado =
+									// socketConectado;
+									// socketsMensagensPendentes.put(socketDesconectado,
+									// dadoCompartilhado);
 								}
 							}
 						}
@@ -118,10 +123,30 @@ public class ServidorCentral {
 		try {
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void atualizarUsuariosOnlines(final String ipSocketConectado) {
+
+		new Thread() {
+			public void run() {
+				List<Socket> socketsConetadosCopia = new ArrayList<Socket>(socketsConectados);
+				try {
+					for (Socket socketConectado : socketsConetadosCopia) {
+
+						if (!socketConectado.getInetAddress().getHostAddress().equals(ipSocketConectado)) {
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+							fluxoSaidaDados.writeObject(ipSocketConectado);
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 
 	public static ServidorCentral getInstance() {

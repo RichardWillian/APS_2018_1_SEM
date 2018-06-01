@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ecochat.aplicacoes.cliente.Aplicacao;
-import ecochat.aplicacoes.servidor.ServidorChatAplicacao;
+import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
@@ -184,7 +184,7 @@ public class UIJanelaChat extends JanelaBase {
 			adicionarAnimacaoArquivo();
 		}
 
-		ServidorChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
+		ControleChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 	}
 
 	public void receberMensagem(String mensagemRecebida) {

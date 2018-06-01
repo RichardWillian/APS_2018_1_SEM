@@ -16,22 +16,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
-public class FrmChat {
+public class UIJanelaPrincipal {
 
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
-	private static FrmChat instancia;
+	private static UIJanelaPrincipal instancia;
 
-	public static FrmChat getInstance() {
-		if (instancia == null) {
-			return instancia = new FrmChat();
-		}
-		return instancia;
-	}
-	/**
-	 * Create the application.
-	 */
-	public FrmChat() {
+	public UIJanelaPrincipal() {
 		FrmEcOLX = new JFrame();
 
 		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
@@ -134,12 +125,27 @@ public class FrmChat {
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 	}
 
-	int j= 10;
-	public void adicionaUsuariosOnline(String id){
-		j++;
-		panel_1.add(new JButton(id));
-		panel_1.setLayout(new GridLayout(j,1,0,0));
-		panel_1.revalidate();
-		System.out.println("TESTE");
+	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
+	// VARIÁVEL
+	int j = 10;
+
+	public void adicionarUsuariosOnline(final String emailConectado) {
+
+		new Thread() {
+			public void run() {
+				j++;
+				panel_1.add(new JButton(emailConectado));
+				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
+				panel_1.revalidate();
+				panel_1.repaint();
+			}
+		}.start();
+	}
+
+	public static UIJanelaPrincipal getInstance() {
+		if (instancia == null) {
+			return instancia = new UIJanelaPrincipal();
+		}
+		return instancia;
 	}
 }

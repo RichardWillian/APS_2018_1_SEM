@@ -40,6 +40,7 @@ public class DadoAnuncio implements Serializable{
 	private File getImagem() {
 		return imagem;
 	}
+	
 	private void setImagem(File imagem) {
 		this.imagem = imagem;
 	}
