@@ -68,11 +68,16 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
 		getContentPane().add(image);
+		getContentPane().addKeyListener(this);
 
 		ok.addActionListener(this);
 		exit.addActionListener(this);
 		cadastrar.addActionListener(this);
+		login.addKeyListener(this);
+		senha.addKeyListener(this);
+		
 		this.addWindowListener(this);
+		this.addKeyListener(this);
 		repaint();
 	}
 
@@ -110,15 +115,16 @@ public class UIJanelaLogin extends JanelaBase {
 		String email = tlg.getText();
 		String senha = new String(psenha.getPassword());
 
-		// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-		if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-			// TODO CHAMAR A TELA DO VITOR
-			this.dispose();
-			ServidorChatAplicacao.getInstance();
-		} else {
-			JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+		if ( !(email == null || email.equals("")) && !(senha == null || senha.equals(""))){
+			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+				// TODO CHAMAR A TELA DO VITOR
+				this.dispose();
+				ServidorChatAplicacao.getInstance();
+			} else {
+				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+			}
 		}
-
 	}
 
 	public void windowClosing(WindowEvent e) {
