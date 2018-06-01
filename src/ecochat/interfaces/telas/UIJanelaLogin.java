@@ -12,10 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
-import ecochat.utilitarios.Utilitaria;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {

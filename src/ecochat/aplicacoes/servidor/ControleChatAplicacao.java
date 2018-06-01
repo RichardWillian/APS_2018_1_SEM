@@ -18,7 +18,13 @@ public class ControleChatAplicacao {
 
 	private ControleChatAplicacao() {
 
-		UIJanelaChat.getInstance();
+		//UIJanelaChat.getInstance();
+		new UIJanelaChat();
+		lerMensagemServidor();
+	}
+
+	public ControleChatAplicacao(String emailConectado) {
+		new UIJanelaChat(emailConectado);
 		lerMensagemServidor();
 	}
 
@@ -57,6 +63,8 @@ public class ControleChatAplicacao {
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
 								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
+						@SuppressWarnings("unused")
+						String aff = (String) fluxoEntradaDados.readObject();
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 

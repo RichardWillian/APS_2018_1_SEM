@@ -3,6 +3,8 @@ package ecochat.interfaces.telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,13 +18,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
-public class UIJanelaPrincipal {
+import ecochat.aplicacoes.servidor.ControleChatAplicacao;
+import ecochat.aplicacoes.telas.JanelaBase;
+
+@SuppressWarnings("serial")
+public class UIJanelaPrincipal extends JanelaBase{
 
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
 	private static UIJanelaPrincipal instancia;
 
-	public UIJanelaPrincipal() {
+	public UIJanelaPrincipal(){
 		FrmEcOLX = new JFrame();
 
 		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
@@ -134,7 +140,16 @@ public class UIJanelaPrincipal {
 		new Thread() {
 			public void run() {
 				j++;
-				panel_1.add(new JButton(emailConectado));
+				JButton btnUsuarioConectado = new JButton(emailConectado);
+				btnUsuarioConectado.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent ae) {
+						//ControleChatAplicacao.getInstance(emailConectado);
+						new ControleChatAplicacao(emailConectado);
+					}
+				});
+				
+				panel_1.add(btnUsuarioConectado);
 				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
 				panel_1.revalidate();
 				panel_1.repaint();

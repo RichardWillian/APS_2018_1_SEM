@@ -1,6 +1,5 @@
 package ecochat.aplicacoes.servidor;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,7 +12,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 
 import ecochat.entidades.DadoCompartilhado;
-import ecochat.interfaces.telas.UIJanelaServidorCentralChat;
+import ecochat.interfaces.telas.UIJanelaServidorCentral;
 import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorCentral {
@@ -27,7 +26,7 @@ public class ServidorCentral {
 	public static void main(String[] args) {
 
 		try {
-			UIJanelaServidorCentralChat.getInstance();
+			UIJanelaServidorCentral.getInstance();
 		} catch (HibernateException exception) {
 			exception.printStackTrace();
 		} catch (Exception e) {
@@ -35,6 +34,7 @@ public class ServidorCentral {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private Object ObjectOutputStream;
 
 	public void iniciarServidor() {
@@ -46,14 +46,14 @@ public class ServidorCentral {
 					InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
 
 			socketsConectados = new ArrayList<Socket>();
-			UIJanelaServidorCentralChat.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
+			UIJanelaServidorCentral.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
 			do {
 				Socket socket = socketServidorCentral.accept();
 				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
 
 				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 
-				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
+				UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
 				socketsConectados.add(socket);
 
 				if (!socketServidorCentral.isClosed())
@@ -73,7 +73,7 @@ public class ServidorCentral {
 			}
 
 			socketServidorCentral.close();
-			UIJanelaServidorCentralChat.getInstance().mostrarMensagem(" ---===== Servidor Desconectado =====---");
+			UIJanelaServidorCentral.getInstance().mostrarMensagem(" ---===== Servidor Desconectado =====---");
 
 		} catch (IOException ioE) {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());

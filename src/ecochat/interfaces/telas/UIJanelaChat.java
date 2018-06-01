@@ -77,12 +77,16 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblLoading;
 
 	public UIJanelaChat() {
-		initialize();
+		//initialize();
 	}
 
-	private void initialize() {
+	public UIJanelaChat(String emailConectado) {
+		initialize(emailConectado);
+	}
 
-		janelaChat = new JFrame();
+	private void initialize(String emailConectado) {
+
+		janelaChat = new JFrame(emailConectado);
 		janelaChat.setAlwaysOnTop(true);
 		janelaChat.setResizable(false);
 		janelaChat.setAutoRequestFocus(false);

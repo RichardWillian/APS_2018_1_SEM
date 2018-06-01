@@ -40,7 +40,6 @@ public class ServidorPainelPrincipalAnuncios {
 							String ipSocketConectado = (String) fluxoEntradaDados.readObject();
 							UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipSocketConectado);
 						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
