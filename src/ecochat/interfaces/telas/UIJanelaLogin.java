@@ -27,7 +27,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private Image fundo;
 	@SuppressWarnings("unused")
 	private String log;
-
+	
 	private static UIJanelaLogin instancia;
 
 	public UIJanelaLogin() {
@@ -111,13 +111,14 @@ public class UIJanelaLogin extends JanelaBase {
 		String senha = new String(psenha.getPassword());
 
 		// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-		if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-			// TODO CHAMAR A TELA DO VITOR
+		//if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+		// TODO CHAMAR A TELA DO VITOR
+			FrmChat.getInstance();
 			this.dispose();
-			ServidorChatAplicacao.getInstance();
-		} else {
-			JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-		}
+			//ServidorChatAplicacao.getInstance();
+//		} else {
+//			JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//		}
 
 	}
 
@@ -135,4 +136,5 @@ public class UIJanelaLogin extends JanelaBase {
 
 		return instancia;
 	}
+
 }

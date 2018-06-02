@@ -14,6 +14,8 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 
 import ecochat.entidades.DadoCompartilhado;
+import ecochat.interfaces.telas.FrmChat;
+import ecochat.interfaces.telas.UIJanelaLogin;
 import ecochat.interfaces.telas.UIJanelaServidorCentralChat;
 import ecochat.utilitarios.ConstantesGerais;
 
@@ -51,6 +53,7 @@ public class ServidorCentral {
 				ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
 
 				UIJanelaServidorCentralChat.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
+				FrmChat.getInstance().addUsuarioOnline(socket.getInetAddress().getHostAddress());
 				socketsConectados.add(socket);
 
 				if (!socketServidorCentral.isClosed())

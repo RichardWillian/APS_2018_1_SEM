@@ -155,7 +155,7 @@ public class FrmChat {
 	}
 
 	int j= 10;
-	public void adicionaUsuariosOnline(String id){
+	public void addUsuarioOnline(String id){
 		j++;
 		panel_1.add(new JButton(id));
 		panel_1.setLayout(new GridLayout(j,1,0,0));
