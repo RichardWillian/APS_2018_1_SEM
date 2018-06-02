@@ -18,6 +18,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
+import com.sun.corba.se.impl.interceptors.InterceptorInvoker;
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
+
 import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 
@@ -27,6 +30,7 @@ public class UIJanelaPrincipal extends JanelaBase{
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
 	private static UIJanelaPrincipal instancia;
+	private String ipChat;
 
 	public UIJanelaPrincipal(){
 		FrmEcOLX = new JFrame();
@@ -144,8 +148,8 @@ public class UIJanelaPrincipal extends JanelaBase{
 				btnUsuarioConectado.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent ae) {
-						//ControleChatAplicacao.getInstance(emailConectado);
-						new ControleChatAplicacao(emailConectado);
+						setIpChat(emailConectado);
+						ControleChatAplicacao.getInstance();
 					}
 				});
 				
@@ -156,11 +160,22 @@ public class UIJanelaPrincipal extends JanelaBase{
 			}
 		}.start();
 	}
-
+	
+	
 	public static UIJanelaPrincipal getInstance() {
 		if (instancia == null) {
 			return instancia = new UIJanelaPrincipal();
 		}
 		return instancia;
+	}
+
+
+	public String getIpChat() {
+		return ipChat;
+	}
+
+
+	public void setIpChat(String ipChat) {
+		this.ipChat = ipChat;
 	}
 }

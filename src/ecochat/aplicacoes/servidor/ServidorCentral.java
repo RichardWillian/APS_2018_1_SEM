@@ -27,7 +27,7 @@ public class ServidorCentral {
 		} catch (HibernateException exception) {
 			exception.printStackTrace();
 		} catch (Exception e) {
-			System.err.println("Ops! " + e.getMessage() + "\n");
+			System.err.println("Ops! " + e.getMessage() + "\n");	
 		}
 	}
 

@@ -33,6 +33,7 @@ import javax.swing.JTextArea;
 
 import ecochat.aplicacoes.cliente.Aplicacao;
 import ecochat.aplicacoes.servidor.ControleChatAplicacao;
+import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
@@ -76,17 +77,13 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblArquivo;
 	private JLabel lblLoading;
 
-	public UIJanelaChat() {
-		//initialize();
+	public UIJanelaChat(String emailconectado) {
+		initialize(emailconectado);
 	}
 
-	public UIJanelaChat(String emailConectado) {
-		initialize(emailConectado);
-	}
 
-	private void initialize(String emailConectado) {
-
-		janelaChat = new JFrame(emailConectado);
+	private void initialize(String emailconectado) {
+		janelaChat = new JFrame(emailconectado);
 		janelaChat.setAlwaysOnTop(true);
 		janelaChat.setResizable(false);
 		janelaChat.setAutoRequestFocus(false);
@@ -135,13 +132,14 @@ public class UIJanelaChat extends JanelaBase {
 		exploradorArquivos = new JFileChooser();
 		exploradorArquivos.setCurrentDirectory(new File("C:\\Users\\richard.divino\\Desktop\\Cliente"));
 
+				
 		janelaChat.setVisible(true);
 	}
 
 	public static UIJanelaChat getInstance() {
 
 		if (instancia == null)
-			return instancia = new UIJanelaChat();
+			return instancia = new UIJanelaChat(UIJanelaPrincipal.getInstance().getIpChat()); 
 
 		return instancia;
 	}
@@ -250,8 +248,12 @@ public class UIJanelaChat extends JanelaBase {
 	}
 
 	private void adicionarMensagemVisor(JLabel lblMensagem) {
-		panelVisorChat.add(lblMensagem);
-		repintarTela();
+		if(panelVisorChat == null) {
+			System.out.println(lblMensagem.getText());
+		}else {
+			panelVisorChat.add(lblMensagem);
+			repintarTela();
+		}
 	}
 
 	private JLabel criarLabelComImagem(URL caminho) {
