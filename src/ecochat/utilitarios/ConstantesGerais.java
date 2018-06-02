@@ -9,4 +9,7 @@ public class ConstantesGerais {
 	
 	public static String IP_SERVIDOR_AUTENTICACAO = "127.255.255.254";
 	public static int PORTA_SERVIDOR_AUTENTICACAO = 12346;
+	
+	public static String IP_SERVIDOR_CHAT = "127.255.255.253"; 
+	public static int PORTA_SERVIDOR_CHAT = 12347;
 }

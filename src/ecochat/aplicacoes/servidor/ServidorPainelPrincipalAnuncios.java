@@ -1,6 +1,7 @@
 package ecochat.aplicacoes.servidor;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -12,18 +13,21 @@ import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorPainelPrincipalAnuncios {
 
-	private static Socket socket;
+	private static Socket socketServidorCentral;
+	private static Socket socketServidorChat;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static ServidorPainelPrincipalAnuncios instancia;
 
 	private ServidorPainelPrincipalAnuncios() {
 		try {
-			inicializarSockets();
+			conectarServidorCentral();
 			atualizarSocketsConectados();
 			UIJanelaPrincipal.getInstance();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -34,16 +38,19 @@ public class ServidorPainelPrincipalAnuncios {
 			public void run() {
 				while (true) {
 					try {
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
+
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
+								socketServidorCentral.getInputStream());
 
 						try {
+
 							String ipSocketConectado = (String) fluxoEntradaDados.readObject();
 							UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipSocketConectado);
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
 
-					} catch (IOException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -51,18 +58,24 @@ public class ServidorPainelPrincipalAnuncios {
 		}.start();
 	}
 
-	private void inicializarSockets() throws UnknownHostException, IOException {
+	private void conectarServidorCentral() throws UnknownHostException, IOException, InterruptedException {
 
 		String ipMaquina = "127.0.0.2";// Inet4Address.getLocalHost().getHostAddress();
 
-		socket = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
+		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
 				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);
 
-		fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+		Thread.sleep(1000);
+
+		socketServidorChat = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT),
+				ConstantesGerais.PORTA_SERVIDOR_CHAT, InetAddress.getByName(ipMaquina), 0);
+
+		fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
+		fluxoSaidaDados.flush();
 	}
 
 	public Socket getSocket() {
-		return socket;
+		return socketServidorChat;
 	}
 
 	public ObjectOutputStream getFluxoSaidaDados() {

@@ -6,9 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
-import ecochat.entidades.DadoAutenticacao;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.ConstantesGerais;
 
@@ -32,11 +32,16 @@ public class ServidorChat {
 			public void run() {
 
 				try {
-					socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_AUTENTICACAO,
+					socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT,
 							ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS,
-							InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_AUTENTICACAO));
+							InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT));
 
-					// lerMensagemDoCliente();
+					socketsConectados = new ArrayList<Socket>();
+					while (true) {
+						Socket socket = socketServidorChat.accept();
+						socketsConectados.add(socket);
+						lerMensagemDoCliente(new ObjectInputStream(socket.getInputStream()));
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

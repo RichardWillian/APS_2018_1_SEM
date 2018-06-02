@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import ecochat.entidades.DadoCompartilhado;
@@ -41,7 +42,8 @@ public class ControleChatAplicacao {
 								dadoCompartilhado.getArquivo());
 					}
 
-					ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados().writeObject(dadoCompartilhado);
+					ObjectOutputStream aff = ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
+					aff.writeObject(dadoCompartilhado);
 					ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados().flush();
 				} catch (IOException e) {
 					e.printStackTrace();
