@@ -12,9 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import ecochat.aplicacoes.servidor.ServidorChatAplicacao;
+import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
-import ecochat.utilitarios.Utilitaria;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -27,7 +26,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private Image fundo;
 	@SuppressWarnings("unused")
 	private String log;
-	
+
 	private static UIJanelaLogin instancia;
 
 	public UIJanelaLogin() {
@@ -68,11 +67,16 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
 		getContentPane().add(image);
+		getContentPane().addKeyListener(this);
 
 		ok.addActionListener(this);
 		exit.addActionListener(this);
 		cadastrar.addActionListener(this);
+		login.addKeyListener(this);
+		senha.addKeyListener(this);
+
 		this.addWindowListener(this);
+		this.addKeyListener(this);
 		repaint();
 	}
 
@@ -110,16 +114,17 @@ public class UIJanelaLogin extends JanelaBase {
 		String email = tlg.getText();
 		String senha = new String(psenha.getPassword());
 
-		// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-		//if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-		// TODO CHAMAR A TELA DO VITOR
-			FrmChat.getInstance();
-			this.dispose();
-			//ServidorChatAplicacao.getInstance();
-//		} else {
-//			JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//		if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
+//			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+//			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+				// TODO CHAMAR A TELA DO VITOR
+				ServidorPainelPrincipalAnuncios.getInstance();
+				this.dispose();
+				//ControleChatAplicacao.getInstance();
+//			} else {
+//				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//			}
 //		}
-
 	}
 
 	public void windowClosing(WindowEvent e) {
@@ -136,5 +141,4 @@ public class UIJanelaLogin extends JanelaBase {
 
 		return instancia;
 	}
-
 }

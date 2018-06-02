@@ -1,9 +1,9 @@
 package ecochat.interfaces.telas;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
@@ -18,40 +18,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
-import ecochat.interfaces.telas.UIJanelaServidorCentralChat;
-import javafx.event.ActionEvent;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.CardLayout;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
+import ecochat.aplicacoes.servidor.ControleChatAplicacao;
+import ecochat.aplicacoes.telas.JanelaBase;
 
-public class FrmChat {
+@SuppressWarnings("serial")
+public class UIJanelaPrincipal extends JanelaBase{
 
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
-	private static FrmChat instancia;
+	private static UIJanelaPrincipal instancia;
 
-	public static FrmChat getInstance() {
-		if (instancia == null) {
-			return instancia = new FrmChat();
-		}
-		return instancia;
-	}
-	/**
-	 * Create the application.
-	 */
-	public FrmChat() {
+	public UIJanelaPrincipal(){
 		FrmEcOLX = new JFrame();
 
 		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
@@ -154,12 +131,36 @@ public class FrmChat {
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 	}
 
-	int j= 10;
-	public void addUsuarioOnline(String id){
-		j++;
-		panel_1.add(new JButton(id));
-		panel_1.setLayout(new GridLayout(j,1,0,0));
-		panel_1.revalidate();
-		System.out.println("TESTE");
+	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
+	// VARIÁVEL
+	int j = 10;
+
+	public void adicionarUsuariosOnline(final String emailConectado) {
+
+		new Thread() {
+			public void run() {
+				j++;
+				JButton btnUsuarioConectado = new JButton(emailConectado);
+				btnUsuarioConectado.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent ae) {
+						//ControleChatAplicacao.getInstance(emailConectado);
+						new ControleChatAplicacao(emailConectado);
+					}
+				});
+				
+				panel_1.add(btnUsuarioConectado);
+				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
+				panel_1.revalidate();
+				panel_1.repaint();
+			}
+		}.start();
+	}
+
+	public static UIJanelaPrincipal getInstance() {
+		if (instancia == null) {
+			return instancia = new UIJanelaPrincipal();
+		}
+		return instancia;
 	}
 }

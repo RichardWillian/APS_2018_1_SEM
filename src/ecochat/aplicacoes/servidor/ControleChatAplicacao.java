@@ -8,44 +8,25 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
-import ecochat.utilitarios.ConstantesGerais;
 import ecochat.utilitarios.Utilitaria;
 
-public class ServidorChatAplicacao {
+public class ControleChatAplicacao {
 
-	private static Socket socket;
-	private static ObjectOutputStream fluxoSaidaDados;
-	private static ServidorChatAplicacao instancia;
+	private static ControleChatAplicacao instancia;
 
-	private ServidorChatAplicacao() {
+	private ControleChatAplicacao() {
 
-		// TODO PRECISA DESCOMENTAR AQUI
-		try {
-			inicializarSockets();
-			UIJanelaChat.getInstance();
-			lerMensagemServidor();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//UIJanelaChat.getInstance();
+		new UIJanelaChat();
+		lerMensagemServidor();
 	}
 
-	private void inicializarSockets() throws UnknownHostException, IOException {
-
-		String ipMaquina = "127.0.0.2";// Inet4Address.getLocalHost().getHostAddress();
-
-		socket = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
-												  ConstantesGerais.PORTA_SERVIDOR_CENTRAL, 
-												  InetAddress.getByName(ipMaquina), 0);
-
-		fluxoSaidaDados = new ObjectOutputStream(socket.getOutputStream());
+	public ControleChatAplicacao(String emailConectado) {
+		new UIJanelaChat(emailConectado);
+		lerMensagemServidor();
 	}
 
 	public void enviarMensagemAoServidor(final DadoCompartilhado dadoCompartilhado) {
@@ -61,8 +42,9 @@ public class ServidorChatAplicacao {
 								dadoCompartilhado.getArquivo());
 					}
 
-					fluxoSaidaDados.writeObject(dadoCompartilhado);
-					fluxoSaidaDados.flush();
+					ObjectOutputStream aff = ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
+					aff.writeObject(dadoCompartilhado);
+					ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados().flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
@@ -80,7 +62,11 @@ public class ServidorChatAplicacao {
 				try {
 					while (true) {
 
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socket.getInputStream());
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
+								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
+
+						@SuppressWarnings("unused")
+						String aff = (String) fluxoEntradaDados.readObject();
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 
@@ -92,20 +78,23 @@ public class ServidorChatAplicacao {
 							OutputStream saidaArquivo = null;
 
 							try {
-								File arquivo = dadoCompartilhado.getArquivo(); 
-								
+								File arquivo = dadoCompartilhado.getArquivo();
+
 								arquivo.createTempFile(Utilitaria.recuperarPastaDownload(), "");
 								entradaArquivo = new FileInputStream(arquivo);
-								saidaArquivo = new FileOutputStream(new File(Utilitaria.recuperarPastaDownload() 
-																		   + Utilitaria.gerarNomeArquivo()
-																		   + Utilitaria.recuperarExtensaoArquivo(arquivo) ));
+								saidaArquivo = new FileOutputStream(
+										new File(Utilitaria.recuperarPastaDownload()
+												+ Utilitaria.gerarNomeArquivo()
+												+ Utilitaria.recuperarExtensaoArquivo(arquivo)));
+								
 								this.sleep(2000);
+								
 								byte[] memoriaTemporaria = new byte[1024 * 50];
 								int tamanho;
 								while ((tamanho = entradaArquivo.read(memoriaTemporaria)) > 0) {
 									saidaArquivo.write(memoriaTemporaria, 0, tamanho);
 								}
-								
+
 								UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Recebeu",
 										dadoCompartilhado.getArquivo());
 							} catch (Exception ex) {
@@ -128,10 +117,10 @@ public class ServidorChatAplicacao {
 		}.start();
 	}
 
-	public static ServidorChatAplicacao getInstance() {
+	public static ControleChatAplicacao getInstance() {
 
 		if (instancia == null)
-			return instancia = new ServidorChatAplicacao();
+			return instancia = new ControleChatAplicacao();
 
 		return instancia;
 	}

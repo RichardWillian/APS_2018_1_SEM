@@ -53,12 +53,17 @@ public class UIJanelaCadastrar extends JanelaBase {
 		getContentPane().add(ok);
 		getContentPane().add(exit);
 		getContentPane().add(email);
+		getContentPane().addKeyListener(this);
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
 		// fundo = fundolg.getImage();
 
-		ok.addActionListener(this);
 		exit.addActionListener(this);
+		ok.addActionListener(this);
+		email.addKeyListener(this);
+		senha.addKeyListener(this);
+		temail.addKeyListener(this);
+		tnome.addKeyListener(this);
 		// cadastrar.addActionListener(this);
 		this.addWindowListener(this);
 		this.addKeyListener(this);
@@ -87,9 +92,13 @@ public class UIJanelaCadastrar extends JanelaBase {
 		String nome = tnome.getText();
 		String email = temail.getText();
 		String senha = new String(psenha.getPassword());
-		Utilitaria.cadastrarUsuario(nome, email, senha);
-		UIJanelaLogin.getInstance();
-		JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-		this.dispose();
+
+		if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))
+				&& !(nome == null || nome.equals(""))) {
+			Utilitaria.cadastrarUsuario(nome, email, senha);
+			UIJanelaLogin.getInstance();
+			JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+			this.dispose();
+		}
 	}
 }

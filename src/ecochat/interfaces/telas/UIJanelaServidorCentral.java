@@ -11,14 +11,14 @@ import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.aplicacoes.telas.JanelaBase;
 
 @SuppressWarnings("serial")
-public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBase {
+public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 
-	private static UIJanelaServidorCentralChat instancia;
+	private static UIJanelaServidorCentral instancia;
 	private JButton botaoIniciarServidor;
 	private JButton botaoDesligarServidor;
 	private JTextArea txtAreaUsuariosConectados;
 
-	private UIJanelaServidorCentralChat() {
+	private UIJanelaServidorCentral() {
 
 		instanciarComponentes();
 		setProriedadesJanela();
@@ -26,10 +26,10 @@ public class UIJanelaServidorCentralChat extends JanelaBase implements IJanelaBa
 		setPropriedadesComponentes();
 	}
 
-	public static UIJanelaServidorCentralChat getInstance() {
+	public static UIJanelaServidorCentral getInstance() {
 
 		if (instancia == null)
-			return instancia = new UIJanelaServidorCentralChat();
+			return instancia = new UIJanelaServidorCentral();
 
 		return instancia;
 	}

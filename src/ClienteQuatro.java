@@ -11,34 +11,40 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.ConstantesGerais;
 
-public class ClienteDois {
+public class ClienteQuatro {
 
-	@SuppressWarnings("unused")
 	private static Socket socketServidorCentral;
 	private static Socket socketServidorChat;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static BufferedReader leitorBuffered;
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) throws InterruptedException {
 
-		String ipMaquina = "127.0.0.3";
+		try {
 
-		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
-				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);
+			String ipMaquina = "127.0.0.5";
+			
+			socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
+					ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);
+			Thread.sleep(1000);
+			socketServidorChat = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT),
+					ConstantesGerais.PORTA_SERVIDOR_CHAT, InetAddress.getByName(ipMaquina), 0);
 
-		Thread.sleep(1000);
-		socketServidorChat = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT),
-				ConstantesGerais.PORTA_SERVIDOR_CHAT, InetAddress.getByName(ipMaquina), 0);
 
-		fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
-		leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
-		escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
-		lerMensagemServidor();
+			fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
+
+			leitorBuffered = new BufferedReader(new InputStreamReader(System.in));
+
+			escreverMensagemAoServidor(fluxoSaidaDados, leitorBuffered);
+			lerMensagemServidor();
+
+		} catch (IOException iec) {
+			System.out.println(iec.getMessage());
+		}
 	}
 
 	private static void lerMensagemServidor() {
@@ -48,8 +54,7 @@ public class ClienteDois {
 			public void run() {
 				try {
 					while (true) {
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-								socketServidorChat.getInputStream());
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketServidorChat.getInputStream());
 						DadoCompartilhado dadoCompatilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 						System.out.println(dadoCompatilhado.getMensagem());
 
