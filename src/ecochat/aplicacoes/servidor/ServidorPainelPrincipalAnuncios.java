@@ -11,6 +11,7 @@ import java.util.Random;
 
 import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;
+import ecochat.utilitarios.Utilitaria;
 
 public class ServidorPainelPrincipalAnuncios {
 
@@ -60,9 +61,8 @@ public class ServidorPainelPrincipalAnuncios {
 	}
 	
 	private void conectarServidorCentral() throws UnknownHostException, IOException, InterruptedException {
-		Random numeroAleatorio = new Random();
 		
-		String ipMaquina = "127.0.1." +numeroAleatorio.nextInt(254 - 1) + 1;
+		String ipMaquina = Utilitaria.criarIpAleatorio();
 
 		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
 				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);

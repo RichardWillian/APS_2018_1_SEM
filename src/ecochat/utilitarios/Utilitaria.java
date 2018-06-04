@@ -202,4 +202,26 @@ public class Utilitaria {
 
 		return nomeArquivo.toString();
 	}
+
+	public static String criarHostAleatorio() {
+		
+		Random numeroAleatorio = new Random();
+		int minimo = 1;
+		int maximo = 254;
+		Integer host = -1;
+		
+		while(host <= 0 || host > 254)
+		{
+			host = numeroAleatorio.nextInt(maximo - minimo) + 1;
+		}
+		
+		return host.toString();
+	}
+
+	public static String criarIpAleatorio() {
+		
+		return "127" + "." + criarHostAleatorio() 
+					 + "." + criarHostAleatorio() 
+					 + "." +  criarHostAleatorio();
+	}
 }

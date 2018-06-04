@@ -156,27 +156,27 @@ public class UIJanelaPrincipal extends JanelaBase {
 					}
 				});
 		
-				new Thread() {
-						public void run() {
-								ActionListener action = new ActionListener()
-								{   
-									@Override
-									public void actionPerformed(ActionEvent event)
-									{
-										float r = rand.nextFloat();
-										float g = rand.nextFloat();
-										float b = rand.nextFloat();
-										
-										btnUsuarioConectado.setBackground(new Color(r, g, b));
-									}
-								};
-								
-								timer = new Timer(delay, action);
-								timer.setInitialDelay(0);
-								timer.start();
-								
-							}
-					}.start();
+//				new Thread() {
+//						public void run() {
+//								ActionListener action = new ActionListener()
+//								{   
+//									@Override
+//									public void actionPerformed(ActionEvent event)
+//									{
+//										float r = rand.nextFloat();
+//										float g = rand.nextFloat();
+//										float b = rand.nextFloat();
+//										
+//										btnUsuarioConectado.setBackground(new Color(r, g, b));
+//									}
+//								};
+//								
+//								timer = new Timer(delay, action);
+//								timer.setInitialDelay(0);
+//								timer.start();
+//								
+//							}
+//					}.start();
 				
 				panel_1.add(btnUsuarioConectado);
 				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
