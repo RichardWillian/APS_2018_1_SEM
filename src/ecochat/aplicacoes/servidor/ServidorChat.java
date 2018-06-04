@@ -49,7 +49,6 @@ public class ServidorChat {
 				}
 			}
 		}.start();
-
 	}
 
 	private static void lerMensagemDoCliente(final ObjectInputStream fluxoEntradaDados) {

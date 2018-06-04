@@ -42,15 +42,15 @@ public class ServidorCentral {
 					InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
 
 			socketsConectados = new ArrayList<Socket>();
-			UIJanelaServidorCentral.getInstance().mostrarMensagem("   ---===== Servidor Conectado =====---");
+			UIJanelaServidorCentral.getInstance().mostrarMensagem("        ---===== Servidor Conectado =====---");
 			while (true) {
 
 				Socket socket = socketServidorCentral.accept();
 				UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
-
-				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
-
+				
 				socketsConectados.add(socket);
+				
+				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
 			}
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
@@ -65,7 +65,7 @@ public class ServidorCentral {
 			}
 
 			socketServidorCentral.close();
-			UIJanelaServidorCentral.getInstance().mostrarMensagem(" ---===== Servidor Desconectado =====---");
+			UIJanelaServidorCentral.getInstance().mostrarMensagem("     ---===== Servidor Desconectado =====---");
 
 		} catch (IOException ioE) {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());

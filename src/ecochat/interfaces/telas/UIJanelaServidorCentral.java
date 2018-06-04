@@ -71,7 +71,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 		botaoDesligarServidor.setText("Desligar");
 		
 		txtAreaUsuariosConectados.setVisible(true);
-		txtAreaUsuariosConectados.setBounds(30, 30, 230, 260);
+		txtAreaUsuariosConectados.setBounds(23, 15, 250, 300);
 		txtAreaUsuariosConectados.setEnabled(false);
 		txtAreaUsuariosConectados.setAutoscrolls(true);
 	}
@@ -110,7 +110,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 	}
 	
 	public void mostrarConectados(String ipConectado){
-		txtAreaUsuariosConectados.append("           Cliente " + ipConectado + " se conectou!\n");
+		txtAreaUsuariosConectados.append("          Cliente " + ipConectado + " se conectou!\n");
 	}
 	
 	@Override
