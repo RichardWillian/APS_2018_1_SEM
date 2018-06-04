@@ -62,11 +62,13 @@ public class UIJanelaChat extends JanelaBase {
 
 	private JFrame janelaChat;
 	private static UIJanelaChat instancia;
+	private static String idJanela;
 	private JLabel lblEnviarArquivo;
 	private JLabel lblEnviarMensagem;
 	private JTextArea textAreaCampoEscritaChat;
 	private JScrollPane scrollPaneCampoEscritaChat;
 
+	
 	private int tamanhoPadraoLabel = 30;
 	private int ultimoYLabel;
 
@@ -131,15 +133,22 @@ public class UIJanelaChat extends JanelaBase {
 
 		exploradorArquivos = new JFileChooser();
 		exploradorArquivos.setCurrentDirectory(new File("C:\\Users\\richard.divino\\Desktop\\Cliente"));
-
-				
+	
 		janelaChat.setVisible(true);
 	}
+	
+	
 
 	public static UIJanelaChat getInstance() {
-
+		setIdJanela(UIJanelaPrincipal.getInstance().getIpChat());
+		new Thread() {
+			public void run() {
+				
+			}
+		}.start();
+		
 		if (instancia == null)
-			return instancia = new UIJanelaChat(UIJanelaPrincipal.getInstance().getIpChat()); 
+			return instancia = new UIJanelaChat(getIdJanela()); 
 
 		return instancia;
 	}
@@ -186,6 +195,7 @@ public class UIJanelaChat extends JanelaBase {
 			adicionarAnimacaoArquivo();
 		}
 
+		dadoCompartilhado.setEmailEntrega(this.getIdJanela());
 		ControleChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 	}
 
@@ -300,4 +310,15 @@ public class UIJanelaChat extends JanelaBase {
 			enviarMensagem();
 		}
 	}
+
+
+	public static String getIdJanela() {
+		return idJanela;
+	}
+
+
+	public static void setIdJanela(String idJanela) {
+		UIJanelaChat.idJanela = idJanela;
+	}
+	
 }

@@ -27,8 +27,7 @@ public class ControleChatAplicacao {
 		new Thread() {
 			public void run() {
 				try {
-					dadoCompartilhado.setEmailEntrega("127.0.0.3");
-
+					
 					if (dadoCompartilhado.getArquivo() != null) {
 						Thread.sleep(2000);
 						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou",
@@ -58,9 +57,9 @@ public class ControleChatAplicacao {
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
 								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
-						Object tst = fluxoEntradaDados.readObject();
+						Object leituraObjeto = fluxoEntradaDados.readObject();
 						
-						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) tst;
+						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) leituraObjeto;
 						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 
 						if (dadoCompartilhado.getArquivo() != null) {

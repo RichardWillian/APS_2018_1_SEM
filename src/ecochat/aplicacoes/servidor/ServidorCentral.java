@@ -27,7 +27,7 @@ public class ServidorCentral {
 		} catch (HibernateException exception) {
 			exception.printStackTrace();
 		} catch (Exception e) {
-			System.err.println("Ops! " + e.getMessage() + "\n");	
+			System.err.println("Ops! " + e.getMessage() + "\n");
 		}
 	}
 
@@ -73,25 +73,40 @@ public class ServidorCentral {
 	}
 
 	public void atualizarUsuariosOnlines(final String ipSocketConectado) {
-
 		new Thread() {
 			public void run() {
-				List<Socket> socketsConetadosCopia = new ArrayList<Socket>(socketsConectados);
+				List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
 				try {
-					for (Socket socketConectado : socketsConetadosCopia) {
+
+					Socket socketSeraAtualizado = null;
+
+					for (Socket socketConectado : socketsConectadosCopia) {
 
 						String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
 						if (!ipSocketLista.equals(ipSocketConectado)) {
 							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
 									socketConectado.getOutputStream());
 							fluxoSaidaDados.writeObject(ipSocketConectado);
+						} else
+							socketSeraAtualizado = socketConectado;
+					}
+
+					for (Socket socketConectado : socketsConectadosCopia) {
+
+						String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
+						if (!ipSocketLista.equals(ipSocketConectado)) {
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
+									socketSeraAtualizado.getOutputStream());
+							fluxoSaidaDados.writeObject(ipSocketLista);
 						}
 					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}.start();
+
 	}
 
 	public static ServidorCentral getInstance() {

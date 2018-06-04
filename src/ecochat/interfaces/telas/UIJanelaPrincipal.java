@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 
 import com.sun.corba.se.impl.interceptors.InterceptorInvoker;
 import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
@@ -25,14 +27,14 @@ import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 
 @SuppressWarnings("serial")
-public class UIJanelaPrincipal extends JanelaBase{
+public class UIJanelaPrincipal extends JanelaBase {
 
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
 	private static UIJanelaPrincipal instancia;
 	private String ipChat;
 
-	public UIJanelaPrincipal(){
+	public UIJanelaPrincipal() {
 		FrmEcOLX = new JFrame();
 
 		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
@@ -138,20 +140,43 @@ public class UIJanelaPrincipal extends JanelaBase{
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
 	// VARIÁVEL
 	int j = 10;
+	private Timer timer;
+	private Random rand = new Random();
+	private int delay = 300; // a cada 0,3 segundos
 
 	public void adicionarUsuariosOnline(final String emailConectado) {
-
 		new Thread() {
 			public void run() {
 				j++;
 				JButton btnUsuarioConectado = new JButton(emailConectado);
-				btnUsuarioConectado.addActionListener(new ActionListener() {
-					
+					btnUsuarioConectado.addActionListener( new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
 					}
 				});
+		
+				new Thread() {
+						public void run() {
+								ActionListener action = new ActionListener()
+								{   
+									@Override
+									public void actionPerformed(ActionEvent event)
+									{
+										float r = rand.nextFloat();
+										float g = rand.nextFloat();
+										float b = rand.nextFloat();
+										
+										btnUsuarioConectado.setBackground(new Color(r, g, b));
+									}
+								};
+								
+								timer = new Timer(delay, action);
+								timer.setInitialDelay(0);
+								timer.start();
+								
+							}
+					}.start();
 				
 				panel_1.add(btnUsuarioConectado);
 				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
@@ -160,8 +185,7 @@ public class UIJanelaPrincipal extends JanelaBase{
 			}
 		}.start();
 	}
-	
-	
+
 	public static UIJanelaPrincipal getInstance() {
 		if (instancia == null) {
 			return instancia = new UIJanelaPrincipal();
@@ -169,11 +193,9 @@ public class UIJanelaPrincipal extends JanelaBase{
 		return instancia;
 	}
 
-
 	public String getIpChat() {
 		return ipChat;
 	}
-
 
 	public void setIpChat(String ipChat) {
 		this.ipChat = ipChat;

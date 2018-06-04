@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;
@@ -57,10 +58,11 @@ public class ServidorPainelPrincipalAnuncios {
 			}
 		}.start();
 	}
-
+	
 	private void conectarServidorCentral() throws UnknownHostException, IOException, InterruptedException {
-
-		String ipMaquina = "127.0.0.2";// Inet4Address.getLocalHost().getHostAddress();
+		Random numeroAleatorio = new Random();
+		
+		String ipMaquina = "127.0.1." +numeroAleatorio.nextInt(254 - 1) + 1;
 
 		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
 				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);
