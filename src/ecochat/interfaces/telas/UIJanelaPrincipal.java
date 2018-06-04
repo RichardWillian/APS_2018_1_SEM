@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -33,6 +35,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 	private JPanel panel_1;
 	private static UIJanelaPrincipal instancia;
 	private String ipChat;
+	private List<JButton> listaUsuariosConectados;
 
 	public UIJanelaPrincipal() {
 		FrmEcOLX = new JFrame();
@@ -135,6 +138,8 @@ public class UIJanelaPrincipal extends JanelaBase {
 		panel_1 = new JPanel();
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
+		
+		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
@@ -149,41 +154,54 @@ public class UIJanelaPrincipal extends JanelaBase {
 			public void run() {
 				j++;
 				JButton btnUsuarioConectado = new JButton(emailConectado);
-					btnUsuarioConectado.addActionListener( new ActionListener() {
+				btnUsuarioConectado.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
+
 					}
 				});
-		
-//				new Thread() {
-//						public void run() {
-//								ActionListener action = new ActionListener()
-//								{   
-//									@Override
-//									public void actionPerformed(ActionEvent event)
-//									{
-//										float r = rand.nextFloat();
-//										float g = rand.nextFloat();
-//										float b = rand.nextFloat();
-//										
-//										btnUsuarioConectado.setBackground(new Color(r, g, b));
-//									}
-//								};
-//								
-//								timer = new Timer(delay, action);
-//								timer.setInitialDelay(0);
-//								timer.start();
-//								
-//							}
-//					}.start();
-				
+
+				listaUsuariosConectados.add(btnUsuarioConectado);
 				panel_1.add(btnUsuarioConectado);
 				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
 				panel_1.revalidate();
 				panel_1.repaint();
 			}
 		}.start();
+	}
+
+	public void alertaMensagem(String emailConectado) {
+		
+		JButton botaoParaAlertar = null;
+		
+		for(JButton botaoLista : listaUsuariosConectados) {
+			if(botaoLista.getText() == emailConectado) {
+				botaoParaAlertar = botaoLista;
+			}
+		
+		}
+		
+		if (UIJanelaChat.getIdJanela() == emailConectado) {
+			if (UIJanelaChat.isMensagemNaFila()) {
+				ActionListener action = new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						float r = rand.nextFloat();
+						float g = rand.nextFloat();
+						float b = rand.nextFloat();
+
+						setBackground(new Color(r, g, b));
+					}
+				};
+				
+				botaoParaAlertar.addActionListener(action);
+
+				timer = new Timer(delay, action);
+				timer.setInitialDelay(0);
+				timer.start();
+
+			}
+		}
 	}
 
 	public static UIJanelaPrincipal getInstance() {

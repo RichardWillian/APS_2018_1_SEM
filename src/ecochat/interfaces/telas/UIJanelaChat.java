@@ -67,6 +67,8 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblEnviarMensagem;
 	private JTextArea textAreaCampoEscritaChat;
 	private JScrollPane scrollPaneCampoEscritaChat;
+	private static boolean mensagemNaFila;
+	
 
 	
 	private int tamanhoPadraoLabel = 30;
@@ -196,6 +198,7 @@ public class UIJanelaChat extends JanelaBase {
 		}
 
 		dadoCompartilhado.setEmailEntrega(UIJanelaChat.getIdJanela());
+		setMensagemNaFila(true);
 		ControleChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 	}
 
@@ -319,6 +322,16 @@ public class UIJanelaChat extends JanelaBase {
 
 	public static void setIdJanela(String idJanela) {
 		UIJanelaChat.idJanela = idJanela;
+	}
+
+
+	public static boolean isMensagemNaFila() {
+		return mensagemNaFila;
+	}
+
+
+	public static void setMensagemNaFila(boolean mensagemFila) {
+		mensagemNaFila = mensagemFila;
 	}
 	
 }
