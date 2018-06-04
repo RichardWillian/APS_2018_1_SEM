@@ -3,12 +3,10 @@ package ecochat.interfaces.telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,10 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.Timer;
-
-import com.sun.corba.se.impl.interceptors.InterceptorInvoker;
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
 import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
@@ -42,7 +36,6 @@ public class UIJanelaPrincipal extends JanelaBase {
 		FrmEcOLX = new JFrame();
 
 		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
-		FrmEcOLX.setTitle("ECOLX");
 		FrmEcOLX.setBounds(100, 100, 579, 446);
 		FrmEcOLX.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		FrmEcOLX.getContentPane().setLayout(null);
@@ -146,9 +139,9 @@ public class UIJanelaPrincipal extends JanelaBase {
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
 	// VARIÁVEL
 	int j = 10;
-	private Timer timer;
-	private Random rand = new Random();
-	private int delay = 300; // a cada 0,3 segundos
+//	private Timer timer;
+//	private Random rand = new Random();
+//	private int delay = 300; // a cada 0,3 segundos
 
 	public void adicionarUsuariosOnline(final String emailConectado) {
 		new Thread() {
@@ -165,8 +158,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 				listaUsuariosConectados.add(btnUsuarioConectado);
 				panel_1.add(btnUsuarioConectado);
 				panel_1.setLayout(new GridLayout(j, 1, 0, 0));
-				panel_1.revalidate();
-				panel_1.repaint();
+				repintarTela();
 			}
 		}.start();
 	}
@@ -179,12 +171,19 @@ public class UIJanelaPrincipal extends JanelaBase {
 				for(JButton botaoLista : listaUsuariosConectados) {
 					if(botaoLista.getText() == emailConectado) {
 						botaoLista.setBackground(Color.CYAN);
-						panel_1.revalidate();
-						panel_1.repaint();
+						repintarTela();
 					}
 				}
 			}
 		}
+	}
+	
+	private void repintarTela(){
+		
+		FrmEcOLX.revalidate();
+		FrmEcOLX.repaint();
+		panel_1.revalidate();
+		panel_1.repaint();
 	}
 
 	public static UIJanelaPrincipal getInstance() {
