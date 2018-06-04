@@ -69,8 +69,6 @@ public class UIJanelaChat extends JanelaBase {
 	private JScrollPane scrollPaneCampoEscritaChat;
 	private static boolean mensagemNaFila;
 	
-
-	
 	private int tamanhoPadraoLabel = 30;
 	private int ultimoYLabel;
 
@@ -92,7 +90,7 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.setResizable(false);
 		janelaChat.setAutoRequestFocus(false);
 		janelaChat.setBounds(100, 100, 350, 472);
-		janelaChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		janelaChat.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		janelaChat.getContentPane().setLayout(null);
 
 		lblEnviarArquivo = criarLabelComImagem(this.getClass().getResource("imagens\\anexo_icon.png"));
