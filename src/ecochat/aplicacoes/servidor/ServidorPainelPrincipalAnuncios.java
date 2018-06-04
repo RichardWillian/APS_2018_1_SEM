@@ -61,8 +61,16 @@ public class ServidorPainelPrincipalAnuncios {
 	
 	private void conectarServidorCentral() throws UnknownHostException, IOException, InterruptedException {
 		Random numeroAleatorio = new Random();
+		int minimo = 1;
+		int maximo = 254;
+		int hostFaixa4 = -1;
 		
-		String ipMaquina = "127.0.1." +numeroAleatorio.nextInt(254 - 1) + 1;
+		while(hostFaixa4 <= 0 || hostFaixa4 > 254)
+		{
+			hostFaixa4 = numeroAleatorio.nextInt(maximo - minimo) + 1;
+		}
+		
+		String ipMaquina = "127.0.1." + hostFaixa4;
 
 		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
 				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);

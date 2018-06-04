@@ -11,6 +11,7 @@ import java.io.OutputStream;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
+import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.Utilitaria;
 
 public class ControleChatAplicacao {
@@ -37,6 +38,7 @@ public class ControleChatAplicacao {
 					ObjectOutputStream aff = ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
 					aff.writeObject(dadoCompartilhado);
 					ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados().flush();
+					UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getEmailEntrega());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
@@ -58,6 +60,9 @@ public class ControleChatAplicacao {
 								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
 						Object leituraObjeto = fluxoEntradaDados.readObject();
+						if(UIJanelaChat.getInstance().isFocusableWindow()) {
+							UIJanelaChat.setMensagemNaFila(false);
+						}
 						
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) leituraObjeto;
 						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
