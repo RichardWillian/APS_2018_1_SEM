@@ -70,13 +70,13 @@ public class ServidorChat {
 
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
-									if(!UIJanelaChat.getInstance().isFocusable()){
-										UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getEmailEntrega());
-										ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
+									if (!UIJanelaChat.getInstance().isFocusable())
+										UIJanelaPrincipal.getInstance()
+												.alertaMensagem(dadoCompartilhado.getEmailEntrega());
+									
+									ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
 											dadoCompartilhado);
-									}else
-										ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
-												dadoCompartilhado);
+
 								}
 							}
 						}

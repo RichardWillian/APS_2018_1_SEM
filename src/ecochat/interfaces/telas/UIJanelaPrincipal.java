@@ -3,6 +3,7 @@ package ecochat.interfaces.telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -158,7 +159,6 @@ public class UIJanelaPrincipal extends JanelaBase {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
-
 					}
 				});
 
@@ -173,33 +173,16 @@ public class UIJanelaPrincipal extends JanelaBase {
 
 	public void alertaMensagem(String emailConectado) {
 		
-		JButton botaoParaAlertar = null;
-		
-		for(JButton botaoLista : listaUsuariosConectados) {
-			if(botaoLista.getText() == emailConectado) {
-				botaoParaAlertar = botaoLista;
-			}
-		
-		}
-		
 		if (UIJanelaChat.getIdJanela() == emailConectado) {
 			if (UIJanelaChat.isMensagemNaFila()) {
-				ActionListener action = new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						float r = rand.nextFloat();
-						float g = rand.nextFloat();
-						float b = rand.nextFloat();
-
-						setBackground(new Color(r, g, b));
-					}
-				};
 				
-				botaoParaAlertar.addActionListener(action);
-
-				timer = new Timer(delay, action);
-				timer.setInitialDelay(0);
-				timer.start();
-
+				for(JButton botaoLista : listaUsuariosConectados) {
+					if(botaoLista.getText() == emailConectado) {
+						botaoLista.setBackground(Color.CYAN);
+						panel_1.revalidate();
+						panel_1.repaint();
+					}
+				}
 			}
 		}
 	}
