@@ -83,7 +83,6 @@ public class UIJanelaChat extends JanelaBase {
 		initialize(emailconectado);
 	}
 
-
 	private void initialize(String emailconectado) {
 		janelaChat = new JFrame(emailconectado);
 		janelaChat.setAlwaysOnTop(true);
@@ -137,16 +136,8 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.setVisible(true);
 	}
 	
-	
-
 	public static UIJanelaChat getInstance() {
 		setIdJanela(UIJanelaPrincipal.getInstance().getIpChat());
-		new Thread() {
-			public void run() {
-				
-			}
-		}.start();
-		
 		if (instancia == null)
 			return instancia = new UIJanelaChat(getIdJanela()); 
 
@@ -312,24 +303,19 @@ public class UIJanelaChat extends JanelaBase {
 		}
 	}
 
-
 	public static String getIdJanela() {
 		return idJanela;
 	}
-
 
 	public static void setIdJanela(String idJanela) {
 		UIJanelaChat.idJanela = idJanela;
 	}
 
-
 	public static boolean isMensagemNaFila() {
 		return mensagemNaFila;
 	}
 
-
 	public static void setMensagemNaFila(boolean mensagemFila) {
 		mensagemNaFila = mensagemFila;
 	}
-	
 }

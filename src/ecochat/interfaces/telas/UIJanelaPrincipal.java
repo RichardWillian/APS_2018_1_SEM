@@ -138,6 +138,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 		
+<<<<<<< HEAD
 		JButton cadastrarAnuncio = new JButton("Cadastrar An\u00FAncio");
 		cadastrarAnuncio.setForeground(Color.DARK_GRAY);
 		cadastrarAnuncio.setBackground(Color.GREEN);
@@ -145,6 +146,9 @@ public class UIJanelaPrincipal extends JanelaBase {
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
 		FrmEcOLX.getContentPane().add(cadastrarAnuncio);
 		
+=======
+		//ControleChatAplicacao.lerMensagemServidor();
+>>>>>>> 6be5c3810c99988df44651f11a4b5c0e2db3d3a1
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
@@ -164,6 +168,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
+						UIJanelaChat.setIdJanela(emailConectado);
 					}
 				});
 
