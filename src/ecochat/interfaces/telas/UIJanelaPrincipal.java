@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 	private static UIJanelaPrincipal instancia;
 	private String ipChat;
 	private List<JButton> listaUsuariosConectados;
+	private JInternalFrame internalFrame;
 
 	public UIJanelaPrincipal() {
 		FrmEcOLX = new JFrame();
@@ -52,20 +54,20 @@ public class UIJanelaPrincipal extends JanelaBase {
 		txtpnVitorSantos.setText("Vitor Santos");
 		FrmEcOLX.getContentPane().add(txtpnVitorSantos);
 
-		JInternalFrame internalFrame = new JInternalFrame("ANUNCIOS");
-		internalFrame.setBounds(144, 11, 409, 385);
-		FrmEcOLX.getContentPane().add(internalFrame);
-		internalFrame.getContentPane().setLayout(null);
+		setInternalFrame(new JInternalFrame("ANUNCIOS"));
+		getInternalFrame().setBounds(154, 42, 409, 354);
+		FrmEcOLX.getContentPane().add(getInternalFrame());
 		FrmEcOLX.setVisible(true);
+		getInternalFrame().getContentPane().setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
 		lblNewLabel.setBounds(10, 11, 70, 57);
-		internalFrame.getContentPane().add(lblNewLabel);
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
+		getInternalFrame().getContentPane().add(lblNewLabel);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(83, 11, 300, 57);
-		internalFrame.getContentPane().add(scrollPane_1);
+		getInternalFrame().getContentPane().add(scrollPane_1);
 
 		JTextArea descricao = new JTextArea();
 		scrollPane_1.setViewportView(descricao);
@@ -78,13 +80,13 @@ public class UIJanelaPrincipal extends JanelaBase {
 		descricao.setAutoscrolls(true);
 
 		JLabel label_1 = new JLabel("New label");
-		label_1.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
 		label_1.setBounds(10, 79, 70, 57);
-		internalFrame.getContentPane().add(label_1);
+		label_1.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
+		getInternalFrame().getContentPane().add(label_1);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(83, 79, 300, 57);
-		internalFrame.getContentPane().add(scrollPane_2);
+		getInternalFrame().getContentPane().add(scrollPane_2);
 
 		JTextArea textArea = new JTextArea();
 		scrollPane_2.setViewportView(textArea);
@@ -97,14 +99,17 @@ public class UIJanelaPrincipal extends JanelaBase {
 		textArea.setAutoscrolls(true);
 
 		JLabel label_2 = new JLabel("New label");
-		label_2.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
 		label_2.setBounds(10, 141, 70, 57);
-		internalFrame.getContentPane().add(label_2);
+		label_2.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
+		getInternalFrame().getContentPane().add(label_2);
 
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(83, 141, 300, 57);
-		internalFrame.getContentPane().add(scrollPane_3);
-
+		getInternalFrame().getContentPane().add(scrollPane_3);
+		getInternalFrame().setResizable(false);
+		getInternalFrame().setVisible(true);
+		
+		
 		JTextArea txtrVendoPeaEletronica = new JTextArea();
 		scrollPane_3.setViewportView(txtrVendoPeaEletronica);
 		txtrVendoPeaEletronica.setWrapStyleWord(true);
@@ -133,6 +138,13 @@ public class UIJanelaPrincipal extends JanelaBase {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 		
+		JButton cadastrarAnuncio = new JButton("Cadastrar An\u00FAncio");
+		cadastrarAnuncio.setForeground(Color.DARK_GRAY);
+		cadastrarAnuncio.setBackground(Color.GREEN);
+		cadastrarAnuncio.setBounds(154, 8, 152, 23);
+		cadastrarAnuncio.addActionListener(new ActionCadastrar());
+		FrmEcOLX.getContentPane().add(cadastrarAnuncio);
+		
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
@@ -142,7 +154,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 //	private Timer timer;
 //	private Random rand = new Random();
 //	private int delay = 300; // a cada 0,3 segundos
-
+	
 	public void adicionarUsuariosOnline(final String emailConectado) {
 		new Thread() {
 			public void run() {
@@ -200,4 +212,20 @@ public class UIJanelaPrincipal extends JanelaBase {
 	public void setIpChat(String ipChat) {
 		this.ipChat = ipChat;
 	}
+	
+	public JInternalFrame getInternalFrame() {
+		return internalFrame;
+	}
+
+	public void setInternalFrame(JInternalFrame internalFrame) {
+		this.internalFrame = internalFrame;
+	}
+
+	private class ActionCadastrar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			UIJanelaEnvioArquivo.getInstance();
+		}
+		
+	}
+	
 }
