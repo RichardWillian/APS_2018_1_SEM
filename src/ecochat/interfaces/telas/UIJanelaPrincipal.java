@@ -133,6 +133,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 		
+		//ControleChatAplicacao.lerMensagemServidor();
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
@@ -152,6 +153,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
+						UIJanelaChat.setIdJanela(emailConectado);
 					}
 				});
 

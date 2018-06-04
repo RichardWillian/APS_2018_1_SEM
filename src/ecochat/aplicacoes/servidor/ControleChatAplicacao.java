@@ -28,16 +28,17 @@ public class ControleChatAplicacao {
 		new Thread() {
 			public void run() {
 				try {
-					
+
 					if (dadoCompartilhado.getArquivo() != null) {
 						Thread.sleep(2000);
 						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou",
 								dadoCompartilhado.getArquivo());
 					}
 
-					ObjectOutputStream aff = ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
-					aff.writeObject(dadoCompartilhado);
-					ServidorPainelPrincipalAnuncios.getInstance().getFluxoSaidaDados().flush();
+					ObjectOutputStream fluxoSaidaDados = ServidorPainelPrincipalAnuncios.getInstance()
+							.getFluxoSaidaDados();
+					fluxoSaidaDados.writeObject(dadoCompartilhado);
+					fluxoSaidaDados.flush();
 					UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getEmailEntrega());
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -48,7 +49,7 @@ public class ControleChatAplicacao {
 		}.start();
 	}
 
-	private static void lerMensagemServidor() {
+	private void lerMensagemServidor() {
 		new Thread() {
 			@SuppressWarnings("static-access")
 			public void run() {
@@ -60,10 +61,10 @@ public class ControleChatAplicacao {
 								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
 						Object leituraObjeto = fluxoEntradaDados.readObject();
-						if(UIJanelaChat.getInstance().isFocusableWindow()) {
+						if (UIJanelaChat.getInstance().isFocusableWindow()) {
 							UIJanelaChat.setMensagemNaFila(false);
 						}
-						
+
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) leituraObjeto;
 						UIJanelaChat.getInstance().receberMensagem(dadoCompartilhado.getMensagem());
 
@@ -80,12 +81,11 @@ public class ControleChatAplicacao {
 								arquivo.createTempFile(Utilitaria.recuperarPastaDownload(), "");
 								entradaArquivo = new FileInputStream(arquivo);
 								saidaArquivo = new FileOutputStream(
-										new File(Utilitaria.recuperarPastaDownload()
-												+ Utilitaria.gerarNomeArquivo()
+										new File(Utilitaria.recuperarPastaDownload() + Utilitaria.gerarNomeArquivo()
 												+ Utilitaria.recuperarExtensaoArquivo(arquivo)));
-								
+
 								this.sleep(2000);
-								
+
 								byte[] memoriaTemporaria = new byte[1024 * 50];
 								int tamanho;
 								while ((tamanho = entradaArquivo.read(memoriaTemporaria)) > 0) {

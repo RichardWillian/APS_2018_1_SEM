@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ecochat.entidades.DadoCompartilhado;
-import ecochat.interfaces.telas.UIJanelaChat;
-import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorChat {
@@ -69,13 +67,8 @@ public class ServidorChat {
 
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
-									if (!UIJanelaChat.getInstance().isFocusable())
-										UIJanelaPrincipal.getInstance()
-												.alertaMensagem(dadoCompartilhado.getEmailEntrega());
-									
 									ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
 											dadoCompartilhado);
-
 								}
 							}
 						}
@@ -94,7 +87,6 @@ public class ServidorChat {
 		try {
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
