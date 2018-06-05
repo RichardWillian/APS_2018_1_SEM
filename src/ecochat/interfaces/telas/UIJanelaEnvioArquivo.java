@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 
 public class UIJanelaEnvioArquivo {
 
@@ -43,10 +45,14 @@ public class UIJanelaEnvioArquivo {
 		frmCadastroDeAnuncio.getContentPane().setLayout(null);
 		
 		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o");
+		lblDescrio.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDescrio.setForeground(Color.WHITE);
 		lblDescrio.setBounds(207, 270, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblDescrio);
 		
 		JLabel lblTtulo = new JLabel("T\u00EDtulo");
+		lblTtulo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTtulo.setForeground(Color.WHITE);
 		lblTtulo.setBounds(207, 175, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblTtulo);
 		
@@ -73,6 +79,8 @@ public class UIJanelaEnvioArquivo {
 		frmCadastroDeAnuncio.getContentPane().add(comboBox);
 		
 		JLabel lblCategoria = new JLabel("Categoria");
+		lblCategoria.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCategoria.setForeground(Color.WHITE);
 		lblCategoria.setBounds(207, 225, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblCategoria);
 		
@@ -101,14 +109,36 @@ public class UIJanelaEnvioArquivo {
 		btnImagem.setBounds(270, 55, 115, 115);
 		frmCadastroDeAnuncio.getContentPane().add(btnImagem);
 		
+		
+		ActionListener busca = new ActionListener(){
+			public void actionPerformed (ActionEvent arg0){
+				procuraArquivo();
+			}
+		};
+		
+		btnImagem.addActionListener(busca);
+		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/background3.jpg")));
+		label.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Background1.jpg")));
 		label.setBounds(0, 0, 458, 391);
 		frmCadastroDeAnuncio.getContentPane().add(label);
 		
 		frmCadastroDeAnuncio.setVisible(true);
 	}
-	
+		public void procuraArquivo(){
+			String diretorioBase = System.getProperty("User.home")+ "/Desktop";
+			File dir = new File (diretorioBase);
+			
+			String caminhoArquivo = "";
+			
+			JFileChooser choose = new JFileChooser();
+			choose.setCurrentDirectory(dir);
+			choose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int retorno = choose.showOpenDialog(null);
+					if (retorno == JFileChooser.APPROVE_OPTION){
+						caminhoArquivo = choose.getSelectedFile().getAbsolutePath();
+					}
+		}
 	
 	public static UIJanelaEnvioArquivo getInstance() {
 		if (instancia == null) {

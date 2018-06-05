@@ -33,6 +33,7 @@ public class UIJanelaLogin extends JanelaBase {
 
 	private static UIJanelaLogin instancia;
 	private JLabel lblNewLabel;
+	private JLabel label;
 
 	public UIJanelaLogin() {
 
@@ -74,11 +75,16 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(ok);
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
+		
+		label = new JLabel("");
+		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+		label.setBounds(155, 20, 80, 95);
+		getContentPane().add(label);
 		getContentPane().add(image);
 		
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Sem t\u00EDtulo.png")));
-		lblNewLabel.setBounds(0, 6, 400, 348);
+		lblNewLabel.setBounds(0, 0, 400, 354);
 		getContentPane().add(lblNewLabel);
 		getContentPane().addKeyListener(this);
 
