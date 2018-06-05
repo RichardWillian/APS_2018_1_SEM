@@ -52,10 +52,10 @@ public class UIJanelaCadastrar extends JanelaBase {
 		email = new JLabel("Email:");
 		email.setFont(new Font("Tahoma", Font.BOLD, 13));
 		email.setForeground(Color.WHITE);
-		
-				email.setBounds(20, 160, 50, 20);
-				getContentPane().add(email);
-				email.addKeyListener(this);
+
+		email.setBounds(20, 160, 50, 20);
+		getContentPane().add(email);
+		email.addKeyListener(this);
 		tnome = new JTextField();
 		tnome.setBounds(70, 120, 150, 20);
 		getContentPane().add(tnome);
@@ -64,14 +64,16 @@ public class UIJanelaCadastrar extends JanelaBase {
 		getContentPane().add(temail);
 		getContentPane().add(ok);
 		getContentPane().add(exit);
-		
+
 		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+		label_1.setIcon(
+				new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
 		label_1.setBounds(-11, 0, 98, 96);
 		getContentPane().add(label_1);
-		
+
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/background4.jpg")));
+		label.setIcon(new ImageIcon(
+				UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/background4.jpg")));
 		label.setBounds(0, 0, 245, 321);
 		getContentPane().add(label);
 		getContentPane().addKeyListener(this);
@@ -118,6 +120,21 @@ public class UIJanelaCadastrar extends JanelaBase {
 			UIJanelaLogin.getInstance();
 			JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
 			this.dispose();
+		}else {
+			boolean nenhumCampoPreenchido = (email == null || email.equals("") 
+					&& (senha == null || senha.equals("") 
+					&& (nome == null || nome.equals(""))));
+
+			if (nenhumCampoPreenchido)
+				JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");
+			else {
+				if (email == null || email.equals(""))
+					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de preencher seu \"Login\"");
+				else if (senha == null || senha.equals(""))
+					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Senha\"");
+				else if (nome == null || nome.equals(""))
+					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Nome\"");
+			}
 		}
 	}
 }
