@@ -3,12 +3,8 @@ package ecochat.interfaces.telas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoAnuncio;
-import ecochat.entidades.DadoCompartilhadoServidor;
 import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
-import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {
