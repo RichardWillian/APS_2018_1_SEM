@@ -20,7 +20,7 @@ public class DadoCompartilhado implements Serializable {
 	}
 
 	public String getDestinatario() {
-		return destinatario = "127.36.76.222";
+		return destinatario;
 	}
 
 	public void setDestinatario(String destinatario) {

@@ -14,8 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
+import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -131,7 +132,7 @@ public class UIJanelaLogin extends JanelaBase {
 //			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
 //			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
 				// TODO CHAMAR A TELA DO VITOR
-				ServidorPainelPrincipalAnuncios.getInstance();
+				ControlePainelPrincipalAnuncios.getInstance();
 				this.dispose();
 				//ControleChatAplicacao.getInstance();
 //			} else {

@@ -32,11 +32,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ecochat.aplicacoes.cliente.Aplicacao;
-import ecochat.aplicacoes.servidor.ControleChatAplicacao;
-import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
+import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
+import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
@@ -79,6 +79,10 @@ public class UIJanelaChat extends JanelaBase {
 	private JLabel lblArquivo;
 	private JLabel lblLoading;
 
+	public UIJanelaChat(){
+		new UIJanelaChat(getIdJanela());
+	}
+	
 	public UIJanelaChat(String emailconectado) {
 		initialize(emailconectado);
 	}

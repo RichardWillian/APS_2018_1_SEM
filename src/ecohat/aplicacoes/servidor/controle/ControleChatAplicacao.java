@@ -1,4 +1,4 @@
-package ecochat.aplicacoes.servidor;
+package ecohat.aplicacoes.servidor.controle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,6 @@ import java.io.OutputStream;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
-import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.Utilitaria;
 
 public class ControleChatAplicacao {
@@ -35,11 +34,11 @@ public class ControleChatAplicacao {
 								dadoCompartilhado.getArquivo());
 					}
 
-					ObjectOutputStream fluxoSaidaDados = ServidorPainelPrincipalAnuncios.getInstance()
+					ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance()
 							.getFluxoSaidaDados();
+					dadoCompartilhado.setRemetente(ControlePainelPrincipalAnuncios.getInstance().getIpAplicacao());
 					fluxoSaidaDados.writeObject(dadoCompartilhado);
 					fluxoSaidaDados.flush();
-					UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getDestinatario());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
@@ -58,7 +57,7 @@ public class ControleChatAplicacao {
 					while (true) {
 
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-								ServidorPainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
+								ControlePainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
 						Object leituraObjeto = fluxoEntradaDados.readObject();
 						if (UIJanelaChat.getInstance().isFocusableWindow()) {
