@@ -1,9 +1,14 @@
 package ecochat.interfaces.telas;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +20,23 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 
 import ecochat.aplicacoes.telas.JanelaBase;
+import ecochat.entidades.DadoAnuncio;
+import ecochat.entidades.DadoCompartilhadoServidor;
 import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {
 
 	private JFrame FrmEcOLX;
 	private JPanel panel_1;
+	private JPanel panel;
 	private static UIJanelaPrincipal instancia;
 	private String ipChat;
 	private List<JButton> listaUsuariosConectados;
@@ -56,13 +67,16 @@ public class UIJanelaPrincipal extends JanelaBase {
 		FrmEcOLX.getContentPane().add(getInternalFrame());
 		FrmEcOLX.setVisible(true);
 		getInternalFrame().setResizable(false);
-		internalFrame.getContentPane().setLayout(new GridLayout(6, 0, 0, 0));
+		internalFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		internalFrame.getContentPane().add(scrollPane_1);
 
-		JButton btnNewButton = new JButton("New button");
-		internalFrame.getContentPane().add(btnNewButton);
+		setPanel(new JPanel());
+		scrollPane_1.setViewportView(getPanel());
+		getPanel().setLayout(new GridLayout(6, 1, 0, 0));
+
+		
 		// btnNewButton.addActionListener(new ActionAddBotao());
 		getInternalFrame().setVisible(true);
 
@@ -97,8 +111,9 @@ public class UIJanelaPrincipal extends JanelaBase {
 	int k = 6;
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
 	// VARIÁVEL
-	
+
 	int j = 10;
+
 	public void adicionarUsuariosOnline(final String emailConectado) {
 		new Thread() {
 			public void run() {
@@ -109,7 +124,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
 						UIJanelaChat.setIdJanela(emailConectado);
-						if(btnUsuarioConectado.getBackground() == Color.CYAN){
+						if (btnUsuarioConectado.getBackground() == Color.CYAN) {
 							btnUsuarioConectado.setBackground(null);
 						}
 					}
@@ -160,20 +175,54 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}
 
 	}
+	
+	public void adicionaPainel(DadoAnuncio anuncio) {
+			k++;
+			JPanel painel = new JPanel();
+			painel.setPreferredSize(new Dimension(100, 50));
+
+			JTextArea ta = new JTextArea(anuncio.getDescricao());
+			ta.setEditable(false);
+			
+			painel.setLayout(new GridLayout(1, 2, 0, 0));
+			JLabel imagem = new JLabel("");
+			imagem.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\testeaps.png"));
+			imagem.setPreferredSize(new Dimension(30, 50 ));
+			painel.add(imagem);
+			JScrollPane teste = new JScrollPane(ta);
+			teste.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			teste.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			ta.setWrapStyleWord(true);
+			ta.setLineWrap(true);
+			teste.setPreferredSize(new Dimension(70,50));
+			painel.add(teste);
+			
+			getPanel().setLayout(new GridLayout(k, 1, 0, 0));
+			getPanel().add( painel );
+			repintarTela();
+	}
 
 	public void notificarUsuario(String ipSocketEnviouMensagem) {
 
-		//if (UIJanelaChat.getIdJanela() == ipSocketEnviouMensagem) {
-			//if (UIJanelaChat.isMensagemNaFila()) {
-		if(UIJanelaChat.getInstance().getFocusableWindowState())
-				for (JButton botaoLista : listaUsuariosConectados) {
-					String ipUsuarioRemetente = botaoLista.getText();
-					if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
-						botaoLista.setBackground(Color.CYAN);
-						repintarTela();
-					}
+		// if (UIJanelaChat.getIdJanela() == ipSocketEnviouMensagem) {
+		// if (UIJanelaChat.isMensagemNaFila()) {
+		if (UIJanelaChat.getInstance().getFocusableWindowState())
+			for (JButton botaoLista : listaUsuariosConectados) {
+				String ipUsuarioRemetente = botaoLista.getText();
+				if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
+					botaoLista.setBackground(Color.CYAN);
+					repintarTela();
 				}
-			//}
-		//}
+			}
+		// }
+		// }
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(JPanel panel) {
+		this.panel = panel;
 	}
 }

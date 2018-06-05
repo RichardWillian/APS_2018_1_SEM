@@ -1,6 +1,7 @@
 package ecochat.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class DadoCompartilhadoServidor implements Serializable{
@@ -9,13 +10,6 @@ public class DadoCompartilhadoServidor implements Serializable{
 	private String ipUsuarioConectou = null;
 	private DadoCompartilhado dadoCompartilhado;
 
-	public DadoAnuncio getAnuncio() {
-		return anuncio;
-	}
-
-	public void setAnuncio(DadoAnuncio anuncio) {
-		this.anuncio = anuncio;
-	}
 
 	public String getIpUsuarioConectou() {
 		return ipUsuarioConectou;
@@ -31,5 +25,13 @@ public class DadoCompartilhadoServidor implements Serializable{
 
 	public void setDadoCompartilhado(DadoCompartilhado dadoCompartilhado) {
 		this.dadoCompartilhado = dadoCompartilhado;
+	}
+
+	public DadoAnuncio getAnuncio() {
+		return anuncio;
+	}
+
+	public void setAnuncio(DadoAnuncio anuncio) {
+		this.anuncio = anuncio;
 	}
 }

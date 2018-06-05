@@ -7,8 +7,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.entidades.DadoCompartilhadoServidor;
+import ecochat.interfaces.telas.UIJanelaEnvioArquivo;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
+import ecochat.interfaces.telas.UIJanelaServidorCentral;
 import ecochat.utilitarios.ConstantesGerais;
 import ecochat.utilitarios.Utilitaria;
 
@@ -68,7 +71,9 @@ public class ControlePainelPrincipalAnuncios {
 							UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipUsuarioConectou);
 
 						// TODO FAZER ENVIO DE ANÚNCIOS
-						//if(dadoCompartilhadoServidor.getAnuncio() != null)
+						if(dadoCompartilhadoServidor.getAnuncio() != null) {
+							UIJanelaPrincipal.getInstance().adicionaPainel(dadoCompartilhadoServidor.getAnuncio());
+						}
 						
 						if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
 							UIJanelaPrincipal.getInstance()

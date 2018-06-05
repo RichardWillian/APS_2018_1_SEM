@@ -1,6 +1,7 @@
 package ecochat.aplicacoes.servidor;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+
+import com.sun.javafx.scene.control.behavior.ScrollBarBehavior.ScrollBarKeyBinding;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.entidades.DadoCompartilhadoServidor;
@@ -53,32 +56,32 @@ public class ServidorCentral {
 				socketsConectados.add(socket);
 
 				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
+				atualizarPaineis();
 			}
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
 		}
 	}
-	
+
 	public void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
 		new Thread() {
 			public void run() {
-				
-				for(Socket socketConectado : socketsConectados){
+
+				for (Socket socketConectado : socketsConectados) {
 					String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
-					if(ipSocketConectado.equals(dadoCompartilhado.getDestinatario())){
+					if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
 						ObjectOutputStream fluxoSaidaDados;
 						try {
-							fluxoSaidaDados = new ObjectOutputStream(
-									socketConectado.getOutputStream());
-							
+							fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
 							dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
-							
+
 							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 				}
 			};
@@ -114,10 +117,10 @@ public class ServidorCentral {
 						if (!ipSocketLista.equals(ipSocketConectado)) {
 							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
 									socketConectado.getOutputStream());
-							
+
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
 							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketConectado);
-							
+
 							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						} else
 							socketSeraAtualizado = socketConectado;
@@ -129,10 +132,10 @@ public class ServidorCentral {
 						if (!ipSocketLista.equals(ipSocketConectado)) {
 							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
 									socketSeraAtualizado.getOutputStream());
-							
+
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
 							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketLista);
-							
+
 							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						}
 					}
@@ -140,6 +143,14 @@ public class ServidorCentral {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		}.start();
+	}
+
+	private void atualizarPaineis() {
+		new Thread() {
+			public void run() {
+				
 			}
 		}.start();
 	}
