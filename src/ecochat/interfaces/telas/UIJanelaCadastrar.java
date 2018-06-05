@@ -11,6 +11,9 @@ import javax.swing.JTextField;
 
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.utilitarios.Utilitaria;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class UIJanelaCadastrar extends JanelaBase {
@@ -26,33 +29,51 @@ public class UIJanelaCadastrar extends JanelaBase {
 		this.setLocationRelativeTo(null);
 
 		nome = new JLabel("Nome:");
-		email = new JLabel("Email:");
+		nome.setFont(new Font("Tahoma", Font.BOLD, 13));
+		nome.setForeground(Color.WHITE);
 		senha = new JLabel("Senha: ");
-		tnome = new JTextField();
+		senha.setFont(new Font("Tahoma", Font.BOLD, 13));
+		senha.setForeground(Color.WHITE);
 		temail = new JTextField();
 		psenha = new JPasswordField();
 		ok = new JButton("OK");
 		exit = new JButton("Sair");
-
-		email.setBounds(20, 84, 50, 20);
-		senha.setBounds(20, 132, 50, 20);
-		temail.setBounds(70, 84, 150, 20);
-		nome.setBounds(20, 42, 50, 20);
-		tnome.setBounds(70, 42, 150, 20);
-		psenha.setBounds(70, 132, 150, 20);
-		ok.setBounds(26, 183, 90, 20);
-		exit.setBounds(130, 183, 90, 20);
+		senha.setBounds(20, 200, 50, 20);
+		temail.setBounds(70, 160, 150, 20);
+		nome.setBounds(20, 120, 50, 20);
+		psenha.setBounds(70, 200, 150, 20);
+		ok.setBounds(26, 250, 90, 20);
+		exit.setBounds(130, 250, 90, 20);
 
 		getContentPane().setLayout(null);
 
 		getContentPane().add(nome);
 		getContentPane().add(senha);
-		getContentPane().add(psenha);
+		email = new JLabel("Email:");
+		email.setFont(new Font("Tahoma", Font.BOLD, 13));
+		email.setForeground(Color.WHITE);
+		
+				email.setBounds(20, 160, 50, 20);
+				getContentPane().add(email);
+				email.addKeyListener(this);
+		tnome = new JTextField();
+		tnome.setBounds(70, 120, 150, 20);
 		getContentPane().add(tnome);
+		tnome.addKeyListener(this);
+		getContentPane().add(psenha);
 		getContentPane().add(temail);
 		getContentPane().add(ok);
 		getContentPane().add(exit);
-		getContentPane().add(email);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setIcon(new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+		label_1.setBounds(-11, 0, 98, 96);
+		getContentPane().add(label_1);
+		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/background4.jpg")));
+		label.setBounds(0, 0, 245, 321);
+		getContentPane().add(label);
 		getContentPane().addKeyListener(this);
 		// ImageIcon fundolg = new
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
@@ -60,10 +81,8 @@ public class UIJanelaCadastrar extends JanelaBase {
 
 		exit.addActionListener(this);
 		ok.addActionListener(this);
-		email.addKeyListener(this);
 		senha.addKeyListener(this);
 		temail.addKeyListener(this);
-		tnome.addKeyListener(this);
 		// cadastrar.addActionListener(this);
 		this.addWindowListener(this);
 		this.addKeyListener(this);
