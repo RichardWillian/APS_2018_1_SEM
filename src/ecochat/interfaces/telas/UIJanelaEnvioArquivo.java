@@ -16,17 +16,17 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
+import javax.swing.JComboBox;
 
 public class UIJanelaEnvioArquivo {
 
 	private JFrame frmCadastroDeAnuncio;
-	private JTextField textDescricao;
 	private JTextField textTitulo;
-	private JTextField textCategoria;
-	private JTextField textLocalizacao;
 	private static UIJanelaEnvioArquivo instancia;
 	private final JLabel lblNewLabel_1 = new JLabel("New label");
-
+	private JTextArea textArea_1;
 	public UIJanelaEnvioArquivo() {
 		initialize();
 	}
@@ -43,55 +43,47 @@ public class UIJanelaEnvioArquivo {
 		frmCadastroDeAnuncio.getContentPane().setLayout(null);
 		
 		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o");
-		lblDescrio.setBounds(207, 205, 223, 14);
+		lblDescrio.setBounds(207, 270, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblDescrio);
 		
-		textDescricao = new JTextField();
-		textDescricao.setBounds(207, 220, 223, 20);
-		frmCadastroDeAnuncio.getContentPane().add(textDescricao);
-		textDescricao.setColumns(10);
-		
 		JLabel lblTtulo = new JLabel("T\u00EDtulo");
-		lblTtulo.setBounds(207, 160, 223, 14);
+		lblTtulo.setBounds(207, 175, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblTtulo);
 		
 		textTitulo = new JTextField();
 		textTitulo.setColumns(10);
-		textTitulo.setBounds(207, 175, 223, 20);
+		textTitulo.setBounds(207, 190, 223, 20);
 		frmCadastroDeAnuncio.getContentPane().add(textTitulo);
 		
-		JButton btnPublicar = new JButton("PUBLICAR");
-		btnPublicar.setBounds(207, 345, 223, 30);
-		frmCadastroDeAnuncio.getContentPane().add(btnPublicar);
-		btnPublicar.addActionListener(new ActionPublicar());
+		JButton botaoPublicar = new JButton("PUBLICAR");
+		botaoPublicar.setBounds(207, 345, 223, 30);
+		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
+		botaoPublicar.addActionListener(new ActionPublicar());
 		
-		JLabel lblLocalizao = new JLabel("Localiza\u00E7\u00E3o");
-		lblLocalizao.setBounds(207, 295, 223, 14);
-		frmCadastroDeAnuncio.getContentPane().add(lblLocalizao);
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(207, 240, 223, 20);
+		comboBox.addItem("");	
+		comboBox.addItem("Celular");				
+		comboBox.addItem("Computador");				
+		comboBox.addItem("Rádio");				
+		comboBox.addItem("Televisor");				
+		comboBox.addItem("Outros");				
+
+		
+		frmCadastroDeAnuncio.getContentPane().add(comboBox);
 		
 		JLabel lblCategoria = new JLabel("Categoria");
-		lblCategoria.setBounds(207, 250, 223, 14);
+		lblCategoria.setBounds(207, 225, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblCategoria);
 		
-		textCategoria = new JTextField();
-		textCategoria.setColumns(10);
-		textCategoria.setBounds(207, 265, 223, 20);
-		frmCadastroDeAnuncio.getContentPane().add(textCategoria);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(207, 285, 221, 40);
+		frmCadastroDeAnuncio.getContentPane().add(scrollPane_1);
 		
-		textLocalizacao = new JTextField();
-		textLocalizacao.setColumns(10);
-		textLocalizacao.setBounds(207, 310, 223, 20);
-		frmCadastroDeAnuncio.getContentPane().add(textLocalizacao);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Inserir.png")));
-		lblNewLabel.setBounds(207, 49, 100, 100);
-		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel);
-		
-		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Inserir.png")));
-		label_1.setBounds(331, 49, 100, 100);
-		frmCadastroDeAnuncio.getContentPane().add(label_1);
+		textArea_1 = new JTextArea();
+		textArea_1.setWrapStyleWord(true);
+		textArea_1.setLineWrap(true);
+		scrollPane_1.setViewportView(textArea_1);
 		
 		JLabel lblInserirAnncio = new JLabel("                                           Inserir An\u00FAncio");
 		lblInserirAnncio.setForeground(Color.WHITE);
@@ -101,6 +93,13 @@ public class UIJanelaEnvioArquivo {
 		lblNewLabel_1.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel_1);
+		
+		JButton btnImagem = new JButton("");
+		btnImagem.setBackground(Color.WHITE);
+		btnImagem.setForeground(Color.WHITE);
+		btnImagem.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Inserir.png")));
+		btnImagem.setBounds(270, 55, 115, 115);
+		frmCadastroDeAnuncio.getContentPane().add(btnImagem);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/background3.jpg")));
@@ -121,13 +120,13 @@ public class UIJanelaEnvioArquivo {
 	private class ActionPublicar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JInternalFrame telaAnuncio = UIJanelaPrincipal.getInstance().getInternalFrame();
-			JLabel lblNewLabel = new JLabel("New label");
-			lblNewLabel.setBounds(30, 30, 100, 80);
-			lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
-			telaAnuncio.getContentPane().add(lblNewLabel);
+			JLabel foto = new JLabel("New label");
+			foto.setBounds(100, 100, 100, 80);
+			foto.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
+			telaAnuncio.getContentPane().add(foto);
 
 			JScrollPane scrollPane_1 = new JScrollPane();
-			scrollPane_1.setBounds(133, 191, 350, 87);
+			scrollPane_1.setBounds(150, 150, 400, 100);
 			telaAnuncio.getContentPane().add(scrollPane_1);
 
 			JTextArea descricao = new JTextArea();
@@ -135,14 +134,12 @@ public class UIJanelaEnvioArquivo {
 			descricao.setWrapStyleWord(true);
 			descricao.setFont(new Font("Arial", Font.PLAIN, 10));
 			descricao.setEditable(false);
-			descricao.setText(
-					"Vendo pe\u00E7a eletronica com alguns wats e ela funciona em perfeito e nois que voa molecotinho da árabia estado troco por HD SSD. aquele abra\u00E7o amigos");
+			descricao.setText(textArea_1.getText());
 			descricao.setLineWrap(true);
 			descricao.setAutoscrolls(true);
 			
-			telaAnuncio.add(scrollPane_1).setVisible(true);
+			telaAnuncio.getContentPane().add(scrollPane_1).setVisible(true);
 			frmCadastroDeAnuncio.dispose();
 		}
 	}
-
 }

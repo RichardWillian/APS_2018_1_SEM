@@ -23,6 +23,17 @@ import javax.swing.ScrollPaneConstants;
 
 import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
+import java.awt.GridBagLayout;
+import java.awt.TextArea;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import java.awt.ScrollPane;
+import java.awt.Panel;
+import javax.swing.JList;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {
@@ -53,72 +64,21 @@ public class UIJanelaPrincipal extends JanelaBase {
 		txtpnVitorSantos.setEditable(false);
 		txtpnVitorSantos.setText("Vitor Santos");
 		FrmEcOLX.getContentPane().add(txtpnVitorSantos);
-
+		
 		setInternalFrame(new JInternalFrame("ANUNCIOS"));
 		getInternalFrame().setBounds(154, 42, 409, 354);
 		FrmEcOLX.getContentPane().add(getInternalFrame());
 		FrmEcOLX.setVisible(true);
-		getInternalFrame().getContentPane().setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(10, 11, 70, 57);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
-		getInternalFrame().getContentPane().add(lblNewLabel);
-
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(83, 11, 300, 57);
-		getInternalFrame().getContentPane().add(scrollPane_1);
-
-		JTextArea descricao = new JTextArea();
-		scrollPane_1.setViewportView(descricao);
-		descricao.setWrapStyleWord(true);
-		descricao.setFont(new Font("Arial", Font.PLAIN, 10));
-		descricao.setEditable(false);
-		descricao.setText(
-				"Vendo pe\u00E7a eletronica com alguns wats e ela funciona em perfeito e nois que voa molecotinho da árabia estado troco por HD SSD. aquele abra\u00E7o amigos");
-		descricao.setLineWrap(true);
-		descricao.setAutoscrolls(true);
-
-		JLabel label_1 = new JLabel("New label");
-		label_1.setBounds(10, 79, 70, 57);
-		label_1.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
-		getInternalFrame().getContentPane().add(label_1);
-
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(83, 79, 300, 57);
-		getInternalFrame().getContentPane().add(scrollPane_2);
-
-		JTextArea textArea = new JTextArea();
-		scrollPane_2.setViewportView(textArea);
-		textArea.setWrapStyleWord(true);
-		textArea.setText(
-				"Vendo pe\u00E7a eletronica com alguns wats e ela funciona em perfeito e nois que voa molecotinho da \u00E1rabia estado troco por HD SSD. aquele abra\u00E7o amigos");
-		textArea.setLineWrap(true);
-		textArea.setFont(new Font("Arial", Font.PLAIN, 10));
-		textArea.setEditable(false);
-		textArea.setAutoscrolls(true);
-
-		JLabel label_2 = new JLabel("New label");
-		label_2.setBounds(10, 141, 70, 57);
-		label_2.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
-		getInternalFrame().getContentPane().add(label_2);
-
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(83, 141, 300, 57);
-		getInternalFrame().getContentPane().add(scrollPane_3);
 		getInternalFrame().setResizable(false);
+		internalFrame.getContentPane().setLayout(new GridLayout(6, 0, 0, 0));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		internalFrame.getContentPane().add(scrollPane_1);
+		
+		JButton btnNewButton = new JButton("New button");
+		internalFrame.getContentPane().add(btnNewButton);
+		btnNewButton.addActionListener(new ActionAddBotao());
 		getInternalFrame().setVisible(true);
-		
-		
-		JTextArea txtrVendoPeaEletronica = new JTextArea();
-		scrollPane_3.setViewportView(txtrVendoPeaEletronica);
-		txtrVendoPeaEletronica.setWrapStyleWord(true);
-		txtrVendoPeaEletronica.setText(
-				"Vendo pe\u00E7a eletronica com alguns wats e ela funciona em perfeito e nois que voa molecotinho da \u00E1rabia estado troco por HD SSD. aquele abra\u00E7o amigos eessa descri\u00E7\u00E3o E MAIOR PRA PODER MOSTRAR QUE O ANUNCIO TAMB\u00C9M TEM SCROLL.");
-		txtrVendoPeaEletronica.setLineWrap(true);
-		txtrVendoPeaEletronica.setFont(new Font("Arial", Font.PLAIN, 10));
-		txtrVendoPeaEletronica.setEditable(false);
-		txtrVendoPeaEletronica.setAutoscrolls(true);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 101, 124, 20);
@@ -138,20 +98,17 @@ public class UIJanelaPrincipal extends JanelaBase {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 		
-<<<<<<< HEAD
 		JButton cadastrarAnuncio = new JButton("Cadastrar An\u00FAncio");
 		cadastrarAnuncio.setForeground(Color.DARK_GRAY);
 		cadastrarAnuncio.setBackground(Color.GREEN);
 		cadastrarAnuncio.setBounds(154, 8, 152, 23);
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
 		FrmEcOLX.getContentPane().add(cadastrarAnuncio);
-		
-=======
 		//ControleChatAplicacao.lerMensagemServidor();
->>>>>>> 6be5c3810c99988df44651f11a4b5c0e2db3d3a1
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
+	int k = 6;
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
 	// VARIÁVEL
 	int j = 10;
@@ -228,9 +185,27 @@ public class UIJanelaPrincipal extends JanelaBase {
 
 	private class ActionCadastrar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			UIJanelaEnvioArquivo.getInstance();
+			new UIJanelaEnvioArquivo();
 		}
 		
 	}
-	
+	int i =1;
+	private class ActionAddBotao implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			getInternalFrame().getContentPane().add(new JButton("TESTE"+i++));
+			internalFrame.getContentPane().setLayout(new GridLayout(k, 0, 0, 0));
+			JButton btnNewButton = new JButton("New button");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			scrollPane_1.setViewportView(btnNewButton);
+			getInternalFrame().revalidate();
+			getInternalFrame().repaint();
+			k++;
+		}
+		
+	}
 }

@@ -4,7 +4,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +16,8 @@ import javax.swing.JTextField;
 
 import ecochat.aplicacoes.servidor.ServidorPainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
+import java.awt.Color;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -28,6 +32,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private String log;
 
 	private static UIJanelaLogin instancia;
+	private JLabel lblNewLabel;
 
 	public UIJanelaLogin() {
 
@@ -35,13 +40,17 @@ public class UIJanelaLogin extends JanelaBase {
 		// ImageIcon(Login.class.getResource("/fundo.jpg"));
 
 		this.setTitle("EcoLx Login");
-		this.setBounds(300, 300, 350, 200);
+		this.setBounds(300, 300, 399, 375);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 
 		image = new JLabel(new ImageIcon("/fundo.jpg"));
 		login = new JLabel("Login:");
+		login.setFont(new Font("Tahoma", Font.BOLD, 12));
+		login.setForeground(Color.WHITE);
 		senha = new JLabel("Senha: ");
+		senha.setFont(new Font("Tahoma", Font.BOLD, 12));
+		senha.setForeground(Color.WHITE);
 		tlg = new JTextField();
 		psenha = new JPasswordField();
 		ok = new JButton("OK");
@@ -49,16 +58,15 @@ public class UIJanelaLogin extends JanelaBase {
 		cadastrar = new JButton("Cadastrar");
 
 		// image.setBounds(200, 50, 150, 150);
-		login.setBounds(20, 30, 50, 20);
-		senha.setBounds(20, 75, 50, 20);
-		tlg.setBounds(70, 30, 150, 20);
-		psenha.setBounds(70, 75, 150, 20);
-		ok.setBounds(20, 129, 90, 20);
-		exit.setBounds(120, 129, 90, 20);
-		cadastrar.setBounds(220, 129, 100, 20);
+		login.setBounds(127, 100, 50, 20);
+		senha.setBounds(127, 150, 50, 20);
+		tlg.setBounds(127, 120, 150, 20);
+		psenha.setBounds(127, 170, 150, 20);
+		ok.setBounds(100, 221, 90, 20);
+		exit.setBounds(215, 221, 90, 20);
+		cadastrar.setBounds(158, 260, 100, 20);
 
 		getContentPane().setLayout(null);
-
 		getContentPane().add(login);
 		getContentPane().add(senha);
 		getContentPane().add(psenha);
@@ -67,6 +75,11 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
 		getContentPane().add(image);
+		
+		lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Sem t\u00EDtulo.png")));
+		lblNewLabel.setBounds(0, 6, 400, 348);
+		getContentPane().add(lblNewLabel);
 		getContentPane().addKeyListener(this);
 
 		ok.addActionListener(this);
