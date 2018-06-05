@@ -78,7 +78,6 @@ public class ServidorCentral {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						
 					}
 				}
 			};
