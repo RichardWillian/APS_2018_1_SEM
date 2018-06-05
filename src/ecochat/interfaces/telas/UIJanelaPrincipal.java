@@ -77,7 +77,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		
 		JButton btnNewButton = new JButton("New button");
 		internalFrame.getContentPane().add(btnNewButton);
-		btnNewButton.addActionListener(new ActionAddBotao());
+//		btnNewButton.addActionListener(new ActionAddBotao());
 		getInternalFrame().setVisible(true);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -189,23 +189,22 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}
 		
 	}
-	int i =1;
-	private class ActionAddBotao implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			getInternalFrame().getContentPane().add(new JButton("TESTE"+i++));
-			internalFrame.getContentPane().setLayout(new GridLayout(k, 0, 0, 0));
-			JButton btnNewButton = new JButton("New button");
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-			scrollPane_1.setViewportView(btnNewButton);
-			getInternalFrame().revalidate();
-			getInternalFrame().repaint();
-			k++;
-		}
-		
-	}
+//	int i =1;
+//	private class ActionAddBotao implements ActionListener{
+//
+//		@Override
+//		public void actionPerformed(ActionEvent arg0) {
+//			getInternalFrame().getContentPane().add(new JButton("TESTE"+i++));
+//			internalFrame.getContentPane().setLayout(new GridLayout(k, 0, 0, 0));
+//			JButton btnNewButton = new JButton("New button");
+//			btnNewButton.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//				}
+//			});
+//			scrollPane_1.setViewportView(btnNewButton);
+//			getInternalFrame().revalidate();
+//			getInternalFrame().repaint();
+//			k++;
+//		}
+	//}
 }
