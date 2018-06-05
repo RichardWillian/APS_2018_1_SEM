@@ -147,7 +147,7 @@ public class UIJanelaLogin extends JanelaBase {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "        	    Desculpe pelo transtorno !\n" + "Estamos com problemas nos Servidores");
-
+			e.printStackTrace();
 		}
 	}
 

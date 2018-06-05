@@ -140,43 +140,48 @@ public class Utilitaria {
 
 	@SuppressWarnings("resource")
 	public static boolean verificarAutenticacaoUsuario(String email, String senha) throws Exception {
+		try {
+			Socket socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_AUTENTICACAO),
+					ConstantesGerais.PORTA_SERVIDOR_AUTENTICACAO,
+					InetAddress.getByName(ConstantesGerais.IP_FIXO_REQUISICAO_AUTENTICACAO), 0);
 
-		Socket socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_AUTENTICACAO),
-				ConstantesGerais.PORTA_SERVIDOR_AUTENTICACAO,
-				InetAddress.getByName(ConstantesGerais.IP_FIXO_REQUISICAO_AUTENTICACAO), 0);
+			ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(
+					socketAutenticacao.getOutputStream());
 
-		ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(socketAutenticacao.getOutputStream());
+			DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
 
-		DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
+			dadoAutenticacao.setEmail(email);
+			dadoAutenticacao.setSenha(senha);
 
-		dadoAutenticacao.setEmail(email);
-		dadoAutenticacao.setSenha(senha);
+//			Thread temporizador = new Thread() {
+//				public void run() {
+//					try {
+//						for (int i = 0; i < 15; i++) {
+//							Thread.sleep(500);
+//						}
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			};
 
-		Thread temporizador = new Thread() {
-			public void run() {
-				try {
-					for (int i = 0; i < 15; i++) {
-						Thread.sleep(500);
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		};
+			fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
 
-		fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
-		fluxoSaidaDadosAutenticacao.flush();
+			fluxoSaidaDadosAutenticacao.flush();
 
-		temporizador.start();
-		ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
-		boolean isUsuarioAutenticado = false;
+			//temporizador.start();
+			ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
+			boolean isUsuarioAutenticado = false;
 
-		isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
-		temporizador.interrupt();
+			isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
+			//temporizador.interrupt();
+			return isUsuarioAutenticado;
 
-		return isUsuarioAutenticado;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {

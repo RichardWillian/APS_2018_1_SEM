@@ -1,7 +1,7 @@
 package ecochat.aplicacoes.servidor;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-
-import com.sun.javafx.scene.control.behavior.ScrollBarBehavior.ScrollBarKeyBinding;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.entidades.DadoCompartilhadoServidor;
@@ -81,10 +79,6 @@ public class ServidorCentral {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-<<<<<<< HEAD
-
-=======
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 					}
 				}
 			};
@@ -153,7 +147,7 @@ public class ServidorCentral {
 	private void atualizarPaineis() {
 		new Thread() {
 			public void run() {
-				
+
 			}
 		}.start();
 	}

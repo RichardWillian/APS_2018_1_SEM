@@ -7,16 +7,11 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.List;
-=======
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -34,7 +29,6 @@ import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
-import javafx.stage.FileChooser;
 import sun.security.action.OpenFileInputStreamAction;
 
 import java.awt.SystemColor;
@@ -49,16 +43,10 @@ public class UIJanelaEnvioArquivo {
 	private JButton btnImagem;
 	private static UIJanelaEnvioArquivo instancia;
 	private final JLabel lblNewLabel_1 = new JLabel("New label");
-<<<<<<< HEAD
-	
 	private JTextArea descricao;
 	private JComboBox cbCategoria;
-	private JButton btnImagem;
 	private JFileChooser escolhaArquivo;
-=======
 	private JTextArea textArea_1;
-
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 	public UIJanelaEnvioArquivo() {
 		initialize();
 	}
@@ -66,6 +54,7 @@ public class UIJanelaEnvioArquivo {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		frmCadastroDeAnuncio = new JFrame();
 		frmCadastroDeAnuncio.setTitle("Cadastro de an\u00FAncio");
@@ -73,17 +62,7 @@ public class UIJanelaEnvioArquivo {
 		frmCadastroDeAnuncio.setBounds(100, 100, 474, 430);
 		frmCadastroDeAnuncio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCadastroDeAnuncio.getContentPane().setLayout(null);
-<<<<<<< HEAD
-		
-		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o");
-		lblDescricao.setBounds(207, 270, 223, 14);
-		frmCadastroDeAnuncio.getContentPane().add(lblDescricao);
-		
-		JLabel lblTitulo = new JLabel("T\u00EDtulo");
-		lblTitulo.setBounds(207, 175, 223, 14);
-		frmCadastroDeAnuncio.getContentPane().add(lblTitulo);
-		
-=======
+
 
 		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o");
 		lblDescrio.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -96,8 +75,6 @@ public class UIJanelaEnvioArquivo {
 		lblTtulo.setForeground(Color.WHITE);
 		lblTtulo.setBounds(207, 175, 223, 14);
 		frmCadastroDeAnuncio.getContentPane().add(lblTtulo);
-
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 		textTitulo = new JTextField();
 		textTitulo.setColumns(10);
 		textTitulo.setBounds(207, 190, 223, 20);
@@ -105,23 +82,8 @@ public class UIJanelaEnvioArquivo {
 
 		botaoPublicar = new JButton("PUBLICAR");
 		botaoPublicar.setBounds(207, 345, 223, 30);
-		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
 		botaoPublicar.addActionListener(new ActionPublicar());
-<<<<<<< HEAD
-		
-		cbCategoria = new JComboBox();
-		cbCategoria.setBounds(207, 240, 223, 20);
-		cbCategoria.addItem("");	
-		cbCategoria.addItem("Celular");				
-		cbCategoria.addItem("Computador");				
-		cbCategoria.addItem("Rádio");				
-		cbCategoria.addItem("Televisor");				
-		cbCategoria.addItem("Outros");				
-
-		
-		frmCadastroDeAnuncio.getContentPane().add(cbCategoria);
-		
-=======
+		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
 
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(207, 240, 223, 20);
@@ -133,8 +95,6 @@ public class UIJanelaEnvioArquivo {
 		comboBox.addItem("Outros");
 
 		frmCadastroDeAnuncio.getContentPane().add(comboBox);
-
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCategoria.setForeground(Color.WHITE);
@@ -144,24 +104,7 @@ public class UIJanelaEnvioArquivo {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(207, 285, 221, 40);
 		frmCadastroDeAnuncio.getContentPane().add(scrollPane_1);
-<<<<<<< HEAD
 		
-		descricao = new JTextArea();
-		descricao.setWrapStyleWord(true);
-		descricao.setLineWrap(true);
-		scrollPane_1.setViewportView(descricao);
-		
-		JLabel lblInserirAnuncio = new JLabel("                                           Inserir An\u00FAncio");
-		lblInserirAnuncio.setForeground(Color.WHITE);
-		lblInserirAnuncio.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblInserirAnuncio.setBounds(0, 0, 458, 30);
-		frmCadastroDeAnuncio.getContentPane().add(lblInserirAnuncio);
-		lblNewLabel_1.setIcon(new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
-		lblNewLabel_1.setBounds(0, 0, 458, 31);
-		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel_1);
-		
-=======
-
 		textArea_1 = new JTextArea();
 		textArea_1.setWrapStyleWord(true);
 		textArea_1.setLineWrap(true);
@@ -176,9 +119,7 @@ public class UIJanelaEnvioArquivo {
 				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel_1);
-
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
-		btnImagem = new JButton("");
+		btnImagem = new JButton();
 		btnImagem.setBackground(Color.WHITE);
 		btnImagem.setForeground(Color.WHITE);
 		btnImagem.setIcon(
@@ -245,21 +186,6 @@ public class UIJanelaEnvioArquivo {
 
 	private class ActionPublicar implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-			DadoAnuncio anuncio = new DadoAnuncio();
-			DadoCompartilhadoServidor dcServidor = new DadoCompartilhadoServidor();
-			List<DadoAnuncio> listaDeAnuncios = new ArrayList<>();
-			
-			anuncio.setDescricao(descricao.getText());
-			anuncio.setCategoria(cbCategoria.getSelectedItem().toString());
-			anuncio.setImagem(escolhaArquivo.getSelectedFile());
-			anuncio.setTitulo(textTitulo.getText());
-			
-			listaDeAnuncios.add(anuncio);
-			dcServidor.setAnuncio(anuncio);
-			UIJanelaPrincipal.getInstance().adicionaPainel(dcServidor.getAnuncio());
-		
-=======
 			JInternalFrame telaAnuncio = UIJanelaPrincipal.getInstance().getInternalFrame();
 			JLabel foto = new JLabel("New label");
 			foto.setBounds(100, 100, 100, 80);
@@ -281,7 +207,6 @@ public class UIJanelaEnvioArquivo {
 
 			telaAnuncio.getContentPane().add(scrollPane_1).setVisible(true);
 			frmCadastroDeAnuncio.dispose();
->>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 		}
 	}
 }
