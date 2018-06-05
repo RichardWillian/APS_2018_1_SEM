@@ -186,7 +186,7 @@ public class UIJanelaChat extends JanelaBase {
 			adicionarAnimacaoArquivo();
 		}
 
-		dadoCompartilhado.setEmailEntrega(UIJanelaChat.getIdJanela());
+		dadoCompartilhado.setDestinatario(UIJanelaChat.getIdJanela());
 		setMensagemNaFila(true);
 		ControleChatAplicacao.getInstance().enviarMensagemAoServidor(dadoCompartilhado);
 	}

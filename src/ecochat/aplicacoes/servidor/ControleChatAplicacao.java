@@ -39,7 +39,7 @@ public class ControleChatAplicacao {
 							.getFluxoSaidaDados();
 					fluxoSaidaDados.writeObject(dadoCompartilhado);
 					fluxoSaidaDados.flush();
-					UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getEmailEntrega());
+					UIJanelaPrincipal.getInstance().alertaMensagem(dadoCompartilhado.getDestinatario());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {

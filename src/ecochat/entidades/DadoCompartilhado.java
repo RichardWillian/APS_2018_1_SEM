@@ -1,4 +1,5 @@
 package ecochat.entidades;
+
 import java.io.File;
 import java.io.Serializable;
 
@@ -6,7 +7,8 @@ import java.io.Serializable;
 public class DadoCompartilhado implements Serializable {
 
 	private String mensagem;
-	private String emailEntrega;
+	private String remetente;
+	private String destinatario;
 	private File arquivo;
 
 	public String getMensagem() {
@@ -17,12 +19,12 @@ public class DadoCompartilhado implements Serializable {
 		this.mensagem = mensagem;
 	}
 
-	public String getEmailEntrega() {
-		return emailEntrega;
+	public String getDestinatario() {
+		return destinatario = "127.36.76.222";
 	}
 
-	public void setEmailEntrega(String emailEntrega) {
-		this.emailEntrega = emailEntrega;
+	public void setDestinatario(String destinatario) {
+		this.destinatario = destinatario;
 	}
 
 	public File getArquivo() {
@@ -31,5 +33,13 @@ public class DadoCompartilhado implements Serializable {
 
 	public void setArquivo(File arquivo) {
 		this.arquivo = arquivo;
+	}
+
+	public String getRemetente() {
+		return remetente;
+	}
+
+	public void setRemetente(String remetente) {
+		this.remetente = remetente;
 	}
 }

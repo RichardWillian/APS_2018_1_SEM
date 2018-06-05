@@ -63,7 +63,7 @@ public class ServidorChat {
 
 						for (Socket socketConectado : socketsConectados) {
 							if (socketConectado.getInetAddress().getHostAddress()
-									.equals(dadoCompartilhado.getEmailEntrega())) {
+									.equals(dadoCompartilhado.getDestinatario())) {
 
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;

@@ -21,7 +21,7 @@ public class ServidorPainelPrincipalAnuncios {
 	private ServidorPainelPrincipalAnuncios() {
 		try {
 			UIJanelaPrincipal.getInstance();
-			conectarServidorCentral();
+			conectarServidor();
 			atualizarSocketsConectados();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -57,7 +57,7 @@ public class ServidorPainelPrincipalAnuncios {
 		}.start();
 	}
 
-	private void conectarServidorCentral() throws UnknownHostException, IOException, InterruptedException {
+	private void conectarServidor() throws UnknownHostException, IOException, InterruptedException {
 
 		String ipMaquina = Utilitaria.criarIpAleatorio();
 
