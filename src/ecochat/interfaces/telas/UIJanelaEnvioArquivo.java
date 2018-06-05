@@ -82,7 +82,10 @@ public class UIJanelaEnvioArquivo {
 
 		botaoPublicar = new JButton("PUBLICAR");
 		botaoPublicar.setBounds(207, 345, 223, 30);
+<<<<<<< HEAD
 		botaoPublicar.addActionListener(new ActionPublicar());
+=======
+>>>>>>> 68d2d30b9732352a68ba2bddc3181f4f2e8befca
 		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
 
 		JComboBox comboBox = new JComboBox();
@@ -119,7 +122,10 @@ public class UIJanelaEnvioArquivo {
 				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel_1);
+<<<<<<< HEAD
 		btnImagem = new JButton();
+=======
+>>>>>>> 68d2d30b9732352a68ba2bddc3181f4f2e8befca
 		btnImagem.setBackground(Color.WHITE);
 		btnImagem.setForeground(Color.WHITE);
 		btnImagem.setIcon(
