@@ -1,11 +1,9 @@
 package ecochat.interfaces.telas;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,23 +15,11 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
-import ecochat.aplicacoes.servidor.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
-import java.awt.GridBagLayout;
-import java.awt.TextArea;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.ScrollPane;
-import java.awt.Panel;
-import javax.swing.JList;
+import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {
@@ -64,20 +50,20 @@ public class UIJanelaPrincipal extends JanelaBase {
 		txtpnVitorSantos.setEditable(false);
 		txtpnVitorSantos.setText("Vitor Santos");
 		FrmEcOLX.getContentPane().add(txtpnVitorSantos);
-		
+
 		setInternalFrame(new JInternalFrame("ANUNCIOS"));
 		getInternalFrame().setBounds(154, 42, 409, 354);
 		FrmEcOLX.getContentPane().add(getInternalFrame());
 		FrmEcOLX.setVisible(true);
 		getInternalFrame().setResizable(false);
 		internalFrame.getContentPane().setLayout(new GridLayout(6, 0, 0, 0));
-		
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		internalFrame.getContentPane().add(scrollPane_1);
-		
+
 		JButton btnNewButton = new JButton("New button");
 		internalFrame.getContentPane().add(btnNewButton);
-//		btnNewButton.addActionListener(new ActionAddBotao());
+		// btnNewButton.addActionListener(new ActionAddBotao());
 		getInternalFrame().setVisible(true);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -97,35 +83,35 @@ public class UIJanelaPrincipal extends JanelaBase {
 		panel_1 = new JPanel();
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
-		
+
 		JButton cadastrarAnuncio = new JButton("Cadastrar An\u00FAncio");
 		cadastrarAnuncio.setForeground(Color.DARK_GRAY);
 		cadastrarAnuncio.setBackground(Color.GREEN);
 		cadastrarAnuncio.setBounds(154, 8, 152, 23);
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
 		FrmEcOLX.getContentPane().add(cadastrarAnuncio);
-		//ControleChatAplicacao.lerMensagemServidor();
+		// ControleChatAplicacao.lerMensagemServidor();
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
 	int k = 6;
 	// TODO VITOR - VERIFICAR SE VAI PASSAR EMAIL OU NOME PARA MUDAR O NOME DA
 	// VARIÁVEL
-	int j = 10;
-//	private Timer timer;
-//	private Random rand = new Random();
-//	private int delay = 300; // a cada 0,3 segundos
 	
+	int j = 10;
 	public void adicionarUsuariosOnline(final String emailConectado) {
 		new Thread() {
 			public void run() {
 				j++;
-				JButton btnUsuarioConectado = new JButton(emailConectado);
+				final JButton btnUsuarioConectado = new JButton(emailConectado);
 				btnUsuarioConectado.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
 						UIJanelaChat.setIdJanela(emailConectado);
+						if(btnUsuarioConectado.getBackground() == Color.CYAN){
+							btnUsuarioConectado.setBackground(null);
+						}
 					}
 				});
 
@@ -137,23 +123,8 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}.start();
 	}
 
-	public void alertaMensagem(String emailConectado) {
-		
-		if (UIJanelaChat.getIdJanela() == emailConectado) {
-			if (UIJanelaChat.isMensagemNaFila()) {
-				
-				for(JButton botaoLista : listaUsuariosConectados) {
-					if(botaoLista.getText() == emailConectado) {
-						botaoLista.setBackground(Color.CYAN);
-						repintarTela();
-					}
-				}
-			}
-		}
-	}
-	
-	private void repintarTela(){
-		
+	private void repintarTela() {
+
 		FrmEcOLX.revalidate();
 		FrmEcOLX.repaint();
 		panel_1.revalidate();
@@ -174,7 +145,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 	public void setIpChat(String ipChat) {
 		this.ipChat = ipChat;
 	}
-	
+
 	public JInternalFrame getInternalFrame() {
 		return internalFrame;
 	}
@@ -183,28 +154,26 @@ public class UIJanelaPrincipal extends JanelaBase {
 		this.internalFrame = internalFrame;
 	}
 
-	private class ActionCadastrar implements ActionListener{
+	private class ActionCadastrar implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			new UIJanelaEnvioArquivo();
 		}
-		
+
 	}
-//	int i =1;
-//	private class ActionAddBotao implements ActionListener{
-//
-//		@Override
-//		public void actionPerformed(ActionEvent arg0) {
-//			getInternalFrame().getContentPane().add(new JButton("TESTE"+i++));
-//			internalFrame.getContentPane().setLayout(new GridLayout(k, 0, 0, 0));
-//			JButton btnNewButton = new JButton("New button");
-//			btnNewButton.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e) {
-//				}
-//			});
-//			scrollPane_1.setViewportView(btnNewButton);
-//			getInternalFrame().revalidate();
-//			getInternalFrame().repaint();
-//			k++;
-//		}
-	//}
+
+	public void notificarUsuario(String ipSocketEnviouMensagem) {
+
+		//if (UIJanelaChat.getIdJanela() == ipSocketEnviouMensagem) {
+			//if (UIJanelaChat.isMensagemNaFila()) {
+		if(UIJanelaChat.getInstance().getFocusableWindowState())
+				for (JButton botaoLista : listaUsuariosConectados) {
+					String ipUsuarioRemetente = botaoLista.getText();
+					if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
+						botaoLista.setBackground(Color.CYAN);
+						repintarTela();
+					}
+				}
+			//}
+		//}
+	}
 }

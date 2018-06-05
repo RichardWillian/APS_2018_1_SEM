@@ -62,11 +62,14 @@ public class ServidorChat {
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
 						for (Socket socketConectado : socketsConectados) {
-							if (socketConectado.getInetAddress().getHostAddress()
-									.equals(dadoCompartilhado.getEmailEntrega())) {
+							String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+							if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
 
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
+
+									ServidorCentral.getInstance().notificarUsuario(dadoCompartilhado);
+									
 									ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
 											dadoCompartilhado);
 								}

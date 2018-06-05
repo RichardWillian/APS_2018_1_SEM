@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 
+import ecochat.entidades.DadoCompartilhado;
+import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaServidorCentral;
 import ecochat.utilitarios.ConstantesGerais;
 
@@ -47,14 +49,40 @@ public class ServidorCentral {
 
 				Socket socket = socketServidorCentral.accept();
 				UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
-				
+
 				socketsConectados.add(socket);
-				
+
 				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
 			}
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
 		}
+	}
+	
+	public void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
+		new Thread() {
+			public void run() {
+				
+				for(Socket socketConectado : socketsConectados){
+					String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+					if(ipSocketConectado.equals(dadoCompartilhado.getDestinatario())){
+						ObjectOutputStream fluxoSaidaDados;
+						try {
+							fluxoSaidaDados = new ObjectOutputStream(
+									socketConectado.getOutputStream());
+							
+							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+							dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+							
+							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+					}
+				}
+			};
+		}.start();
 	}
 
 	public void desligarServidor() {
@@ -86,7 +114,11 @@ public class ServidorCentral {
 						if (!ipSocketLista.equals(ipSocketConectado)) {
 							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
 									socketConectado.getOutputStream());
-							fluxoSaidaDados.writeObject(ipSocketConectado);
+							
+							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketConectado);
+							
+							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						} else
 							socketSeraAtualizado = socketConectado;
 					}
@@ -97,7 +129,11 @@ public class ServidorCentral {
 						if (!ipSocketLista.equals(ipSocketConectado)) {
 							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
 									socketSeraAtualizado.getOutputStream());
-							fluxoSaidaDados.writeObject(ipSocketLista);
+							
+							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketLista);
+							
+							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						}
 					}
 
@@ -106,7 +142,6 @@ public class ServidorCentral {
 				}
 			}
 		}.start();
-
 	}
 
 	public static ServidorCentral getInstance() {
