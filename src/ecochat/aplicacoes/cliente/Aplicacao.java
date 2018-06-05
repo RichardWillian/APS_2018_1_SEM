@@ -6,8 +6,8 @@ import ecochat.utilitarios.Utilitaria;
 public class Aplicacao {
 
 	public static void main(String[] args) {
-		
-		Utilitaria.CriarDiretorio(System.getProperty("user.dir")+ "\\DownloadsEcochat");
+
+		Utilitaria.CriarDiretorio(System.getProperty("user.dir") + "\\DownloadsEcochat");
 		UIJanelaLogin.getInstance();
 	}
 }

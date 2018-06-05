@@ -1,12 +1,12 @@
 package ecochat.interfaces.telas;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,10 +15,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ecochat.aplicacoes.telas.JanelaBase;
+import ecochat.utilitarios.Utilitaria;
 import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
-
-import java.awt.Color;
-import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -34,11 +32,9 @@ public class UIJanelaLogin extends JanelaBase {
 
 	private static UIJanelaLogin instancia;
 	private JLabel lblNewLabel;
+	private JLabel label;
 
 	public UIJanelaLogin() {
-
-		// ImageIcon fundolg = new
-		// ImageIcon(Login.class.getResource("/fundo.jpg"));
 
 		this.setTitle("EcoLx Login");
 		this.setBounds(300, 300, 399, 375);
@@ -75,11 +71,16 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(ok);
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
-		getContentPane().add(image);
 		
+		label = new JLabel("");
+		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+		label.setBounds(155, 20, 80, 95);
+		getContentPane().add(label);
+		getContentPane().add(image);
+
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Sem t\u00EDtulo.png")));
-		lblNewLabel.setBounds(0, 6, 400, 348);
+		lblNewLabel.setBounds(0, 0, 400, 354);
 		getContentPane().add(lblNewLabel);
 		getContentPane().addKeyListener(this);
 
@@ -93,14 +94,6 @@ public class UIJanelaLogin extends JanelaBase {
 		this.addKeyListener(this);
 		repaint();
 	}
-
-	// public void paintComponent(Graphics a) {
-	// Graphics2D graficos = (Graphics2D) a;
-	// graficos.drawImage(fundo, 0, 0, 200, 200, null);
-	// //Image img = fundo.getImage();
-	// //graficos.dispose();
-	//
-	// }
 
 	public void keyPressed(KeyEvent ke) {
 
@@ -125,20 +118,37 @@ public class UIJanelaLogin extends JanelaBase {
 
 	private void entrarAplicacao() {
 
-		String email = tlg.getText();
-		String senha = new String(psenha.getPassword());
+		try {
+			String email = tlg.getText();
+			String senha = new String(psenha.getPassword());
 
-//		if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
-//			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-//			if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-				// TODO CHAMAR A TELA DO VITOR
-				ControlePainelPrincipalAnuncios.getInstance();
-				this.dispose();
-				//ControleChatAplicacao.getInstance();
-//			} else {
-//				JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-//			}
-//		}
+			if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
+				// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+				if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+					// TODO CHAMAR A TELA DO VITOR
+					ControlePainelPrincipalAnuncios.getInstance();
+					// ControleChatAplicacao.getInstance();
+					this.dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+				}
+			} else {
+				boolean nenhumCampoPreenchido = (email == null
+						|| email.equals("") && (senha == null || senha.equals("")));
+
+				if (nenhumCampoPreenchido)
+					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");
+				else {
+					if (email == null || email.equals(""))
+						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de preencher seu \"Login\"");
+					if (senha == null || senha.equals(""))
+						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Senha\"");
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "        	    Desculpe pelo transtorno !\n" + "Estamos com problemas nos Servidores");
+
+		}
 	}
 
 	public void windowClosing(WindowEvent e) {

@@ -81,7 +81,10 @@ public class ServidorCentral {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8f4452847ea2fdeda37d5845b5db6b8af926efff
 					}
 				}
 			};

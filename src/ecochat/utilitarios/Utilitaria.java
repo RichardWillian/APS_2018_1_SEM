@@ -139,37 +139,44 @@ public class Utilitaria {
 	}
 
 	@SuppressWarnings("resource")
-	public static boolean verificarAutenticacaoUsuario(String email, String senha) {
+	public static boolean verificarAutenticacaoUsuario(String email, String senha) throws Exception {
 
-		try {
-			Socket socketAutenticacao = new Socket(InetAddress.getByName("127.255.255.254"), 12346,
-					InetAddress.getByName("127.0.0.3"), 0);
+		Socket socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_AUTENTICACAO),
+				ConstantesGerais.PORTA_SERVIDOR_AUTENTICACAO,
+				InetAddress.getByName(ConstantesGerais.IP_FIXO_REQUISICAO_AUTENTICACAO), 0);
 
-			ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(
-					socketAutenticacao.getOutputStream());
+		ObjectOutputStream fluxoSaidaDadosAutenticacao = new ObjectOutputStream(socketAutenticacao.getOutputStream());
 
-			DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
+		DadoAutenticacao dadoAutenticacao = new DadoAutenticacao();
 
-			dadoAutenticacao.setEmail(email);
-			dadoAutenticacao.setSenha(senha);
+		dadoAutenticacao.setEmail(email);
+		dadoAutenticacao.setSenha(senha);
 
-			fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
-			fluxoSaidaDadosAutenticacao.flush();
-
-			ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
-			boolean isUsuarioAutenticado = false;
-			try {
-				isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+		Thread temporizador = new Thread() {
+			public void run() {
+				try {
+					for (int i = 0; i < 15; i++) {
+						Thread.sleep(500);
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		};
 
-			return isUsuarioAutenticado;
+		fluxoSaidaDadosAutenticacao.writeObject(dadoAutenticacao);
+		fluxoSaidaDadosAutenticacao.flush();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		temporizador.start();
+		ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAutenticacao.getInputStream());
+		boolean isUsuarioAutenticado = false;
+
+		isUsuarioAutenticado = (boolean) fluxoEntradaDados.readObject();
+		temporizador.interrupt();
+
+		return isUsuarioAutenticado;
 	}
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {
@@ -181,7 +188,6 @@ public class Utilitaria {
 
 		if (!diretorio.exists())
 			diretorio.mkdirs();
-
 	}
 
 	public static String recuperarPastaDownload() {
@@ -204,24 +210,21 @@ public class Utilitaria {
 	}
 
 	public static String criarHostAleatorio() {
-		
+
 		Random numeroAleatorio = new Random();
 		int minimo = 1;
 		int maximo = 254;
 		Integer host = -1;
-		
-		while(host <= 0 || host > 254)
-		{
+
+		while (host <= 0 || host > 254) {
 			host = numeroAleatorio.nextInt(maximo - minimo) + 1;
 		}
-		
+
 		return host.toString();
 	}
 
 	public static String criarIpAleatorio() {
-		
-		return "127" + "." + criarHostAleatorio() 
-					 + "." + criarHostAleatorio() 
-					 + "." +  criarHostAleatorio();
+
+		return "127" + "." + criarHostAleatorio() + "." + criarHostAleatorio() + "." + criarHostAleatorio();
 	}
 }

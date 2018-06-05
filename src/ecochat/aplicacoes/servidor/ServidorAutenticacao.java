@@ -43,7 +43,7 @@ public class ServidorAutenticacao {
 						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					new Exception(e);
 				}
 			}
 		}.start();
