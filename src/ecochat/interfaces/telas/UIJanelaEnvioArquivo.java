@@ -197,9 +197,8 @@ public class UIJanelaEnvioArquivo {
 			
 			DadoCompartilhadoServidor dcServidor = new DadoCompartilhadoServidor();
 			DadoAnuncio anuncio = new DadoAnuncio();
-			anuncio.setTitulo(textTitulo.getText());
+			anuncio.setDescricao(textTitulo.getText());
 			dcServidor.setAnuncio(anuncio);
-			
 			
 			try {
 				socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),

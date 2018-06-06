@@ -171,6 +171,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 
 			JTextArea ta = new JTextArea(anuncio.getDescricao());
 			ta.setEditable(false);
+			ta.setEnabled(true);
 			
 			painel.setLayout(new GridLayout(1, 2, 0, 0));
 			JLabel imagem = new JLabel("");
