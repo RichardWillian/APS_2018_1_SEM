@@ -135,7 +135,7 @@ public class UIJanelaChat extends JanelaBase {
 		janelaChat.getContentPane().add(scrollPaneVisorChat);
 
 		exploradorArquivos = new JFileChooser();
-		exploradorArquivos.setCurrentDirectory(new File("C:\\Users\\richard.divino\\Desktop\\Cliente"));
+		exploradorArquivos.setCurrentDirectory(new File(System.getProperty("user.dir")));
 	
 		janelaChat.setVisible(true);
 	}

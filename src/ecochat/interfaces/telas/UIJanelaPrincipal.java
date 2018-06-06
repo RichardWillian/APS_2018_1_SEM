@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,43 +29,44 @@ import javax.swing.ScrollPaneConstants;
 
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoAnuncio;
+import ecochat.utilitarios.Utilitaria;
 import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {
 
-	private JFrame FrmEcOLX;
 	private JPanel panel_1;
 	private JPanel panel;
 	private static UIJanelaPrincipal instancia;
 	private String ipChat;
 	private List<JButton> listaUsuariosConectados;
 	private JInternalFrame internalFrame;
+	private JLabel lblIconeUsuario;
 
 	public UIJanelaPrincipal() {
-		FrmEcOLX = new JFrame();
 
-		FrmEcOLX.getContentPane().setBackground(Color.WHITE);
-		FrmEcOLX.setBounds(100, 100, 579, 446);
-		FrmEcOLX.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		FrmEcOLX.getContentPane().setLayout(null);
+		this.getContentPane().setBackground(Color.WHITE);
+		this.setBounds(100, 100, 579, 446);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 
-		JLabel imagemUsuario = new JLabel("");
-		imagemUsuario.setBounds(46, 11, 55, 64);
-		imagemUsuario.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\testeaps.png"));
-		FrmEcOLX.getContentPane().add(imagemUsuario);
+		lblIconeUsuario = new JLabel("");
+		lblIconeUsuario.setBounds(46, 11, 63, 64);
+		lblIconeUsuario.setIcon(new ImageIcon(this.getClass().getResource("imagens/usuario_icon.png")));
+		lblIconeUsuario.addMouseListener(this);
+		this.getContentPane().add(lblIconeUsuario);
 
 		JTextPane nomeUsuario = new JTextPane();
 		nomeUsuario.setBounds(42, 76, 69, 14);
 		nomeUsuario.setEnabled(false);
 		nomeUsuario.setEditable(false);
 		nomeUsuario.setText("Vitor Santos");
-		FrmEcOLX.getContentPane().add(nomeUsuario);
+		this.getContentPane().add(nomeUsuario);
 
 		setInternalFrame(new JInternalFrame("ANUNCIOS"));
 		getInternalFrame().setBounds(154, 42, 409, 354);
-		FrmEcOLX.getContentPane().add(getInternalFrame());
-		FrmEcOLX.setVisible(true);
+		this.getContentPane().add(getInternalFrame());
+		this.setVisible(true);
 		getInternalFrame().setResizable(false);
 		internalFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 
@@ -78,18 +80,18 @@ public class UIJanelaPrincipal extends JanelaBase {
 		getInternalFrame().setVisible(true);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(10, 101, 124, 20);
+		comboBox.setBounds(10, 101, 141, 20);
 		comboBox.addItem("Online");
 		comboBox.addItem("Offline");
 		comboBox.addItem("Ausente");
 		comboBox.addItem("Ocupado");
 
-		FrmEcOLX.getContentPane().add(comboBox);
+		this.getContentPane().add(comboBox);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(10, 134, 124, 262);
-		FrmEcOLX.getContentPane().add(scrollPane);
+		scrollPane.setBounds(10, 134, 141, 262);
+		this.getContentPane().add(scrollPane);
 
 		panel_1 = new JPanel();
 		scrollPane.setViewportView(panel_1);
@@ -100,8 +102,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		cadastrarAnuncio.setBackground(Color.GREEN);
 		cadastrarAnuncio.setBounds(154, 8, 152, 23);
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
-		FrmEcOLX.getContentPane().add(cadastrarAnuncio);
-		// ControleChatAplicacao.lerMensagemServidor();
+		this.getContentPane().add(cadastrarAnuncio);
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
@@ -118,7 +119,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 						setIpChat(emailConectado);
 						ControleChatAplicacao.getInstance();
 						UIJanelaChat.setIdJanela(emailConectado);
-						if (btnUsuarioConectado.getBackground() == Color.CYAN) {
+						if (btnUsuarioConectado.getBackground() == Color.ORANGE) {
 							btnUsuarioConectado.setBackground(null);
 						}
 					}
@@ -134,8 +135,8 @@ public class UIJanelaPrincipal extends JanelaBase {
 
 	private void repintarTela() {
 
-		FrmEcOLX.revalidate();
-		FrmEcOLX.repaint();
+		this.revalidate();
+		this.repaint();
 		panel_1.revalidate();
 		panel_1.repaint();
 	}
@@ -167,49 +168,92 @@ public class UIJanelaPrincipal extends JanelaBase {
 		public void actionPerformed(ActionEvent e) {
 			new UIJanelaEnvioArquivo();
 		}
+	}
 
+	public void adicionaPainel(DadoAnuncio anuncio) {
+		k++;
+		JPanel painel = new JPanel();
+		JTextArea descricao = new JTextArea(anuncio.getDescricao());
+		JScrollPane scrollPanel = new JScrollPane();
+		JLabel titulo = new JLabel(anuncio.getTitulo() + " (" + anuncio.getCategoria() + ")");
+		JLabel imagem = new JLabel();
+
+		imagem.setIcon(anuncio.getImagem());
+
+		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setPreferredSize(new Dimension(5, 50));
+		scrollPanel.setViewportView(descricao);
+		scrollPanel.setColumnHeaderView(titulo);
+
+		descricao.setEditable(false);
+		descricao.setEnabled(true);
+		descricao.setWrapStyleWord(true);
+		descricao.setLineWrap(true);
+
+		painel.setPreferredSize(new Dimension(70, 50));
+		painel.setLayout(new GridLayout(1, 1, 0, 0));
+		painel.add(imagem);
+		painel.add(scrollPanel);
+
+		getPanel().setLayout(new GridLayout(k, 1, 0, 5));
+		getPanel().add(painel);
+		repintarTela();
+	}
+
+	public void mouseClicked(MouseEvent me){
+		
+		if(me.getSource() == lblIconeUsuario){
+			trocarIconeUsuario();
+		}
+	}
+
+	private void trocarIconeUsuario() {
+		
+		JFileChooser exploradorArquivos = new JFileChooser(System.getProperty("user.dir"));
+		int valorRetornado = exploradorArquivos.showOpenDialog(this);
+		
+		File arquivoRetornado = null;
+		
+		if (valorRetornado == JFileChooser.APPROVE_OPTION) {
+			 arquivoRetornado  = new File(exploradorArquivos.getSelectedFile(), "");
+		}
+		
+		BufferedImage imagem = null;
+		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivoRetornado);
+
+		if (isImagem) {
+
+			try {
+				imagem = ImageIO.read(arquivoRetornado);
+			} catch (IOException io) {
+				System.out.println(io.getMessage());
+			}
+		}else{
+			try {
+				imagem = ImageIO.read(this.getClass().getResource("imagens/arquivo_icon.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Image imagemDinamizada = imagem.getScaledInstance(lblIconeUsuario.getWidth(), lblIconeUsuario.getHeight(),
+				Image.SCALE_SMOOTH);
+
+		lblIconeUsuario.setIcon(new ImageIcon(imagemDinamizada));
+		repintarTela();
 	}
 	
-	public void adicionaPainel(DadoAnuncio anuncio) {
-			k++;
-			JPanel painel = new JPanel();
-			JTextArea descricao = new JTextArea(anuncio.getDescricao());
-			JScrollPane scrollPanel = new JScrollPane();
-			JLabel titulo = new JLabel(anuncio.getTitulo() + " ("+anuncio.getCategoria()+")");
-			JLabel imagem = new JLabel();
-			
-			imagem.setIcon(anuncio.getImagem());
-			
-			scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-			scrollPanel.setPreferredSize(new Dimension(5,50));
-			scrollPanel.setViewportView(descricao);
-			scrollPanel.setColumnHeaderView(titulo);
-
-			descricao.setEditable(false);
-			descricao.setEnabled(true);
-			descricao.setWrapStyleWord(true);
-			descricao.setLineWrap(true);
-			
-			painel.setPreferredSize(new Dimension(70, 50));
-			painel.setLayout(new GridLayout(1, 1, 0, 0));
-			painel.add(imagem);
-			painel.add(scrollPanel);
-			
-			getPanel().setLayout(new GridLayout(k, 1, 0, 5));
-			getPanel().add( painel );
-			repintarTela();
-	}
-
 	public void notificarUsuario(String ipSocketEnviouMensagem) {
-		if (UIJanelaChat.getInstance().getFocusableWindowState())
+		if (UIJanelaChat.getInstance().getFocusableWindowState()) {
 			for (JButton botaoLista : listaUsuariosConectados) {
 				String ipUsuarioRemetente = botaoLista.getText();
 				if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
-					botaoLista.setBackground(Color.CYAN);
+					botaoLista.setBackground(Color.ORANGE);
 					repintarTela();
 				}
 			}
+		}
 	}
 
 	public JPanel getPanel() {

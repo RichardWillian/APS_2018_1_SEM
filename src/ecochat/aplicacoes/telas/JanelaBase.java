@@ -15,15 +15,15 @@ import javax.swing.JFrame;
 public class JanelaBase extends JFrame implements KeyListener, ActionListener, WindowListener, MouseListener{
 
 	public JanelaBase() {
-		
-		super("this is the JFrame");
+		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setDefaultLookAndFeelDecorated(true);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		setBounds(350, 100, 640, 480);
-		this.addKeyListener(this);
 		setResizable(false);
+		setTitle("ECOLX");
+		this.addKeyListener(this);
 		this.addKeyListener(this);
 	}
 

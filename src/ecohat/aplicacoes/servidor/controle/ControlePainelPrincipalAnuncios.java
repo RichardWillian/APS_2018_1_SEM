@@ -7,11 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.entidades.DadoCompartilhadoServidor;
-import ecochat.interfaces.telas.UIJanelaEnvioArquivo;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
-import ecochat.interfaces.telas.UIJanelaServidorCentral;
 import ecochat.utilitarios.ConstantesGerais;
 import ecochat.utilitarios.Utilitaria;
 

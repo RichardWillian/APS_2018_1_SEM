@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -20,13 +21,13 @@ public class UIJanelaCadastrar extends JanelaBase {
 	private JLabel nome, email, senha;
 	private JTextField tnome, temail;
 	private JPasswordField psenha;
-	private JButton ok, exit;
-	// private Image fundo;
+	private JButton ok, bntVoltar;
 
 	public UIJanelaCadastrar() {
 
 		this.setBounds(500, 500, 251, 350);
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		nome = new JLabel("Nome:");
 		nome.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -37,13 +38,13 @@ public class UIJanelaCadastrar extends JanelaBase {
 		temail = new JTextField();
 		psenha = new JPasswordField();
 		ok = new JButton("OK");
-		exit = new JButton("Sair");
+		bntVoltar = new JButton("Voltar");
 		senha.setBounds(20, 200, 50, 20);
 		temail.setBounds(70, 160, 150, 20);
 		nome.setBounds(20, 120, 50, 20);
 		psenha.setBounds(70, 200, 150, 20);
 		ok.setBounds(26, 250, 90, 20);
-		exit.setBounds(130, 250, 90, 20);
+		bntVoltar.setBounds(130, 250, 90, 20);
 
 		getContentPane().setLayout(null);
 
@@ -63,29 +64,25 @@ public class UIJanelaCadastrar extends JanelaBase {
 		getContentPane().add(psenha);
 		getContentPane().add(temail);
 		getContentPane().add(ok);
-		getContentPane().add(exit);
+		getContentPane().add(bntVoltar);
 
-		JLabel label_1 = new JLabel("");
+		JLabel label_1 = new JLabel();
 		label_1.setIcon(
 				new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
 		label_1.setBounds(-11, 0, 98, 96);
 		getContentPane().add(label_1);
 
-		JLabel label = new JLabel("");
+		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon(
 				UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/background4.jpg")));
 		label.setBounds(0, 0, 245, 321);
 		getContentPane().add(label);
 		getContentPane().addKeyListener(this);
-		// ImageIcon fundolg = new
-		// ImageIcon(Login.class.getResource("/fundo.jpg"));
-		// fundo = fundolg.getImage();
 
-		exit.addActionListener(this);
+		bntVoltar.addActionListener(this);
 		ok.addActionListener(this);
 		senha.addKeyListener(this);
 		temail.addKeyListener(this);
-		// cadastrar.addActionListener(this);
 		this.addWindowListener(this);
 		this.addKeyListener(this);
 		repaint();
@@ -99,11 +96,8 @@ public class UIJanelaCadastrar extends JanelaBase {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == exit) {
-			int b = JOptionPane.showConfirmDialog(null, "Deseja Sair?", null, JOptionPane.YES_NO_OPTION);
-			if (b == JOptionPane.YES_OPTION) {
-				this.dispose();
-			}
+		if (e.getSource() == bntVoltar) {
+			this.dispose();
 		} else if (e.getSource() == ok) {
 			cadastrarUsuario();
 		}
@@ -120,10 +114,9 @@ public class UIJanelaCadastrar extends JanelaBase {
 			UIJanelaLogin.getInstance();
 			JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
 			this.dispose();
-		}else {
-			boolean nenhumCampoPreenchido = (email == null || email.equals("") 
-					&& (senha == null || senha.equals("") 
-					&& (nome == null || nome.equals(""))));
+		} else {
+			boolean nenhumCampoPreenchido = (email == null
+					|| email.equals("") && (senha == null || senha.equals("") && (nome == null || nome.equals(""))));
 
 			if (nenhumCampoPreenchido)
 				JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");

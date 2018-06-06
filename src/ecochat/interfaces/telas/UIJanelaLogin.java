@@ -2,20 +2,19 @@ package ecochat.interfaces.telas;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ecochat.aplicacoes.telas.JanelaBase;
-import ecochat.utilitarios.Utilitaria;
 import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 
 @SuppressWarnings("serial")
@@ -25,18 +24,13 @@ public class UIJanelaLogin extends JanelaBase {
 	private JTextField tlg;
 	private JPasswordField psenha;
 	private JButton ok, exit, cadastrar;
-	@SuppressWarnings("unused")
-	private Image fundo;
-	@SuppressWarnings("unused")
-	private String log;
 
 	private static UIJanelaLogin instancia;
 	private JLabel lblNewLabel;
 	private JLabel label;
 
 	public UIJanelaLogin() {
-
-		this.setTitle("EcoLx Login");
+		
 		this.setBounds(300, 300, 399, 375);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
@@ -54,7 +48,6 @@ public class UIJanelaLogin extends JanelaBase {
 		exit = new JButton("Sair");
 		cadastrar = new JButton("Cadastrar");
 
-		// image.setBounds(200, 50, 150, 150);
 		login.setBounds(127, 100, 50, 20);
 		senha.setBounds(127, 150, 50, 20);
 		tlg.setBounds(127, 120, 150, 20);

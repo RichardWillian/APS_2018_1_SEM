@@ -1,7 +1,6 @@
 package ecochat.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public class DadoCompartilhadoServidor implements Serializable{
