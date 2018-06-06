@@ -137,7 +137,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase {
 
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(
-				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Background1.jpg")));
+				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/fundo_anuncio.jpg")));
 		label.setBounds(0, 0, 324, 407);
 		this.getContentPane().add(label);
 
