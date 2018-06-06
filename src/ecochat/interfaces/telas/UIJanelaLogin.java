@@ -8,14 +8,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ecochat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
-import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -26,7 +25,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private JButton ok, exit, cadastrar;
 
 	private static UIJanelaLogin instancia;
-	private JLabel lblNewLabel;
+	private JLabel lblFundoLogin;
 	private JLabel label;
 
 	public UIJanelaLogin() {
@@ -66,15 +65,15 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(cadastrar);
 		
 		label = new JLabel("");
-		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/logo_ecochat.png")));
 		label.setBounds(155, 20, 80, 95);
 		getContentPane().add(label);
 		getContentPane().add(image);
 
-		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/Sem t\u00EDtulo.png")));
-		lblNewLabel.setBounds(0, 0, 400, 354);
-		getContentPane().add(lblNewLabel);
+		lblFundoLogin = new JLabel();
+		lblFundoLogin.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/fundo_login.png")));
+		lblFundoLogin.setBounds(0, 0, 400, 354);
+		getContentPane().add(lblFundoLogin);
 		getContentPane().addKeyListener(this);
 
 		ok.addActionListener(this);

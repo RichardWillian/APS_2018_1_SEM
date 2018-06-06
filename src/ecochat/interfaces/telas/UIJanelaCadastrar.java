@@ -68,13 +68,13 @@ public class UIJanelaCadastrar extends JanelaBase {
 
 		JLabel label_1 = new JLabel();
 		label_1.setIcon(
-				new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/Logo1.png")));
+				new ImageIcon(UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/logo_ecochat.png")));
 		label_1.setBounds(-11, 0, 98, 96);
 		getContentPane().add(label_1);
 
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon(
-				UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/background4.jpg")));
+				UIJanelaCadastrar.class.getResource("/ecochat/interfaces/telas/imagens/fundo_cadastrar.jpg")));
 		label.setBounds(0, 0, 245, 321);
 		getContentPane().add(label);
 		getContentPane().addKeyListener(this);

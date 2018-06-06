@@ -45,9 +45,6 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		frmCadastroDeAnuncio = this;
@@ -110,7 +107,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 		lblInserirAnncio.setBounds(0, 0, 458, 30);
 		this.getContentPane().add(lblInserirAnncio);
 		lblNewLabel_1.setIcon(
-				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
+				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/barra_enviar_anuncio.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		this.getContentPane().add(lblNewLabel_1);
 		btnImagem = new JButton();
@@ -118,7 +115,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 		btnImagem.setBackground(Color.WHITE);
 		btnImagem.setForeground(Color.WHITE);
 		btnImagem.setIcon(
-				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Inserir.png")));
+				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/inserir_anuncio.png")));
 		btnImagem.setBounds(270, 55, 115, 115);
 		escolhaArquivo = new JFileChooser();
 		escolhaArquivo.setDialogTitle("Inserir Image");

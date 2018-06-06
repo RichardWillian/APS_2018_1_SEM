@@ -27,10 +27,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
+import ecochat.aplicacoes.servidor.controle.ControleChatAplicacao;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoAnuncio;
 import ecochat.utilitarios.Utilitaria;
-import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
 
 @SuppressWarnings("serial")
 public class UIJanelaPrincipal extends JanelaBase {

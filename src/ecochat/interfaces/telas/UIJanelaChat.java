@@ -32,11 +32,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ecochat.aplicacoes.cliente.Aplicacao;
+import ecochat.aplicacoes.servidor.controle.ControleChatAplicacao;
+import ecochat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.utilitarios.Utilitaria;
-import ecohat.aplicacoes.servidor.controle.ControleChatAplicacao;
-import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
