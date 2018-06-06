@@ -2,6 +2,7 @@ package ecochat.interfaces.telas;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 
 import ecochat.aplicacoes.servidor.controle.ControleChatAplicacao;
@@ -144,7 +144,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}
 		return instancia;
 	}
-	
+
 	public static UIJanelaPrincipal getInstance() {
 		if (instancia == null) {
 			return instancia = new UIJanelaPrincipal(new String());
@@ -174,55 +174,66 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}
 	}
 
-	public void adicionaPainel(DadoAnuncio anuncio) {
+	public void adicionaPainel(DadoAnuncio dadoAnuncio) {
 		k++;
-		JPanel painel = new JPanel();
-		JTextArea descricao = new JTextArea(anuncio.getDescricao());
+		JPanel anuncio = new JPanel();
+		JTextArea descricao = new JTextArea(dadoAnuncio.getDescricao());
 		JScrollPane scrollPanel = new JScrollPane();
-		JLabel titulo = new JLabel(anuncio.getTitulo() + " (" + anuncio.getCategoria() + ")");
-		JLabel imagem = new JLabel();
+		JLabel lblTitulo = new JLabel(dadoAnuncio.getTitulo() + "(" + dadoAnuncio.getCategoria() + ")");
+		JLabel lblImagem = new JLabel();
+		//lblImagem.setSize(new Dimension(60, 60));
 
-		imagem.setIcon(anuncio.getImagem());
+		//Image imagem = redimensionarImagem(dadoAnuncio, lblImagem);
 
+		lblImagem.setIcon(dadoAnuncio.getImagem());
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setPreferredSize(new Dimension(5, 50));
+		scrollPanel.setPreferredSize(new Dimension(100, 50));
 		scrollPanel.setViewportView(descricao);
-		scrollPanel.setColumnHeaderView(titulo);
+		scrollPanel.setColumnHeaderView(lblTitulo);
 
 		descricao.setEditable(false);
 		descricao.setEnabled(true);
 		descricao.setWrapStyleWord(true);
 		descricao.setLineWrap(true);
 
-		painel.setPreferredSize(new Dimension(70, 50));
-		painel.setLayout(new GridLayout(1, 1, 0, 0));
-		painel.add(imagem);
-		painel.add(scrollPanel);
+		anuncio.setPreferredSize(new Dimension(70, 80));
+		anuncio.setLayout(new GridLayout(1, 1, 0, 0));
+		anuncio.add(lblImagem);
+		anuncio.add(scrollPanel);
 
 		getPanel().setLayout(new GridLayout(k, 1, 0, 5));
-		getPanel().add(painel);
+		getPanel().add(anuncio);
 		repintarTela();
 	}
 
-	public void mouseClicked(MouseEvent me){
-		
-		if(me.getSource() == lblIconeUsuario){
+//	public Image redimensionarImagem(DadoAnuncio dadoAnuncio, JLabel lblImagem) {
+//		BufferedImage imagemAnuncio = new BufferedImage(dadoAnuncio.getImagem().getIconWidth(),
+//				dadoAnuncio.getImagem().getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+//		Graphics2D g2 = (Graphics2D) imagemAnuncio.getGraphics();
+//		dadoAnuncio.getImagem().paintIcon(null, g2, 0, 0);
+//		Image imagem = imagemAnuncio.getScaledInstance(lblImagem.getWidth(), lblImagem.getHeight(), Image.SCALE_SMOOTH);
+//		return imagem;
+//	}
+
+	public void mouseClicked(MouseEvent me) {
+
+		if (me.getSource() == lblIconeUsuario) {
 			trocarIconeUsuario();
 		}
 	}
 
 	private void trocarIconeUsuario() {
-		
+
 		JFileChooser exploradorArquivos = new JFileChooser(System.getProperty("user.dir"));
 		int valorRetornado = exploradorArquivos.showOpenDialog(this);
-		
+
 		File arquivoRetornado = null;
-		
+
 		if (valorRetornado == JFileChooser.APPROVE_OPTION) {
-			 arquivoRetornado  = new File(exploradorArquivos.getSelectedFile(), "");
+			arquivoRetornado = new File(exploradorArquivos.getSelectedFile(), "");
 		}
-		
+
 		BufferedImage imagem = null;
 		boolean isImagem = Utilitaria.identificarTipoArquivo(arquivoRetornado);
 
@@ -233,7 +244,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 			} catch (IOException io) {
 				System.out.println(io.getMessage());
 			}
-		}else{
+		} else {
 			try {
 				imagem = ImageIO.read(this.getClass().getResource("imagens/arquivo_icon.png"));
 			} catch (IOException e) {
@@ -247,7 +258,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		lblIconeUsuario.setIcon(new ImageIcon(imagemDinamizada));
 		repintarTela();
 	}
-	
+
 	public void notificarUsuario(String ipSocketEnviouMensagem) {
 		if (UIJanelaChat.getInstance().getFocusableWindowState()) {
 			for (JButton botaoLista : listaUsuariosConectados) {
