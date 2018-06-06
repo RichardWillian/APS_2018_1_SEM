@@ -2,7 +2,6 @@ package ecochat.interfaces.telas;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -181,14 +180,12 @@ public class UIJanelaPrincipal extends JanelaBase {
 		JScrollPane scrollPanel = new JScrollPane();
 		JLabel lblTitulo = new JLabel(dadoAnuncio.getTitulo() + "(" + dadoAnuncio.getCategoria() + ")");
 		JLabel lblImagem = new JLabel();
-		//lblImagem.setSize(new Dimension(60, 60));
-
-		//Image imagem = redimensionarImagem(dadoAnuncio, lblImagem);
 
 		lblImagem.setIcon(dadoAnuncio.getImagem());
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setPreferredSize(new Dimension(100, 50));
+		//scrollPanel.setPreferredSize(new Dimension(100, 50));
+		scrollPanel.setPreferredSize(new Dimension(100, 10));
 		scrollPanel.setViewportView(descricao);
 		scrollPanel.setColumnHeaderView(lblTitulo);
 
@@ -206,15 +203,6 @@ public class UIJanelaPrincipal extends JanelaBase {
 		getPanel().add(anuncio);
 		repintarTela();
 	}
-
-//	public Image redimensionarImagem(DadoAnuncio dadoAnuncio, JLabel lblImagem) {
-//		BufferedImage imagemAnuncio = new BufferedImage(dadoAnuncio.getImagem().getIconWidth(),
-//				dadoAnuncio.getImagem().getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//		Graphics2D g2 = (Graphics2D) imagemAnuncio.getGraphics();
-//		dadoAnuncio.getImagem().paintIcon(null, g2, 0, 0);
-//		Image imagem = imagemAnuncio.getScaledInstance(lblImagem.getWidth(), lblImagem.getHeight(), Image.SCALE_SMOOTH);
-//		return imagem;
-//	}
 
 	public void mouseClicked(MouseEvent me) {
 
