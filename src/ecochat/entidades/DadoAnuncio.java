@@ -3,13 +3,15 @@ package ecochat.entidades;
 import java.io.File;
 import java.io.Serializable;
 
+import javax.swing.Icon;
+
 @SuppressWarnings("serial")
 public class DadoAnuncio implements Serializable{
 	
 	private String titulo;
 	private String descricao;
 	private String categoria;
-	private File   imagem;
+	private Icon   imagem;
 	
 	
 	public String getTitulo() {
@@ -31,12 +33,12 @@ public class DadoAnuncio implements Serializable{
 		this.categoria = categoria;
 	}
 
-	public File getImagem() {
+	public Icon getImagem() {
 		return imagem;
 	}
 	
-	public void setImagem(File imagem) {
-		this.imagem = imagem;
+	public void setImagem(Icon icon) {
+		this.imagem = icon;
 	}
 	
 }

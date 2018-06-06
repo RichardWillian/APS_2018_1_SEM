@@ -3,14 +3,20 @@ package ecochat.interfaces.telas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -43,17 +49,17 @@ public class UIJanelaPrincipal extends JanelaBase {
 		FrmEcOLX.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		FrmEcOLX.getContentPane().setLayout(null);
 
-		JLabel label = new JLabel("");
-		label.setBounds(46, 11, 55, 64);
-		label.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\testeaps.png"));
-		FrmEcOLX.getContentPane().add(label);
+		JLabel imagemUsuario = new JLabel("");
+		imagemUsuario.setBounds(46, 11, 55, 64);
+		imagemUsuario.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\testeaps.png"));
+		FrmEcOLX.getContentPane().add(imagemUsuario);
 
-		JTextPane txtpnVitorSantos = new JTextPane();
-		txtpnVitorSantos.setBounds(42, 76, 69, 14);
-		txtpnVitorSantos.setEnabled(false);
-		txtpnVitorSantos.setEditable(false);
-		txtpnVitorSantos.setText("Vitor Santos");
-		FrmEcOLX.getContentPane().add(txtpnVitorSantos);
+		JTextPane nomeUsuario = new JTextPane();
+		nomeUsuario.setBounds(42, 76, 69, 14);
+		nomeUsuario.setEnabled(false);
+		nomeUsuario.setEditable(false);
+		nomeUsuario.setText("Vitor Santos");
+		FrmEcOLX.getContentPane().add(nomeUsuario);
 
 		setInternalFrame(new JInternalFrame("ANUNCIOS"));
 		getInternalFrame().setBounds(154, 42, 409, 354);
@@ -167,34 +173,35 @@ public class UIJanelaPrincipal extends JanelaBase {
 	public void adicionaPainel(DadoAnuncio anuncio) {
 			k++;
 			JPanel painel = new JPanel();
-			painel.setPreferredSize(new Dimension(100, 50));
+			JTextArea descricao = new JTextArea(anuncio.getDescricao());
+			JScrollPane scrollPanel = new JScrollPane();
+			JLabel titulo = new JLabel(anuncio.getTitulo() + " ("+anuncio.getCategoria()+")");
+			JLabel imagem = new JLabel();
+			
+			imagem.setIcon(anuncio.getImagem());
+			
+			scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPanel.setPreferredSize(new Dimension(5,50));
+			scrollPanel.setViewportView(descricao);
+			scrollPanel.setColumnHeaderView(titulo);
 
-			JTextArea ta = new JTextArea(anuncio.getDescricao());
-			ta.setEditable(false);
-			ta.setEnabled(true);
+			descricao.setEditable(false);
+			descricao.setEnabled(true);
+			descricao.setWrapStyleWord(true);
+			descricao.setLineWrap(true);
 			
-			painel.setLayout(new GridLayout(1, 2, 0, 0));
-			JLabel imagem = new JLabel("");
-			imagem.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\testeaps.png"));
-			imagem.setPreferredSize(new Dimension(30, 50 ));
+			painel.setPreferredSize(new Dimension(70, 50));
+			painel.setLayout(new GridLayout(1, 1, 0, 0));
 			painel.add(imagem);
-			JScrollPane teste = new JScrollPane(ta);
-			teste.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			teste.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-			ta.setWrapStyleWord(true);
-			ta.setLineWrap(true);
-			teste.setPreferredSize(new Dimension(70,50));
-			painel.add(teste);
+			painel.add(scrollPanel);
 			
-			getPanel().setLayout(new GridLayout(k, 1, 0, 0));
+			getPanel().setLayout(new GridLayout(k, 1, 0, 5));
 			getPanel().add( painel );
 			repintarTela();
 	}
 
 	public void notificarUsuario(String ipSocketEnviouMensagem) {
-
-		// if (UIJanelaChat.getIdJanela() == ipSocketEnviouMensagem) {
-		// if (UIJanelaChat.isMensagemNaFila()) {
 		if (UIJanelaChat.getInstance().getFocusableWindowState())
 			for (JButton botaoLista : listaUsuariosConectados) {
 				String ipUsuarioRemetente = botaoLista.getText();
@@ -203,8 +210,6 @@ public class UIJanelaPrincipal extends JanelaBase {
 					repintarTela();
 				}
 			}
-		// }
-		// }
 	}
 
 	public JPanel getPanel() {

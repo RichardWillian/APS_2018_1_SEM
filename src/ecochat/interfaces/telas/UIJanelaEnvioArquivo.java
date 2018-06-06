@@ -52,7 +52,7 @@ public class UIJanelaEnvioArquivo {
 	private JTextArea descricao;
 	private JComboBox cbCategoria;
 	private JFileChooser escolhaArquivo;
-	private JTextArea textArea_1;
+	private JTextArea textDescricao;
 	public UIJanelaEnvioArquivo() {
 		initialize();
 	}
@@ -91,16 +91,16 @@ public class UIJanelaEnvioArquivo {
 		botaoPublicar.addActionListener(new ActionPublicar());
 		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(207, 240, 223, 20);
-		comboBox.addItem("");
-		comboBox.addItem("Celular");
-		comboBox.addItem("Computador");
-		comboBox.addItem("Rádio");
-		comboBox.addItem("Televisor");
-		comboBox.addItem("Outros");
+		cbCategoria = new JComboBox();
+		cbCategoria.setBounds(207, 240, 223, 20);
+		cbCategoria.addItem("");
+		cbCategoria.addItem("Celular");
+		cbCategoria.addItem("Computador");
+		cbCategoria.addItem("Rádio");
+		cbCategoria.addItem("Televisor");
+		cbCategoria.addItem("Outros");
 
-		frmCadastroDeAnuncio.getContentPane().add(comboBox);
+		frmCadastroDeAnuncio.getContentPane().add(cbCategoria);
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCategoria.setForeground(Color.WHITE);
@@ -111,10 +111,10 @@ public class UIJanelaEnvioArquivo {
 		scrollPane_1.setBounds(207, 285, 221, 40);
 		frmCadastroDeAnuncio.getContentPane().add(scrollPane_1);
 		
-		textArea_1 = new JTextArea();
-		textArea_1.setWrapStyleWord(true);
-		textArea_1.setLineWrap(true);
-		scrollPane_1.setViewportView(textArea_1);
+		textDescricao = new JTextArea();
+		textDescricao.setWrapStyleWord(true);
+		textDescricao.setLineWrap(true);
+		scrollPane_1.setViewportView(textDescricao);
 
 		JLabel lblInserirAnncio = new JLabel("                                           Inserir An\u00FAncio");
 		lblInserirAnncio.setForeground(Color.WHITE);
@@ -197,7 +197,12 @@ public class UIJanelaEnvioArquivo {
 			
 			DadoCompartilhadoServidor dcServidor = new DadoCompartilhadoServidor();
 			DadoAnuncio anuncio = new DadoAnuncio();
-			anuncio.setDescricao(textTitulo.getText());
+			
+			anuncio.setDescricao(textDescricao.getText());
+			anuncio.setCategoria(cbCategoria.getSelectedItem().toString());
+			anuncio.setImagem(btnImagem.getIcon());
+			anuncio.setTitulo(textTitulo.getText());
+			
 			dcServidor.setAnuncio(anuncio);
 			
 			try {
