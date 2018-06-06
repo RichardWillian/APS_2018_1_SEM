@@ -1,7 +1,7 @@
 package ecochat.aplicacoes.servidor;
 
 import java.io.IOException;
-
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -21,7 +21,7 @@ public class ServidorCentral {
 	private static ServerSocket socketServidorCentral;
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
-	public Socket cliente;
+	public Socket socketAnuncio;
 
 	public static void main(String[] args) {
 
@@ -49,12 +49,17 @@ public class ServidorCentral {
 			while (true) {
 
 				Socket socket = socketServidorCentral.accept();
-				UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
+				if (socket.getInetAddress().getHostAddress().equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
+					socketAnuncio = socket;
+					atualizarPaineis();
+				} else {
 
-				socketsConectados.add(socket);
+					UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
 
-				atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
-				atualizarPaineis();
+					socketsConectados.add(socket);
+
+					atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
+				}
 			}
 		} catch (IOException ioE) {
 			System.err.println(ioE.getMessage());
@@ -147,7 +152,23 @@ public class ServidorCentral {
 	private void atualizarPaineis() {
 		new Thread() {
 			public void run() {
+				while (true) {
+					try {
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAnuncio.getInputStream());
+						DadoCompartilhadoServidor dcServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
+								.readObject();
 
+						List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
+						for (Socket socketConectado : socketsConectadosCopia) {
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
+									socketConectado.getOutputStream());
+							fluxoSaidaDados.writeObject(dcServidor);
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}.start();
 	}

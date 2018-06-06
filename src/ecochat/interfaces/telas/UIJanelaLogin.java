@@ -122,29 +122,28 @@ public class UIJanelaLogin extends JanelaBase {
 			String email = tlg.getText();
 			String senha = new String(psenha.getPassword());
 
-			if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
-				// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-				if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
+//			if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
+//				// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+//				if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
 					// TODO CHAMAR A TELA DO VITOR
 					ControlePainelPrincipalAnuncios.getInstance();
-					// ControleChatAplicacao.getInstance();
 					this.dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-				}
-			} else {
-				boolean nenhumCampoPreenchido = (email == null
-						|| email.equals("") && (senha == null || senha.equals("")));
-
-				if (nenhumCampoPreenchido)
-					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");
-				else {
-					if (email == null || email.equals(""))
-						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de preencher seu \"Login\"");
-					if (senha == null || senha.equals(""))
-						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Senha\"");
-				}
-			}
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
+//				}
+//			} else {
+//				boolean nenhumCampoPreenchido = (email == null
+//						|| email.equals("") && (senha == null || senha.equals("")));
+//
+//				if (nenhumCampoPreenchido)
+//					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");
+//				else {
+//					if (email == null || email.equals(""))
+//						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de preencher seu \"Login\"");
+//					if (senha == null || senha.equals(""))
+//						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Senha\"");
+//				}
+//			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "        	    Desculpe pelo transtorno !\n" + "Estamos com problemas nos Servidores");
 			e.printStackTrace();

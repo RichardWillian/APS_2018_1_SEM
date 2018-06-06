@@ -8,7 +8,11 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,7 +31,9 @@ import javax.swing.SwingConstants;
 
 import ecochat.aplicacoes.servidor.ServidorCentral;
 import ecochat.entidades.DadoAnuncio;
+import ecochat.entidades.DadoCompartilhado;
 import ecochat.entidades.DadoCompartilhadoServidor;
+import ecochat.utilitarios.ConstantesGerais;
 import ecohat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 import sun.security.action.OpenFileInputStreamAction;
 
@@ -82,10 +88,7 @@ public class UIJanelaEnvioArquivo {
 
 		botaoPublicar = new JButton("PUBLICAR");
 		botaoPublicar.setBounds(207, 345, 223, 30);
-<<<<<<< HEAD
 		botaoPublicar.addActionListener(new ActionPublicar());
-=======
->>>>>>> 68d2d30b9732352a68ba2bddc3181f4f2e8befca
 		frmCadastroDeAnuncio.getContentPane().add(botaoPublicar);
 
 		JComboBox comboBox = new JComboBox();
@@ -122,10 +125,8 @@ public class UIJanelaEnvioArquivo {
 				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Barra.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		frmCadastroDeAnuncio.getContentPane().add(lblNewLabel_1);
-<<<<<<< HEAD
 		btnImagem = new JButton();
-=======
->>>>>>> 68d2d30b9732352a68ba2bddc3181f4f2e8befca
+		
 		btnImagem.setBackground(Color.WHITE);
 		btnImagem.setForeground(Color.WHITE);
 		btnImagem.setIcon(
@@ -192,26 +193,25 @@ public class UIJanelaEnvioArquivo {
 
 	private class ActionPublicar implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JInternalFrame telaAnuncio = UIJanelaPrincipal.getInstance().getInternalFrame();
-			JLabel foto = new JLabel("New label");
-			foto.setBounds(100, 100, 100, 80);
-			foto.setIcon(new ImageIcon("C:\\Users\\Vitor\\Desktop\\produto.png"));
-			telaAnuncio.getContentPane().add(foto);
-
-			JScrollPane scrollPane_1 = new JScrollPane();
-			scrollPane_1.setBounds(150, 150, 400, 100);
-			telaAnuncio.getContentPane().add(scrollPane_1);
-
-			JTextArea descricao = new JTextArea();
-			scrollPane_1.setViewportView(descricao);
-			descricao.setWrapStyleWord(true);
-			descricao.setFont(new Font("Arial", Font.PLAIN, 10));
-			descricao.setEditable(false);
-			descricao.setText(textArea_1.getText());
-			descricao.setLineWrap(true);
-			descricao.setAutoscrolls(true);
-
-			telaAnuncio.getContentPane().add(scrollPane_1).setVisible(true);
+			Socket socketAutenticacao = null;
+			
+			DadoCompartilhadoServidor dcServidor = new DadoCompartilhadoServidor();
+			DadoAnuncio anuncio = new DadoAnuncio();
+			anuncio.setTitulo(textTitulo.getText());
+			dcServidor.setAnuncio(anuncio);
+			
+			
+			try {
+				socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
+						ConstantesGerais.PORTA_SERVIDOR_CENTRAL, 
+						InetAddress.getByName(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO),0);
+				ObjectOutputStream fluxoSaidaAnuncio = new ObjectOutputStream(socketAutenticacao.getOutputStream());
+				fluxoSaidaAnuncio.writeObject(dcServidor);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			
 			frmCadastroDeAnuncio.dispose();
 		}
 	}
