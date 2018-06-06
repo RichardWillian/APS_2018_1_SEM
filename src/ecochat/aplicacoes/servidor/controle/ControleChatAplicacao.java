@@ -1,4 +1,4 @@
-package ecohat.aplicacoes.servidor.controle;
+package ecochat.aplicacoes.servidor.controle;
 
 import java.io.File;
 import java.io.FileInputStream;

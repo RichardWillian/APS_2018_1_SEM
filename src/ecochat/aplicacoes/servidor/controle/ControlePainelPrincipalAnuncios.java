@@ -1,4 +1,4 @@
-package ecohat.aplicacoes.servidor.controle;
+package ecochat.aplicacoes.servidor.controle;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
