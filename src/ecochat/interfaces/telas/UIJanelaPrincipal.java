@@ -184,7 +184,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 		lblImagem.setIcon(dadoAnuncio.getImagem());
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		//scrollPanel.setPreferredSize(new Dimension(100, 50));
+		// scrollPanel.setPreferredSize(new Dimension(100, 50));
 		scrollPanel.setPreferredSize(new Dimension(100, 10));
 		scrollPanel.setViewportView(descricao);
 		scrollPanel.setColumnHeaderView(lblTitulo);
@@ -248,13 +248,12 @@ public class UIJanelaPrincipal extends JanelaBase {
 	}
 
 	public void notificarUsuario(String ipSocketEnviouMensagem) {
-		if (UIJanelaChat.getInstance().getFocusableWindowState()) {
-			for (JButton botaoLista : listaUsuariosConectados) {
-				String ipUsuarioRemetente = botaoLista.getText();
-				if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
-					botaoLista.setBackground(Color.ORANGE);
-					repintarTela();
-				}
+
+		for (JButton botaoLista : listaUsuariosConectados) {
+			String ipUsuarioRemetente = botaoLista.getText();
+			if (ipUsuarioRemetente.equals(ipSocketEnviouMensagem)) {
+				botaoLista.setBackground(Color.ORANGE);
+				repintarTela();
 			}
 		}
 	}
