@@ -95,11 +95,16 @@ public class UIJanelaPrincipal extends JanelaBase {
 		panel_1.setLayout(new GridLayout(10, 1, 0, 0));
 
 		JButton cadastrarAnuncio = new JButton("Cadastrar An\u00FAncio");
-		cadastrarAnuncio.setForeground(Color.DARK_GRAY);
-		cadastrarAnuncio.setBackground(Color.GREEN);
+		cadastrarAnuncio.setForeground(Color.BLACK);
+		cadastrarAnuncio.setBackground(new Color(51, 255, 153));
 		cadastrarAnuncio.setBounds(154, 8, 152, 23);
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
 		this.getContentPane().add(cadastrarAnuncio);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(UIJanelaPrincipal.class.getResource("/ecochat/interfaces/telas/imagens/fundo_janela_principal.jpg")));
+		lblNewLabel.setBounds(0, 0, 573, 417);
+		getContentPane().add(lblNewLabel);
 		listaUsuariosConectados = new ArrayList<JButton>();
 	}
 
