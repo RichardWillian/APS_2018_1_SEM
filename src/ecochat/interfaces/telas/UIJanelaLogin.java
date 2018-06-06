@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -65,13 +66,13 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(cadastrar);
 		
 		label = new JLabel("");
-		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/logo_ecochat.png")));
+		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("imagens/logo_ecochat.png")));
 		label.setBounds(155, 20, 80, 95);
 		getContentPane().add(label);
 		getContentPane().add(image);
 
 		lblFundoLogin = new JLabel();
-		lblFundoLogin.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("/ecochat/interfaces/telas/imagens/fundo_login.png")));
+		lblFundoLogin.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("imagens/fundo_login.png")));
 		lblFundoLogin.setBounds(0, 0, 400, 354);
 		getContentPane().add(lblFundoLogin);
 		getContentPane().addKeyListener(this);
@@ -114,10 +115,10 @@ public class UIJanelaLogin extends JanelaBase {
 			String email = tlg.getText();
 			String senha = new String(psenha.getPassword());
 
+			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
 //			if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
-//				// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
+//				
 //				if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-					// TODO CHAMAR A TELA DO VITOR
 					ControlePainelPrincipalAnuncios.getInstance();
 					this.dispose();
 //				} else {

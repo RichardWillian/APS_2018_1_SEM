@@ -29,7 +29,7 @@ import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.utilitarios.ConstantesGerais;
 
 @SuppressWarnings("serial")
-public class UIJanelaEnvioArquivo extends JanelaBase{
+public class UIJanelaEnvioArquivo extends JanelaBase {
 
 	private JFrame frmCadastroDeAnuncio;
 	private JTextField textTitulo;
@@ -41,6 +41,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 	private JComboBox cbCategoria;
 	private JFileChooser escolhaArquivo;
 	private JTextArea textDescricao;
+
 	public UIJanelaEnvioArquivo() {
 		initialize();
 	}
@@ -50,34 +51,33 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 		frmCadastroDeAnuncio = this;
 		this.setTitle("Cadastro de an\u00FAncio");
 		this.setForeground(new Color(240, 255, 240));
-		this.setBounds(100, 100, 474, 430);
+		this.setBounds(100, 100, 330, 436);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(null);
-
 
 		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o");
 		lblDescrio.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDescrio.setForeground(Color.WHITE);
-		lblDescrio.setBounds(207, 270, 223, 14);
+		lblDescrio.setBounds(52, 270, 223, 14);
 		this.getContentPane().add(lblDescrio);
 
 		JLabel lblTtulo = new JLabel("T\u00EDtulo");
 		lblTtulo.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblTtulo.setForeground(Color.WHITE);
-		lblTtulo.setBounds(207, 175, 223, 14);
+		lblTtulo.setBounds(52, 179, 223, 14);
 		this.getContentPane().add(lblTtulo);
 		textTitulo = new JTextField();
 		textTitulo.setColumns(10);
-		textTitulo.setBounds(207, 190, 223, 20);
+		textTitulo.setBounds(52, 193, 223, 20);
 		this.getContentPane().add(textTitulo);
 
 		botaoPublicar = new JButton("PUBLICAR");
-		botaoPublicar.setBounds(207, 345, 223, 30);
+		botaoPublicar.setBounds(52, 346, 223, 30);
 		botaoPublicar.addActionListener(new ActionPublicar());
 		this.getContentPane().add(botaoPublicar);
 
 		cbCategoria = new JComboBox();
-		cbCategoria.setBounds(207, 240, 223, 20);
+		cbCategoria.setBounds(52, 239, 223, 20);
 		cbCategoria.addItem("");
 		cbCategoria.addItem("Celular");
 		cbCategoria.addItem("Computador");
@@ -89,34 +89,35 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCategoria.setForeground(Color.WHITE);
-		lblCategoria.setBounds(207, 225, 223, 14);
+		lblCategoria.setBounds(52, 224, 223, 14);
 		this.getContentPane().add(lblCategoria);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(207, 285, 221, 40);
-		this.getContentPane().add(scrollPane_1);
-		
 		textDescricao = new JTextArea();
+		textDescricao.setBounds(52, 286, 221, 40);
 		textDescricao.setWrapStyleWord(true);
 		textDescricao.setLineWrap(true);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(52, 286, 221, 40);
 		scrollPane_1.setViewportView(textDescricao);
-
-		JLabel lblInserirAnncio = new JLabel("                                           Inserir An\u00FAncio");
+		this.getContentPane().add(scrollPane_1);
+		
+		JLabel lblInserirAnncio = new JLabel("                          Inserir An\u00FAncio");
 		lblInserirAnncio.setForeground(Color.WHITE);
 		lblInserirAnncio.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblInserirAnncio.setBounds(0, 0, 458, 30);
+		lblInserirAnncio.setBounds(0, 0, 296, 30);
 		this.getContentPane().add(lblInserirAnncio);
-		lblNewLabel_1.setIcon(
-				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/barra_enviar_anuncio.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(
+				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/barra_enviar_anuncio.png")));
 		lblNewLabel_1.setBounds(0, 0, 458, 31);
 		this.getContentPane().add(lblNewLabel_1);
 		btnImagem = new JButton();
-		
+
 		btnImagem.setBackground(Color.WHITE);
 		btnImagem.setForeground(Color.WHITE);
-		btnImagem.setIcon(
-				new ImageIcon(UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/inserir_anuncio.png")));
-		btnImagem.setBounds(270, 55, 115, 115);
+		btnImagem.setIcon(new ImageIcon(
+				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/inserir_anuncio.png")));
+		btnImagem.setBounds(105, 53, 115, 115);
 		escolhaArquivo = new JFileChooser();
 		escolhaArquivo.setDialogTitle("Inserir Image");
 		btnImagem.addActionListener(new ActionListener() {
@@ -136,8 +137,8 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(
-				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/Background1.jpg")));
-		label.setBounds(0, 0, 458, 391);
+				UIJanelaEnvioArquivo.class.getResource("/ecochat/interfaces/telas/imagens/fundo_anuncio.jpg")));
+		label.setBounds(0, 0, 324, 407);
 		this.getContentPane().add(label);
 
 		this.setVisible(true);
@@ -165,7 +166,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 					Image.SCALE_SMOOTH);
 			btnImagem.setIcon(new ImageIcon(imagemDinamizada));
 			btnImagem.revalidate();
-			btnImagem.repaint();						
+			btnImagem.repaint();
 		}
 	}
 
@@ -179,21 +180,21 @@ public class UIJanelaEnvioArquivo extends JanelaBase{
 	private class ActionPublicar implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Socket socketAutenticacao = null;
-			
+
 			DadoCompartilhadoServidor dcServidor = new DadoCompartilhadoServidor();
 			DadoAnuncio anuncio = new DadoAnuncio();
-			
+
 			anuncio.setDescricao(textDescricao.getText());
 			anuncio.setCategoria(cbCategoria.getSelectedItem().toString());
 			anuncio.setImagem(btnImagem.getIcon());
 			anuncio.setTitulo(textTitulo.getText());
-			
+
 			dcServidor.setAnuncio(anuncio);
-			
+
 			try {
 				socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
-						ConstantesGerais.PORTA_SERVIDOR_CENTRAL, 
-						InetAddress.getByName(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO),0);
+						ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
+						InetAddress.getByName(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO), 0);
 				ObjectOutputStream fluxoSaidaAnuncio = new ObjectOutputStream(socketAutenticacao.getOutputStream());
 				fluxoSaidaAnuncio.writeObject(dcServidor);
 			} catch (Exception e1) {
