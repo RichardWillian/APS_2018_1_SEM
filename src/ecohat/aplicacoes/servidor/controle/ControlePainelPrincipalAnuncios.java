@@ -22,7 +22,8 @@ public class ControlePainelPrincipalAnuncios {
 
 	private ControlePainelPrincipalAnuncios() {
 		try {
-			UIJanelaPrincipal.getInstance();
+			ipMaquina = Utilitaria.criarIpAleatorio();
+			UIJanelaPrincipal.getInstance(ipMaquina);
 			conectarServidor();
 			iniciarLeituraAtualizacoesSistema();
 		} catch (UnknownHostException e) {
@@ -35,8 +36,6 @@ public class ControlePainelPrincipalAnuncios {
 	}
 
 	private void conectarServidor() throws UnknownHostException, IOException, InterruptedException {
-
-		ipMaquina = Utilitaria.criarIpAleatorio();
 
 		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
 				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);

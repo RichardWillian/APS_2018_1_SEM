@@ -43,7 +43,7 @@ public class UIJanelaPrincipal extends JanelaBase {
 	private JInternalFrame internalFrame;
 	private JLabel lblIconeUsuario;
 
-	public UIJanelaPrincipal() {
+	public UIJanelaPrincipal(String ip) {
 
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, 579, 446);
@@ -56,11 +56,8 @@ public class UIJanelaPrincipal extends JanelaBase {
 		lblIconeUsuario.addMouseListener(this);
 		this.getContentPane().add(lblIconeUsuario);
 
-		JTextPane nomeUsuario = new JTextPane();
-		nomeUsuario.setBounds(42, 76, 69, 14);
-		nomeUsuario.setEnabled(false);
-		nomeUsuario.setEditable(false);
-		nomeUsuario.setText("Vitor Santos");
+		JLabel nomeUsuario = new JLabel("    " + ip);
+		nomeUsuario.setBounds(24, 78, 120, 20);
 		this.getContentPane().add(nomeUsuario);
 
 		setInternalFrame(new JInternalFrame("ANUNCIOS"));
@@ -109,16 +106,16 @@ public class UIJanelaPrincipal extends JanelaBase {
 	int k = 6;
 	int j = 10;
 
-	public void adicionarUsuariosOnline(final String emailConectado) {
+	public void adicionarUsuariosOnline(final String ipConectado) {
 		new Thread() {
 			public void run() {
 				j++;
-				final JButton btnUsuarioConectado = new JButton(emailConectado);
+				final JButton btnUsuarioConectado = new JButton(ipConectado);
 				btnUsuarioConectado.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						setIpChat(emailConectado);
+						setIpChat(ipConectado);
 						ControleChatAplicacao.getInstance();
-						UIJanelaChat.setIdJanela(emailConectado);
+						UIJanelaChat.setIdJanela(ipConectado);
 						if (btnUsuarioConectado.getBackground() == Color.ORANGE) {
 							btnUsuarioConectado.setBackground(null);
 						}
@@ -141,9 +138,16 @@ public class UIJanelaPrincipal extends JanelaBase {
 		panel_1.repaint();
 	}
 
+	public static UIJanelaPrincipal getInstance(String ip) {
+		if (instancia == null) {
+			return instancia = new UIJanelaPrincipal(ip);
+		}
+		return instancia;
+	}
+	
 	public static UIJanelaPrincipal getInstance() {
 		if (instancia == null) {
-			return instancia = new UIJanelaPrincipal();
+			return instancia = new UIJanelaPrincipal(new String());
 		}
 		return instancia;
 	}
