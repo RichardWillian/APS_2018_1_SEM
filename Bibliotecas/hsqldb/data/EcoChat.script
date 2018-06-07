@@ -45,7 +45,4 @@ GRANT DBA TO SA
 SET SCHEMA SYSTEM_LOBS
 INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
-INSERT INTO USUARIOS VALUES(1,'Richard','Jorginho@hotmail.com','kli')
-INSERT INTO USUARIOS VALUES(2,'Daniel Nascimento','kleber@gmail.com.br','klb')
-INSERT INTO USUARIOS VALUES(3,'Willian','willian@hotmail.com','clock')
-INSERT INTO USUARIOS VALUES(4,'Richard','richardwillian.2008@hotmail.com','aaa')
+INSERT INTO USUARIOS VALUES(1,'Administrador','admin','admin')
