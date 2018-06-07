@@ -122,18 +122,11 @@ public class UIJanelaEnvioArquivo extends JanelaBase {
 		escolhaArquivo.setDialogTitle("Inserir Image");
 		btnImagem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				escolhaArquivo.showOpenDialog(btnImagem);
+				procurarArquivo();
 			}
 		});
+		
 		this.getContentPane().add(btnImagem);
-
-		ActionListener busca = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				procuraArquivo();
-			}
-		};
-
-		btnImagem.addActionListener(busca);
 
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(
@@ -144,7 +137,7 @@ public class UIJanelaEnvioArquivo extends JanelaBase {
 		this.setVisible(true);
 	}
 
-	public void procuraArquivo() {
+	public void procurarArquivo() {
 		String diretorioBase = System.getProperty("User.home") + "/Desktop";
 		File dir = new File(diretorioBase);
 
