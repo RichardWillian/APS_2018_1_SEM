@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 
+import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaServidorCentral;
@@ -21,6 +22,7 @@ public class ServidorCentral {
 	private static ServerSocket socketServidorCentral;
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
+	private static List<DadoAnuncio> listaAnuncios;
 	public Socket socketAnuncio;
 
 	public static void main(String[] args) {
@@ -46,6 +48,7 @@ public class ServidorCentral {
 
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("        ---===== Servidor Conectado =====---");
+			listaAnuncios = new ArrayList<DadoAnuncio>();
 			while (true) {
 
 				Socket socket = socketServidorCentral.accept();
@@ -139,7 +142,14 @@ public class ServidorCentral {
 							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketLista);
 
 							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+						} else {
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
+									socketSeraAtualizado.getOutputStream());
+							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+							dadoCompartilhadoServidor.setAnuncio(listaAnuncios);
+							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						}
+
 					}
 
 				} catch (Exception e) {
@@ -157,6 +167,8 @@ public class ServidorCentral {
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAnuncio.getInputStream());
 						DadoCompartilhadoServidor dcServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
 								.readObject();
+
+						listaAnuncios.add(dcServidor.getAnuncio().get(0));
 
 						List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
 						for (Socket socketConectado : socketsConectadosCopia) {

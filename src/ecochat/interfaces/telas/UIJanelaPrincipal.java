@@ -99,9 +99,10 @@ public class UIJanelaPrincipal extends JanelaBase {
 		cadastrarAnuncio.setBounds(154, 8, 152, 23);
 		cadastrarAnuncio.addActionListener(new ActionCadastrar());
 		this.getContentPane().add(cadastrarAnuncio);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(UIJanelaPrincipal.class.getResource("/ecochat/interfaces/telas/imagens/fundo_janela_principal.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(
+				UIJanelaPrincipal.class.getResource("/ecochat/interfaces/telas/imagens/fundo_janela_principal.jpg")));
 		lblNewLabel.setBounds(0, 0, 573, 417);
 		getContentPane().add(lblNewLabel);
 		listaUsuariosConectados = new ArrayList<JButton>();
@@ -178,35 +179,37 @@ public class UIJanelaPrincipal extends JanelaBase {
 		}
 	}
 
-	public void adicionaPainel(DadoAnuncio dadoAnuncio) {
-		k++;
-		JPanel anuncio = new JPanel();
-		JTextArea descricao = new JTextArea(dadoAnuncio.getDescricao());
-		JScrollPane scrollPanel = new JScrollPane();
-		JLabel lblTitulo = new JLabel(dadoAnuncio.getTitulo() + "(" + dadoAnuncio.getCategoria() + ")");
-		JLabel lblImagem = new JLabel();
+	public void adicionaPainel(List<DadoAnuncio> dadosAnuncios) {
+		for (DadoAnuncio dadoAnuncio : dadosAnuncios) {
+			k++;
+			JPanel anuncio = new JPanel();
+			JTextArea descricao = new JTextArea(dadoAnuncio.getDescricao());
+			JScrollPane scrollPanel = new JScrollPane();
+			JLabel lblTitulo = new JLabel(dadoAnuncio.getTitulo() + "(" + dadoAnuncio.getCategoria() + ")");
+			JLabel lblImagem = new JLabel();
 
-		lblImagem.setIcon(dadoAnuncio.getImagem());
-		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		// scrollPanel.setPreferredSize(new Dimension(100, 50));
-		scrollPanel.setPreferredSize(new Dimension(100, 10));
-		scrollPanel.setViewportView(descricao);
-		scrollPanel.setColumnHeaderView(lblTitulo);
+			lblImagem.setIcon(dadoAnuncio.getImagem());
+			scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			// scrollPanel.setPreferredSize(new Dimension(100, 50));
+			scrollPanel.setPreferredSize(new Dimension(100, 10));
+			scrollPanel.setViewportView(descricao);
+			scrollPanel.setColumnHeaderView(lblTitulo);
 
-		descricao.setEditable(false);
-		descricao.setEnabled(true);
-		descricao.setWrapStyleWord(true);
-		descricao.setLineWrap(true);
+			descricao.setEditable(false);
+			descricao.setEnabled(true);
+			descricao.setWrapStyleWord(true);
+			descricao.setLineWrap(true);
 
-		anuncio.setPreferredSize(new Dimension(70, 80));
-		anuncio.setLayout(new GridLayout(1, 1, 0, 0));
-		anuncio.add(lblImagem);
-		anuncio.add(scrollPanel);
+			anuncio.setPreferredSize(new Dimension(70, 80));
+			anuncio.setLayout(new GridLayout(1, 1, 0, 0));
+			anuncio.add(lblImagem);
+			anuncio.add(scrollPanel);
 
-		getPanel().setLayout(new GridLayout(k, 1, 0, 5));
-		getPanel().add(anuncio);
-		repintarTela();
+			getPanel().setLayout(new GridLayout(k, 1, 0, 5));
+			getPanel().add(anuncio);
+			repintarTela();
+		}
 	}
 
 	public void mouseClicked(MouseEvent me) {

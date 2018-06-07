@@ -1,11 +1,13 @@
 package ecochat.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class DadoCompartilhadoServidor implements Serializable{
 
-	private DadoAnuncio anuncio;
+	private List<DadoAnuncio> anuncios;
 	private String ipUsuarioConectou = null;
 	private DadoCompartilhado dadoCompartilhado;
 
@@ -26,11 +28,11 @@ public class DadoCompartilhadoServidor implements Serializable{
 		this.dadoCompartilhado = dadoCompartilhado;
 	}
 
-	public DadoAnuncio getAnuncio() {
-		return anuncio;
+	public List<DadoAnuncio> getAnuncio() {
+		return anuncios;
 	}
 
-	public void setAnuncio(DadoAnuncio anuncio) {
-		this.anuncio = anuncio;
+	public void setAnuncio(List<DadoAnuncio> anuncio) {
+		this.anuncios = anuncio;
 	}
 }

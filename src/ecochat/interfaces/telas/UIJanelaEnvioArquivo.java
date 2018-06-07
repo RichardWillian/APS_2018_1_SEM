@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -182,7 +184,9 @@ public class UIJanelaEnvioArquivo extends JanelaBase {
 			anuncio.setImagem(btnImagem.getIcon());
 			anuncio.setTitulo(textTitulo.getText());
 
-			dcServidor.setAnuncio(anuncio);
+			List<DadoAnuncio> listaAnuncio = new ArrayList<DadoAnuncio>();
+			listaAnuncio.add(anuncio);
+			dcServidor.setAnuncio(listaAnuncio);
 
 			try {
 				socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
