@@ -20,25 +20,21 @@ public class ControlePainelPrincipalAnuncios {
 	private static ControlePainelPrincipalAnuncios instancia;
 	private String ipMaquina;
 
-	private ControlePainelPrincipalAnuncios() {
-		try {
-			ipMaquina = Utilitaria.criarIpAleatorio();
-			UIJanelaPrincipal.getInstance(ipMaquina);
-			conectarServidor();
-			iniciarLeituraAtualizacoesSistema();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private ControlePainelPrincipalAnuncios() throws UnknownHostException, IOException, InterruptedException {
+
+		ipMaquina = Utilitaria.criarIpAleatorio();
+		conectarServidor();
+		UIJanelaPrincipal.getInstance(ipMaquina);
+		iniciarLeituraAtualizacoesSistema();
 	}
 
 	private void conectarServidor() throws UnknownHostException, IOException, InterruptedException {
 
-		socketServidorCentral = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
-				ConstantesGerais.PORTA_SERVIDOR_CENTRAL, InetAddress.getByName(ipMaquina), 0);
+		InetAddress inetAddressServidorCentral = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
+		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
+
+		socketServidorCentral = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
+										   inetAddressAplicacaoCorrente, 0);
 
 		Thread.sleep(1000);
 
@@ -53,11 +49,10 @@ public class ControlePainelPrincipalAnuncios {
 
 		new Thread() {
 			public void run() {
-				while (true) {
-					try {
 
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-								socketServidorCentral.getInputStream());
+				try {
+					while (true) {
+						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketServidorCentral.getInputStream()); 
 						DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
 								.readObject();
 
@@ -67,20 +62,18 @@ public class ControlePainelPrincipalAnuncios {
 							UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipUsuarioConectou);
 
 						// TODO FAZER ENVIO DE ANÚNCIOS
-						if(dadoCompartilhadoServidor.getAnuncio() != null) {
+						if (dadoCompartilhadoServidor.getAnuncio() != null) {
 							UIJanelaPrincipal.getInstance().adicionaPainel(dadoCompartilhadoServidor.getAnuncio());
 						}
-						
+
 						if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
 							UIJanelaPrincipal.getInstance()
-									.notificarUsuario(dadoCompartilhadoServidor
-								    .getDadoCompartilhado().getRemetente());
-
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (Exception ex) {
-						ex.printStackTrace();
+									.notificarUsuario(dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
 					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		}.start();
@@ -98,7 +91,8 @@ public class ControlePainelPrincipalAnuncios {
 		return fluxoSaidaDados;
 	}
 
-	public static ControlePainelPrincipalAnuncios getInstance() {
+	public static ControlePainelPrincipalAnuncios getInstance()
+			throws UnknownHostException, IOException, InterruptedException {
 
 		if (instancia == null)
 			return instancia = new ControlePainelPrincipalAnuncios();

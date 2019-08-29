@@ -42,9 +42,7 @@ public class ServidorCentral {
 			ServidorAutenticacao.getInstance().iniciarServidor();
 			ServidorChat.getInstance().iniciarServidor();
 
-			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
-					ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS,
-					InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL));
+			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
 
 			socketsConectados = new ArrayList<Socket>();
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("        ---===== Servidor Conectado =====---");

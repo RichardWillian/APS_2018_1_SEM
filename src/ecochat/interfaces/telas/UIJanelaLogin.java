@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.net.URL;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import ecochat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
-import ecochat.utilitarios.Utilitaria;
 
 @SuppressWarnings("serial")
 public class UIJanelaLogin extends JanelaBase {
@@ -31,7 +30,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private JLabel label;
 
 	public UIJanelaLogin() {
-		
+
 		this.setBounds(300, 300, 399, 375);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
@@ -65,7 +64,7 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(ok);
 		getContentPane().add(exit);
 		getContentPane().add(cadastrar);
-		
+
 		label = new JLabel("");
 		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("imagens/logo_ecochat.png")));
 		label.setBounds(155, 20, 80, 95);
@@ -113,34 +112,12 @@ public class UIJanelaLogin extends JanelaBase {
 	private void entrarAplicacao() {
 
 		try {
-			String email = tlg.getText();
-			String senha = new String(psenha.getPassword());
-
-			// TODO PRECISA DESCOMENTAR AQUI - SERVIDOR AUTENTICAÇÃO
-			if (!(email == null || email.equals("")) && !(senha == null || senha.equals(""))) {
-				
-				if (Utilitaria.verificarAutenticacaoUsuario(email, senha)) {
-					ControlePainelPrincipalAnuncios.getInstance();
-					this.dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Seu Email ou sua Senha estão incorretos");
-				}
-			} else {
-				boolean nenhumCampoPreenchido = (email == null
-						|| email.equals("") && (senha == null || senha.equals("")));
-
-				if (nenhumCampoPreenchido)
-					JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar seus dados");
-				else {
-					if (email == null || email.equals(""))
-						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de preencher seu \"Login\"");
-					if (senha == null || senha.equals(""))
-						JOptionPane.showMessageDialog(null, "Ops! Você se esqueceu de informar sua \"Senha\"");
-				}
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "        	    Desculpe pelo transtorno !\n" + "Estamos com problemas nos Servidores");
-			e.printStackTrace();
+			ControlePainelPrincipalAnuncios.getInstance();
+			this.dispose();
+			
+		} catch (IOException | InterruptedException e) {
+			
+			System.out.println("Estamos com probleminha no servidor, desculpe");
 		}
 	}
 

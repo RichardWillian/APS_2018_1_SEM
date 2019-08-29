@@ -32,9 +32,7 @@ public class ServidorChat {
 			public void run() {
 
 				try {
-					socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT,
-							ConstantesGerais.QUANTIDADE_MAXIMA_CONECTADOS,
-							InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT));
+					socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT);
 
 					socketsConectados = new ArrayList<Socket>();
 					while (true) {
