@@ -17,6 +17,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 	private JButton botaoIniciarServidor;
 	private JButton botaoDesligarServidor;
 	private JTextArea txtAreaUsuariosConectados;
+	private Thread threadServidor;
 
 	private UIJanelaServidorCentral() {
 
@@ -82,11 +83,14 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 		if (ae.getSource() == botaoIniciarServidor) {
 			botaoDesligarServidor.setEnabled(true);
 			botaoIniciarServidor.setEnabled(false);
-			new Thread() {
+			
+			threadServidor = new Thread() {
 				public void run() {
 					ServidorCentral.getInstance().iniciarServidor();
 				}
-			}.start();
+			};
+			
+			threadServidor.start();
 		}
 
 		if (ae.getSource() == botaoDesligarServidor) {

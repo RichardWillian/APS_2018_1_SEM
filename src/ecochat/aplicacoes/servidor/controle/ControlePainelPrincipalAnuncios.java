@@ -1,11 +1,12 @@
 package ecochat.aplicacoes.servidor.controle;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.net.Socket;
 
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
@@ -18,23 +19,21 @@ public class ControlePainelPrincipalAnuncios {
 	private static Socket socketServidorChat;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static ControlePainelPrincipalAnuncios instancia;
-	private String ipMaquina;
+	private static String ipMaquina;
+	private static ArrayList<String> socketsConectados;
 
 	private ControlePainelPrincipalAnuncios() throws UnknownHostException, IOException, InterruptedException {
 
+		socketsConectados = new ArrayList<String>();
 		ipMaquina = Utilitaria.criarIpAleatorio();
-		conectarServidor();
+		conectarServidores();
 		UIJanelaPrincipal.getInstance(ipMaquina);
 		iniciarLeituraAtualizacoesSistema();
 	}
 
-	private void conectarServidor() throws UnknownHostException, IOException, InterruptedException {
+	private static void conectarServidores() throws UnknownHostException, IOException, InterruptedException {
 
-		InetAddress inetAddressServidorCentral = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
-		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
-
-		socketServidorCentral = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
-										   inetAddressAplicacaoCorrente, 0);
+		conectarServidorCentral();
 
 		Thread.sleep(1000);
 
@@ -45,35 +44,68 @@ public class ControlePainelPrincipalAnuncios {
 		fluxoSaidaDados.flush();
 	}
 
-	private void iniciarLeituraAtualizacoesSistema() {
+	public static void conectarServidorCentral() throws UnknownHostException, IOException {
+
+		InetAddress inetAddressServidorCentral = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
+		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
+
+		socketServidorCentral = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
+				inetAddressAplicacaoCorrente, 0);
+	}
+
+	public static void iniciarLeituraAtualizacoesSistema() {
 
 		new Thread() {
+
 			public void run() {
 
-				try {
-					while (true) {
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketServidorCentral.getInputStream()); 
-						DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
-								.readObject();
+				while (true) {
 
-						String ipUsuarioConectou = dadoCompartilhadoServidor.getIpUsuarioConectou();
+					try {
+						while (true) {
 
-						if (ipUsuarioConectou != null)
-							UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipUsuarioConectou);
+							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
+									socketServidorCentral.getInputStream());
+							DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
+									.readObject();
 
-						// TODO FAZER ENVIO DE ANÚNCIOS
-						if (dadoCompartilhadoServidor.getAnuncio() != null) {
-							UIJanelaPrincipal.getInstance().adicionaPainel(dadoCompartilhadoServidor.getAnuncio());
+							String ipUsuarioConectou = dadoCompartilhadoServidor.getIpUsuarioConectou();
+
+							if (!socketsConectados.contains(ipUsuarioConectou)) {
+
+								if (ipUsuarioConectou != null) {
+									UIJanelaPrincipal.getInstance().adicionarUsuariosOnline(ipUsuarioConectou);
+									socketsConectados.add(ipUsuarioConectou);
+								}
+
+								boolean possuiAnuncios = dadoCompartilhadoServidor.getAnuncio() != null
+										&& dadoCompartilhadoServidor.getAnuncio().size() > 0;
+
+								if (possuiAnuncios) {
+									UIJanelaPrincipal.getInstance()
+											.adicionaPainel(dadoCompartilhadoServidor.getAnuncio());
+								}
+
+								if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
+									UIJanelaPrincipal.getInstance().notificarUsuario(
+											dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
+							}
 						}
+					} catch (Exception ex) {
 
-						if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
-							UIJanelaPrincipal.getInstance()
-									.notificarUsuario(dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
+						System.out.println("Obtivemos um problema com o servidor, por favor aguarde");
+
+						while (true) {
+							try {
+								conectarServidorCentral();
+								System.out.println("O usuário se conectou novamente !");
+								Thread.sleep(3000);
+								break;
+							} catch (IOException | InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
 					}
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (Exception ex) {
-					ex.printStackTrace();
 				}
 			}
 		}.start();

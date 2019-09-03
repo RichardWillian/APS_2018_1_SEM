@@ -20,10 +20,12 @@ import ecochat.utilitarios.ConstantesGerais;
 public class ServidorCentral {
 
 	private static ServerSocket socketServidorCentral;
+	private static List<String> ipsSocketsConectados;
+	private static List<DadoAnuncio> listaAnuncios;
 	private static List<Socket> socketsConectados;
 	private static ServidorCentral instancia;
-	private static List<DadoAnuncio> listaAnuncios;
-	public Socket socketAnuncio;
+	private static Socket socketAnuncio;
+	private static boolean servidorCentralLigado;
 
 	public static void main(String[] args) {
 
@@ -39,67 +41,94 @@ public class ServidorCentral {
 	public void iniciarServidor() {
 
 		try {
-			ServidorAutenticacao.getInstance().iniciarServidor();
-			ServidorChat.getInstance().iniciarServidor();
 
-			socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
+			if (socketServidorCentral == null || socketServidorCentral.isClosed()) {
 
-			socketsConectados = new ArrayList<Socket>();
+				socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
+				ServidorChat.getInstance().iniciarServidor();
+				servidorCentralLigado = true;
+			}
+
+			if (socketsConectados == null || !(socketsConectados.size() > 0))
+				socketsConectados = new ArrayList<Socket>();
+
+			if (ipsSocketsConectados == null || !(ipsSocketsConectados.size() > 0))
+				ipsSocketsConectados = new ArrayList<String>();
+
+			if (listaAnuncios == null || !(listaAnuncios.size() > 0))
+				listaAnuncios = new ArrayList<DadoAnuncio>();
+
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("        ---===== Servidor Conectado =====---");
-			listaAnuncios = new ArrayList<DadoAnuncio>();
+
 			while (true) {
 
-				Socket socket = socketServidorCentral.accept();
-				if (socket.getInetAddress().getHostAddress().equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
-					socketAnuncio = socket;
-					atualizarPaineis();
-				} else {
+				try {
+					Socket socket = socketServidorCentral.accept();
+					String ipConectado = socket.getInetAddress().getHostAddress();
 
-					UIJanelaServidorCentral.getInstance().mostrarConectados(socket.getInetAddress().getHostAddress());
+					if (ipConectado.equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
+						socketAnuncio = socket;
+						atualizarPaineis();
 
-					socketsConectados.add(socket);
+					} else {
 
-					atualizarUsuariosOnlines(socket.getInetAddress().getHostAddress());
+						if (servidorCentralLigado) {
+
+							UIJanelaServidorCentral.getInstance().mostrarConectados(ipConectado);
+							socketsConectados.add(socket);
+
+							if (!ipsSocketsConectados.contains(ipConectado)) {
+								
+								atualizarUsuariosOnlines(ipConectado);
+								ipsSocketsConectados.add(ipConectado);
+							}
+						}
+					}
+				} catch (Exception ex) {
 				}
 			}
 		} catch (IOException ioE) {
-			System.err.println(ioE.getMessage());
+			ioE.printStackTrace();
 		}
 	}
 
 	public void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
-		new Thread() {
-			public void run() {
 
-				for (Socket socketConectado : socketsConectados) {
-					String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
-					if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
-						ObjectOutputStream fluxoSaidaDados;
-						try {
-							fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+		for (Socket socketConectado : socketsConectados) {
 
-							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-							dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+			String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+			if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
+				ObjectOutputStream fluxoSaidaDados;
+				try {
 
-							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
+					fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+
+					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+					dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+
+					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("O que ta rolando ?");
 				}
-			};
-		}.start();
+			}
+		}
 	}
 
 	public void desligarServidor() {
 		try {
 
+			servidorCentralLigado = false;
+
 			for (Socket socketConectado : socketsConectados) {
 				socketConectado.close();
 			}
 
-			socketServidorCentral.close();
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("     ---===== Servidor Desconectado =====---");
+			ServidorChat.getInstance().desligarServidor();
+			socketServidorCentral.close();
+			socketsConectados = new ArrayList<Socket>();
+			Thread.currentThread().interrupt();
 
 		} catch (IOException ioE) {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());
@@ -147,7 +176,6 @@ public class ServidorCentral {
 							dadoCompartilhadoServidor.setAnuncio(listaAnuncios);
 							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 						}
-
 					}
 
 				} catch (Exception e) {
@@ -177,6 +205,7 @@ public class ServidorCentral {
 
 					} catch (Exception e) {
 						e.printStackTrace();
+						Thread.currentThread().interrupt();
 					}
 				}
 			}
