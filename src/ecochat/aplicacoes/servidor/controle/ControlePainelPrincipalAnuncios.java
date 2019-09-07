@@ -37,11 +37,19 @@ public class ControlePainelPrincipalAnuncios {
 
 		Thread.sleep(1000);
 
-		socketServidorChat = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT),
-				ConstantesGerais.PORTA_SERVIDOR_CHAT, InetAddress.getByName(ipMaquina), 0);
+		conectarServidorChat();
 
 		fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
 		fluxoSaidaDados.flush();
+	}
+
+	private static void conectarServidorChat() throws IOException, UnknownHostException {
+		
+		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
+		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
+		
+		socketServidorChat = new Socket(inetAddressAplicacaoCorrente,
+				ConstantesGerais.PORTA_SERVIDOR_CHAT, inetAddressAplicacaoCorrente, 0);
 	}
 
 	public static void conectarServidorCentral() throws UnknownHostException, IOException {
@@ -94,15 +102,19 @@ public class ControlePainelPrincipalAnuncios {
 					} catch (Exception ex) {
 
 						System.out.println("Obtivemos um problema com o servidor, por favor aguarde");
-
+						try {
+							socketServidorCentral.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						while (true) {
 							try {
 								conectarServidorCentral();
-								System.out.println("O usuário se conectou novamente !");
+								System.out.println("O usuário se conectou ao servidor central novamente !");
 								Thread.sleep(3000);
 								break;
 							} catch (IOException | InterruptedException e) {
-								e.printStackTrace();
+								
 							}
 						}
 					}
@@ -113,6 +125,10 @@ public class ControlePainelPrincipalAnuncios {
 
 	public String getIpAplicacao() {
 		return ipMaquina;
+	}
+	
+	public boolean servidorCentralIsClosed () {
+		return socketServidorCentral.isClosed();
 	}
 
 	public Socket getSocket() {

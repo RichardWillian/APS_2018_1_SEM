@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.interfaces.telas.UIJanelaChat;
@@ -16,36 +19,76 @@ import ecochat.utilitarios.Utilitaria;
 public class ControleChatAplicacao {
 
 	private static ControleChatAplicacao instancia;
+	private List<DadoCompartilhado> mensagensNaoEnviadas;
 
 	private ControleChatAplicacao() {
 		UIJanelaChat.getInstance();
+		mensagensNaoEnviadas = new ArrayList<DadoCompartilhado>();
 		lerMensagemServidor();
 	}
 
 	public void enviarMensagemAoServidor(final DadoCompartilhado dadoCompartilhado) {
 
-		new Thread() {
-			public void run() {
-				try {
+		try {
 
-					if (dadoCompartilhado.getArquivo() != null) {
-						Thread.sleep(2000);
-						UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou",
-								dadoCompartilhado.getArquivo());
-					}
+			if (ControlePainelPrincipalAnuncios.getInstance().servidorCentralIsClosed()) {
 
-					ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance()
-							.getFluxoSaidaDados();
-					dadoCompartilhado.setRemetente(ControlePainelPrincipalAnuncios.getInstance().getIpAplicacao());
-					fluxoSaidaDados.writeObject(dadoCompartilhado);
-					fluxoSaidaDados.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				if (mensagensNaoEnviadas.size() == 0) {
+					
+					mensagensNaoEnviadas.add(dadoCompartilhado);
+					
+					new Thread() {
+						@SuppressWarnings("static-access")
+						public void run() {
+
+							while (true) {
+
+								try {
+
+									if (!ControlePainelPrincipalAnuncios.getInstance().servidorCentralIsClosed()) {
+
+										for (int i = 0; i < mensagensNaoEnviadas.size(); i++)
+											enviarMensagemDestinatario(mensagensNaoEnviadas.get(i));
+
+										mensagensNaoEnviadas = new ArrayList<DadoCompartilhado>();
+										Thread.currentThread().interrupted();
+										break;
+									}
+
+								} catch (IOException | InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}.start();
+				} else
+					mensagensNaoEnviadas.add(dadoCompartilhado);
+
+			} else
+				enviarMensagemDestinatario(dadoCompartilhado);
+
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void enviarMensagemDestinatario(final DadoCompartilhado dadoCompartilhado) {
+
+		try {
+			if (dadoCompartilhado.getArquivo() != null) {
+				Thread.sleep(2000);
+				UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou", dadoCompartilhado.getArquivo());
 			}
-		}.start();
+
+			ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
+			dadoCompartilhado.setRemetente(ControlePainelPrincipalAnuncios.getInstance().getIpAplicacao());
+
+			fluxoSaidaDados.writeObject(dadoCompartilhado);
+			fluxoSaidaDados.flush();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private void lerMensagemServidor() {
@@ -60,6 +103,7 @@ public class ControleChatAplicacao {
 								ControlePainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
 
 						Object leituraObjeto = fluxoEntradaDados.readObject();
+
 						if (UIJanelaChat.getInstance().isFocusableWindow()) {
 							UIJanelaChat.setMensagemNaFila(false);
 						}
@@ -103,11 +147,8 @@ public class ControleChatAplicacao {
 							}
 						}
 					}
-				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
-					System.err.println(e.getMessage());
 				} catch (Exception ex) {
-					System.err.println(ex.getMessage());
+					ex.printStackTrace();
 				}
 			}
 		}.start();

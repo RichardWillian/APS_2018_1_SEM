@@ -47,7 +47,6 @@ public class UIJanelaLogin extends JanelaBase {
 		psenha = new JPasswordField();
 		ok = new JButton("OK");
 		exit = new JButton("Sair");
-//		cadastrar = new JButton("Cadastrar");
 
 		login.setBounds(127, 100, 50, 20);
 		senha.setBounds(127, 150, 50, 20);
@@ -55,7 +54,6 @@ public class UIJanelaLogin extends JanelaBase {
 		psenha.setBounds(127, 170, 150, 20);
 		ok.setBounds(100, 221, 90, 20);
 		exit.setBounds(215, 221, 90, 20);
-//		cadastrar.setBounds(158, 260, 100, 20);
 
 		getContentPane().setLayout(null);
 		getContentPane().add(login);
@@ -64,7 +62,6 @@ public class UIJanelaLogin extends JanelaBase {
 		getContentPane().add(tlg);
 		getContentPane().add(ok);
 		getContentPane().add(exit);
-//		getContentPane().add(cadastrar);
 
 		label = new JLabel("");
 		label.setIcon(new ImageIcon(UIJanelaLogin.class.getResource("imagens/logo_ecochat.png")));
@@ -80,7 +77,6 @@ public class UIJanelaLogin extends JanelaBase {
 
 		ok.addActionListener(this);
 		exit.addActionListener(this);
-//		cadastrar.addActionListener(this);
 		login.addKeyListener(this);
 		senha.addKeyListener(this);
 
@@ -114,7 +110,6 @@ public class UIJanelaLogin extends JanelaBase {
 			ControlePainelPrincipalAnuncios.getInstance();
 			this.dispose();
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

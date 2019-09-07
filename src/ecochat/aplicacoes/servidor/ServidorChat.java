@@ -59,7 +59,7 @@ public class ServidorChat {
 						}
 					}
 				} catch (IOException e) {
-
+					e.printStackTrace();
 				}
 			}
 		}.start();
@@ -78,7 +78,7 @@ public class ServidorChat {
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
 						for (Socket socketConectado : socketsConectados) {
-							
+
 							String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
 							if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
 
@@ -108,16 +108,6 @@ public class ServidorChat {
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void desligarServidor() {
-		try {
-
-			socketServidorChat.close();
-
-		} catch (IOException ioE) {
-			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());
 		}
 	}
 }

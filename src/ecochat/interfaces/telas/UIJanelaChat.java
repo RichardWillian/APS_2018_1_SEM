@@ -89,7 +89,7 @@ public class UIJanelaChat extends JanelaBase {
 
 	private void initialize(String emailconectado) {
 		janelaChat = new JFrame(emailconectado);
-		janelaChat.setAlwaysOnTop(true);
+		janelaChat.setAlwaysOnTop(false);
 		janelaChat.setResizable(false);
 		janelaChat.setAutoRequestFocus(false);
 		janelaChat.setBounds(100, 100, 350, 472);

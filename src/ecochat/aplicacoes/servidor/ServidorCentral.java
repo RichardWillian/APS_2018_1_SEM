@@ -3,7 +3,6 @@ package ecochat.aplicacoes.servidor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -125,7 +124,6 @@ public class ServidorCentral {
 			}
 
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("     ---===== Servidor Desconectado =====---");
-			ServidorChat.getInstance().desligarServidor();
 			socketServidorCentral.close();
 			socketsConectados = new ArrayList<Socket>();
 			Thread.currentThread().interrupt();
