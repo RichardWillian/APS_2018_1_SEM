@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Random;
 
-import javax.swing.JLabel;		
+import javax.swing.JLabel;
 
 public class Utilitaria {
 

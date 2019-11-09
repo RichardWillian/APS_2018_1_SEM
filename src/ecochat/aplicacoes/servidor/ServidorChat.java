@@ -21,6 +21,7 @@ public class ServidorChat {
 	private static ServidorChat instancia;
 	
 	public static void main(String[] args) {
+		
 		iniciarServidor();
 	}
 

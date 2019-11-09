@@ -45,10 +45,10 @@ public class ControlePainelPrincipalAnuncios {
 
 	private static void conectarServidorChat() throws IOException, UnknownHostException {
 		
-		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
+		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT);
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
 		
-		socketServidorChat = new Socket(inetAddressAplicacaoCorrente,
+		socketServidorChat = new Socket(inetAddressServidorChat,
 				ConstantesGerais.PORTA_SERVIDOR_CHAT, inetAddressAplicacaoCorrente, 0);
 	}
 
