@@ -9,6 +9,5 @@ public class ConstantesGerais {
 	public static String IP_FIXO_ENVIO_ANUNCIO = "127.255.255.251";
 	
 	public static int PORTA_SERVIDOR_CENTRAL = 8005;
-	public static int PORTA_SERVIDOR_AUTENTICACAO = 12346;
 	public static int PORTA_SERVIDOR_CHAT = 12347;	
 }
