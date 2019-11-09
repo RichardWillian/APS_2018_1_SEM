@@ -19,6 +19,10 @@ public class ServidorChat {
 	private static List<Socket> socketsConectados;
 	private static List<String> ipsSocketsConectados;
 	private static ServidorChat instancia;
+	
+	public static void main(String[] args) {
+		iniciarServidor();
+	}
 
 	public static ServidorChat getInstance() {
 
@@ -28,13 +32,15 @@ public class ServidorChat {
 		return instancia;
 	}
 
-	public void iniciarServidor() {
+	public static void iniciarServidor() {
 
 		new Thread() {
 			public void run() {
 
 				try {
 
+					System.out.println("Servidor Chat Conectado");
+					
 					if (socketServidorChat == null || socketServidorChat.isClosed())
 						socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT);
 
@@ -49,6 +55,7 @@ public class ServidorChat {
 						if (!socketServidorChat.isClosed()) {
 							Socket socket = socketServidorChat.accept();
 							String ipSocket = socket.getInetAddress().getHostAddress();
+							System.out.println("Ip conectou: " + ipSocket);
 
 							if (!ipsSocketsConectados.contains(ipSocket)) {
 								socketsConectados.add(socket);

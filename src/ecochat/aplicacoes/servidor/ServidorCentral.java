@@ -44,7 +44,6 @@ public class ServidorCentral {
 			if (socketServidorCentral == null || socketServidorCentral.isClosed()) {
 
 				socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
-				ServidorChat.getInstance().iniciarServidor();
 				servidorCentralLigado = true;
 			}
 
