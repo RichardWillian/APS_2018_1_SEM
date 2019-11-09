@@ -7,9 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ecochat.dao.modelos.usuario.UsuarioDAO;
 import ecochat.entidades.DadoAutenticacao;
-import ecochat.entidades.modelos.Usuario;
 import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorAutenticacao {
@@ -50,18 +48,6 @@ public class ServidorAutenticacao {
 	}
 
 	private boolean autenticarUsuario(DadoAutenticacao dadosAutenticar) {
-
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-		String nome = dadosAutenticar.getNome();
-		String email = dadosAutenticar.getEmail();
-		String senha = dadosAutenticar.getSenha();
-
-		Usuario usuario = usuarioDAO.getUsuarioPorCamposAutenticacao(nome, email, senha);
-
-		if (usuario == null)
-			return false;
-
 		return true;
 	}
 

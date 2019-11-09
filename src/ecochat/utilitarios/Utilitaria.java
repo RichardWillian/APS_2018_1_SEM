@@ -10,8 +10,6 @@ import java.nio.file.Files;
 import java.util.Random;
 
 import javax.swing.JLabel;
-
-import ecochat.dao.modelos.usuario.UsuarioDAO;
 import ecochat.entidades.DadoAutenticacao;
 
 public class Utilitaria {
@@ -185,7 +183,6 @@ public class Utilitaria {
 	}
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {
-		UsuarioDAO.cadastrarUsuario(nome, email, senha);
 	}
 
 	public static void CriarDiretorio(String caminho) {
