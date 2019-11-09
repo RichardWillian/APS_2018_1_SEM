@@ -44,7 +44,7 @@ public class ServidorCentral {
 			if (socketServidorCentral == null || socketServidorCentral.isClosed()) {
 
 				socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
-				servidorCentralLigado = true;
+				servidorCentralLigado = true; 
 			}
 
 			if (socketsConectados == null || !(socketsConectados.size() > 0))
