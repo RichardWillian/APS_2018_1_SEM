@@ -1,10 +1,7 @@
 package ecochat.entidades.modelos;
 
-import javax.persistence.Id;
-
 public class Usuario {
-
-	@Id
+	
 	private int id;
 	private String nome;
 	private String email;

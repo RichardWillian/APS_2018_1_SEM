@@ -2,17 +2,10 @@ package ecochat.utilitarios;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.nio.file.Files;
 import java.util.Random;
 
-import javax.swing.JLabel;
-
-import ecochat.dao.modelos.usuario.UsuarioDAO;
-import ecochat.entidades.DadoAutenticacao;
+import javax.swing.JLabel;		
 
 public class Utilitaria {
 
@@ -139,7 +132,7 @@ public class Utilitaria {
 	}
 
 	public static void cadastrarUsuario(String nome, String email, String senha) {
-		UsuarioDAO.cadastrarUsuario(nome, email, senha);
+		
 	}
 
 	public static void CriarDiretorio(String caminho) {

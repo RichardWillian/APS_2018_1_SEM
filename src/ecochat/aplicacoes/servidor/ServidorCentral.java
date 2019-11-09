@@ -7,9 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.HibernateException;
-
 import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhado;
 import ecochat.entidades.DadoCompartilhadoServidor;
@@ -30,8 +27,6 @@ public class ServidorCentral {
 
 		try {
 			UIJanelaServidorCentral.getInstance();
-		} catch (HibernateException exception) {
-			exception.printStackTrace();
 		} catch (Exception e) {
 			System.err.println("Ops! " + e.getMessage() + "\n");
 		}
