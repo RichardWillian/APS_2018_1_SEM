@@ -49,7 +49,7 @@ public class ServidorChat {
 						if (!socketServidorChat.isClosed()) {
 							Socket socket = socketServidorChat.accept();
 							String ipSocket = socket.getInetAddress().getHostAddress();
-							System.out.println("Ip conectou: " + ipSocket);
+							System.out.println("(Servidor Chat) Ip conectou: " + ipSocket);
 
 							if (!ipsSocketsConectados.contains(ipSocket)) {
 								socketsConectados.add(socket);

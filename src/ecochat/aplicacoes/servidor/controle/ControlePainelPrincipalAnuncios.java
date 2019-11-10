@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;
@@ -15,6 +16,7 @@ import ecochat.utilitarios.ConstantesGerais;
 public class ControlePainelPrincipalAnuncios {
 
 	private static Socket socketServidorCentral;
+	private static Socket socketServidorAnuncios;
 	private static Socket socketServidorChat;
 	private static ObjectOutputStream fluxoSaidaDados;
 	private static ControlePainelPrincipalAnuncios instancia;
@@ -37,6 +39,10 @@ public class ControlePainelPrincipalAnuncios {
 		Thread.sleep(1000);
 
 		conectarServidorChat();
+		
+		Thread.sleep(1000);
+		
+		conectarServidorAnuncios();
 
 		fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
 		fluxoSaidaDados.flush();
@@ -47,8 +53,8 @@ public class ControlePainelPrincipalAnuncios {
 		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT);
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
 		
-		socketServidorChat = new Socket(inetAddressServidorChat,
-				ConstantesGerais.PORTA_SERVIDOR_CHAT, inetAddressAplicacaoCorrente, 0);
+		socketServidorChat = new Socket(inetAddressServidorChat, ConstantesGerais.PORTA_SERVIDOR_CHAT, 
+				inetAddressAplicacaoCorrente, 0);
 	}
 
 	public static void conectarServidorCentral() throws UnknownHostException, IOException {
@@ -57,6 +63,15 @@ public class ControlePainelPrincipalAnuncios {
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
 
 		socketServidorCentral = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
+				inetAddressAplicacaoCorrente, 0);
+	}
+	
+	public static void conectarServidorAnuncios() throws UnknownHostException, IOException {
+
+		InetAddress inetAddressServidorCentral = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_ANUNCIOS);
+		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
+
+		socketServidorAnuncios = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_ANUNCIOS,
 				inetAddressAplicacaoCorrente, 0);
 	}
 
@@ -102,6 +117,7 @@ public class ControlePainelPrincipalAnuncios {
 
 						System.out.println("Obtivemos um problema com o servidor, por favor aguarde");
 						try {
+							
 							socketServidorCentral.close();
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -122,6 +138,21 @@ public class ControlePainelPrincipalAnuncios {
 		}.start();
 	}
 
+	public void enviarAnunciosPaineis(DadoCompartilhadoServidor dadoCompartilhadoServidor){
+		
+		ObjectOutputStream fluxoSaidaAnuncio;
+		try {
+			
+			fluxoSaidaAnuncio = new ObjectOutputStream(socketServidorAnuncios.getOutputStream());
+			fluxoSaidaAnuncio.writeObject(dadoCompartilhadoServidor);
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public String getIpAplicacao() {
 		return ipMaquina;
 	}
@@ -130,7 +161,7 @@ public class ControlePainelPrincipalAnuncios {
 		return socketServidorCentral.isClosed();
 	}
 
-	public Socket getSocket() {
+	public Socket getSocketServidorChat() {
 		return socketServidorChat;
 	}
 

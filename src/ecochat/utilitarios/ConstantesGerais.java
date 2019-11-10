@@ -6,8 +6,9 @@ public class ConstantesGerais {
 	
 	public static String IP_SERVIDOR_CENTRAL = "192.168.0.105";
 	public static String IP_SERVIDOR_CHAT = "192.168.0.105"; 
-	public static String IP_FIXO_ENVIO_ANUNCIO = "127.255.255.251";
+	public static String IP_SERVIDOR_ANUNCIOS = "192.168.0.103";
 	
 	public static int PORTA_SERVIDOR_CENTRAL = 8005;
-	public static int PORTA_SERVIDOR_CHAT = 8006;	
+	public static int PORTA_SERVIDOR_CHAT = 8006;
+	public static int PORTA_SERVIDOR_ANUNCIOS = 8007;
 }

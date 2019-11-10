@@ -19,7 +19,6 @@ public class ServidorCentral {
 	private static List<String> ipsSocketsConectados;
 	private static List<DadoAnuncio> listaAnuncios;
 	private static List<Socket> socketsConectados;
-	private static Socket socketAnuncio;
 	private static Socket socketChat;
 	private static boolean servidorCentralLigado;
 
@@ -63,10 +62,6 @@ public class ServidorCentral {
 					if (ipConectado.equals(ConstantesGerais.IP_SERVIDOR_CHAT)) {
 						socketChat = socket;
 						UIJanelaServidorCentral.getInstance().mostrarConectados("Servidor Chat");
-					} else if (ipConectado.equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
-
-						socketAnuncio = socket;
-						atualizarPaineis();
 					} else {
 
 						if (servidorCentralLigado) {
@@ -158,33 +153,6 @@ public class ServidorCentral {
 		}.start();
 	}
 
-	private static void atualizarPaineis() {
-		new Thread() {
-			public void run() {
-				while (true) {
-					try {
-						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketAnuncio.getInputStream());
-						DadoCompartilhadoServidor dcServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
-								.readObject();
-
-						listaAnuncios.add(dcServidor.getAnuncio().get(0));
-
-						List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
-						for (Socket socketConectado : socketsConectadosCopia) {
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketConectado.getOutputStream());
-							fluxoSaidaDados.writeObject(dcServidor);
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-						Thread.currentThread().interrupt();
-					}
-				}
-			}
-		}.start();
-	}
-
 	public static void notificarUsuario() {
 		new Thread() {
 			public void run() {
@@ -192,7 +160,7 @@ public class ServidorCentral {
 					try {
 
 						if (socketChat != null) {
-							
+
 							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketChat.getInputStream());
 							DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 

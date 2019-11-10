@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import ecochat.aplicacoes.servidor.controle.ControlePainelPrincipalAnuncios;
 import ecochat.aplicacoes.telas.JanelaBase;
 import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhadoServidor;
@@ -189,14 +190,12 @@ public class UIJanelaEnvioArquivo extends JanelaBase {
 			dcServidor.setAnuncio(listaAnuncio);
 
 			try {
-				socketAutenticacao = new Socket(InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL),
-						ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
-						InetAddress.getByName(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO), 0);
-				ObjectOutputStream fluxoSaidaAnuncio = new ObjectOutputStream(socketAutenticacao.getOutputStream());
-				fluxoSaidaAnuncio.writeObject(dcServidor);
-			} catch (Exception e1) {
-				e1.printStackTrace();
+				ControlePainelPrincipalAnuncios.getInstance().enviarAnunciosPaineis(dcServidor);
+			} catch (IOException | InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
 			}
+			
 			frmCadastroDeAnuncio.dispose();
 		}
 	}

@@ -99,7 +99,7 @@ public class ControleChatAplicacao {
 					while (true) {
 
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-								ControlePainelPrincipalAnuncios.getInstance().getSocket().getInputStream());
+								ControlePainelPrincipalAnuncios.getInstance().getSocketServidorChat().getInputStream());
 
 						Object leituraObjeto = fluxoEntradaDados.readObject();
 
