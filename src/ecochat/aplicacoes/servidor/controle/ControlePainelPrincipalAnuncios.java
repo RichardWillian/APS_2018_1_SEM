@@ -1,17 +1,16 @@
 package ecochat.aplicacoes.servidor.controle;
 
-import java.net.UnknownHostException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.util.ArrayList;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;
-import ecochat.utilitarios.Utilitaria;
 
 public class ControlePainelPrincipalAnuncios {
 
@@ -26,7 +25,6 @@ public class ControlePainelPrincipalAnuncios {
 
 		socketsConectados = new ArrayList<String>();
 		ipMaquina = InetAddress.getLocalHost().getHostAddress();
-		System.out.println(ipMaquina);
 		conectarServidores();
 		UIJanelaPrincipal.getInstance(ipMaquina);
 		iniciarLeituraAtualizacoesSistema();

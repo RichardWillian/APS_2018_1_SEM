@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ecochat.entidades.DadoCompartilhado;
-import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorChat {
