@@ -87,7 +87,7 @@ public class ControlePainelPrincipalAnuncios {
 						while (true) {
 
 							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-									socketServidorCentral.getInputStream());
+									socketServidorAnuncios.getInputStream());
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
 									.readObject();
 
