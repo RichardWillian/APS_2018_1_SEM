@@ -35,13 +35,16 @@ public class ServidorAnuncios {
 					System.out.println("Servidor Anúncio Conectado");
 
 					if (socketServidorAnuncio == null || socketServidorAnuncio.isClosed())
-						socketServidorAnuncio = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT);
+						socketServidorAnuncio = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_ANUNCIOS);
 
 					if (socketsConectados == null || !(socketsConectados.size() > 0))
 						socketsConectados = new ArrayList<Socket>();
 
 					if (ipsSocketsConectados == null || !(ipsSocketsConectados.size() > 0))
 						ipsSocketsConectados = new ArrayList<String>();
+					
+					if(listaAnuncios == null)
+						listaAnuncios = new ArrayList<DadoAnuncio>();
 
 					while (true) {
 
@@ -80,8 +83,9 @@ public class ServidorAnuncios {
 
 						List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
 						for (Socket socketConectado : socketsConectadosCopia) {
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketConectado.getOutputStream());
+							
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+							
 							fluxoSaidaDados.writeObject(dadoCompartilhado);
 						}
 					}
