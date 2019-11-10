@@ -19,7 +19,6 @@ public class ServidorCentral {
 	private static List<String> ipsSocketsConectados;
 	private static List<DadoAnuncio> listaAnuncios;
 	private static List<Socket> socketsConectados;
-	private static ServidorCentral instancia;
 	private static Socket socketAnuncio;
 	private static boolean servidorCentralLigado;
 
@@ -32,14 +31,14 @@ public class ServidorCentral {
 		}
 	}
 
-	public void iniciarServidor() {
+	public static void iniciarServidor() {
 
 		try {
 
 			if (socketServidorCentral == null || socketServidorCentral.isClosed()) {
 
 				socketServidorCentral = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CENTRAL);
-				servidorCentralLigado = true; 
+				servidorCentralLigado = true;
 			}
 
 			if (socketsConectados == null || !(socketsConectados.size() > 0))
@@ -71,7 +70,7 @@ public class ServidorCentral {
 							socketsConectados.add(socket);
 
 							if (!ipsSocketsConectados.contains(ipConectado)) {
-								
+
 								atualizarUsuariosOnlines(ipConectado);
 								ipsSocketsConectados.add(ipConectado);
 							}
@@ -85,30 +84,7 @@ public class ServidorCentral {
 		}
 	}
 
-	public void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
-
-		for (Socket socketConectado : socketsConectados) {
-
-			String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
-			if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
-				ObjectOutputStream fluxoSaidaDados;
-				try {
-
-					fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
-
-					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-					dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
-
-					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.out.println("O que ta rolando ?");
-				}
-			}
-		}
-	}
-
-	public void desligarServidor() {
+	public static void desligarServidor() {
 		try {
 
 			servidorCentralLigado = false;
@@ -127,7 +103,7 @@ public class ServidorCentral {
 		}
 	}
 
-	public void atualizarUsuariosOnlines(final String ipSocketConectado) {
+	public static void atualizarUsuariosOnlines(final String ipSocketConectado) {
 		new Thread() {
 			public void run() {
 				List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
@@ -177,7 +153,7 @@ public class ServidorCentral {
 		}.start();
 	}
 
-	private void atualizarPaineis() {
+	private static void atualizarPaineis() {
 		new Thread() {
 			public void run() {
 				while (true) {
@@ -204,11 +180,11 @@ public class ServidorCentral {
 		}.start();
 	}
 
-	public static ServidorCentral getInstance() {
-
-		if (instancia == null)
-			return instancia = new ServidorCentral();
-
-		return instancia;
-	}
+//	public static ServidorCentral getInstance() {
+//
+//		if (instancia == null)
+//			return instancia = new ServidorCentral();
+//
+//		return instancia;
+//	}
 }

@@ -3,14 +3,13 @@ package ecochat.aplicacoes.servidor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 import ecochat.entidades.DadoCompartilhado;
-import ecochat.interfaces.telas.UIJanelaServidorCentral;
+import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorChat {
@@ -18,19 +17,10 @@ public class ServidorChat {
 	private static ServerSocket socketServidorChat;
 	private static List<Socket> socketsConectados;
 	private static List<String> ipsSocketsConectados;
-	private static ServidorChat instancia;
-	
+
 	public static void main(String[] args) {
-		
+
 		iniciarServidor();
-	}
-
-	public static ServidorChat getInstance() {
-
-		if (instancia == null)
-			return instancia = new ServidorChat();
-
-		return instancia;
 	}
 
 	public static void iniciarServidor() {
@@ -41,7 +31,7 @@ public class ServidorChat {
 				try {
 
 					System.out.println("Servidor Chat Conectado");
-					
+
 					if (socketServidorChat == null || socketServidorChat.isClosed())
 						socketServidorChat = new ServerSocket(ConstantesGerais.PORTA_SERVIDOR_CHAT);
 
@@ -93,10 +83,9 @@ public class ServidorChat {
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
 
-									ServidorCentral.getInstance().notificarUsuario(dadoCompartilhado);
+									//ServidorChat.notificarUsuario(dadoCompartilhado);
 
-									ServidorChat.getInstance().enviarMensagem(socketQueReceberaMensagem,
-											dadoCompartilhado);
+									ServidorChat.enviarMensagem(socketQueReceberaMensagem, dadoCompartilhado);
 								}
 							}
 						}
@@ -109,13 +98,36 @@ public class ServidorChat {
 		}.start();
 	}
 
-	public void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
+	public static void enviarMensagem(Socket socketQueReceberaMensagem, DadoCompartilhado dadoCompartilhado) {
 
 		try {
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
+
+		for (Socket socketConectado : socketsConectados) {
+
+			String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+
+			if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
+				ObjectOutputStream fluxoSaidaDados;
+				try {
+
+					fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+
+					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+					dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+
+					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

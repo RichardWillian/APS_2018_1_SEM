@@ -86,7 +86,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 			
 			threadServidor = new Thread() {
 				public void run() {
-					ServidorCentral.getInstance().iniciarServidor();
+					ServidorCentral.iniciarServidor();
 				}
 			};
 			
@@ -106,7 +106,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 				
 				new Thread() {
 					public void run() {
-						ServidorCentral.getInstance().desligarServidor();
+						ServidorCentral.desligarServidor();
 					}
 				}.start();
 			}
@@ -119,7 +119,7 @@ public class UIJanelaServidorCentral extends JanelaBase implements IJanelaBase {
 	
 	@Override
 	public void windowClosing(WindowEvent we) {
-		ServidorCentral.getInstance().desligarServidor();
+		ServidorCentral.desligarServidor();
 	}
 
 	public void mostrarMensagem(String mensagem) {
