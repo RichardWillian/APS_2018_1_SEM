@@ -25,7 +25,8 @@ public class ControlePainelPrincipalAnuncios {
 	private ControlePainelPrincipalAnuncios() throws UnknownHostException, IOException, InterruptedException {
 
 		socketsConectados = new ArrayList<String>();
-		ipMaquina = Utilitaria.criarIpAleatorio();
+		ipMaquina = InetAddress.getLocalHost().getHostAddress();
+		System.out.println(ipMaquina);
 		conectarServidores();
 		UIJanelaPrincipal.getInstance(ipMaquina);
 		iniciarLeituraAtualizacoesSistema();

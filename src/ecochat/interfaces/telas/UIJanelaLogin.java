@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.ConnectException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,7 +23,7 @@ public class UIJanelaLogin extends JanelaBase {
 	private JLabel login, senha, image;
 	private JTextField tlg;
 	private JPasswordField psenha;
-	private JButton ok, exit;// , cadastrar;
+	private JButton ok, exit;
 
 	private static UIJanelaLogin instancia;
 	private JLabel lblFundoLogin;

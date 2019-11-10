@@ -20,12 +20,14 @@ public class ServidorCentral {
 	private static List<DadoAnuncio> listaAnuncios;
 	private static List<Socket> socketsConectados;
 	private static Socket socketAnuncio;
+	private static Socket socketChat;
 	private static boolean servidorCentralLigado;
 
 	public static void main(String[] args) {
 
 		try {
 			UIJanelaServidorCentral.getInstance();
+			notificarUsuario();
 		} catch (Exception e) {
 			System.err.println("Ops! " + e.getMessage() + "\n");
 		}
@@ -58,10 +60,13 @@ public class ServidorCentral {
 					Socket socket = socketServidorCentral.accept();
 					String ipConectado = socket.getInetAddress().getHostAddress();
 
-					if (ipConectado.equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
+					if (ipConectado.equals(ConstantesGerais.IP_SERVIDOR_CHAT)) {
+						socketChat = socket;
+						UIJanelaServidorCentral.getInstance().mostrarConectados("Servidor Chat");
+					} else if (ipConectado.equals(ConstantesGerais.IP_FIXO_ENVIO_ANUNCIO)) {
+
 						socketAnuncio = socket;
 						atualizarPaineis();
-
 					} else {
 
 						if (servidorCentralLigado) {
@@ -180,11 +185,38 @@ public class ServidorCentral {
 		}.start();
 	}
 
-//	public static ServidorCentral getInstance() {
-//
-//		if (instancia == null)
-//			return instancia = new ServidorCentral();
-//
-//		return instancia;
-//	}
+	public static void notificarUsuario() {
+		new Thread() {
+			public void run() {
+				while (true) {
+					try {
+
+						if (socketChat != null) {
+							
+							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketChat.getInputStream());
+							DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
+
+							for (Socket socketConectado : socketsConectados) {
+
+								String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+
+								if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
+									ObjectOutputStream fluxoSaidaDados;
+
+									fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+
+									DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+									dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+
+									fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+								}
+							}
+						}
+					} catch (IOException | ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
 }

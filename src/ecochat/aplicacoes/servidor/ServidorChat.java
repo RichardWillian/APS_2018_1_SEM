@@ -3,8 +3,10 @@ package ecochat.aplicacoes.servidor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +16,15 @@ import ecochat.utilitarios.ConstantesGerais;
 
 public class ServidorChat {
 
+	private static Socket socketServidorCentral;
 	private static ServerSocket socketServidorChat;
 	private static List<Socket> socketsConectados;
 	private static List<String> ipsSocketsConectados;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 
 		iniciarServidor();
+		conectarServidorCentral();
 	}
 
 	public static void iniciarServidor() {
@@ -83,7 +87,7 @@ public class ServidorChat {
 								if (!socketConectado.isClosed()) {
 									socketQueReceberaMensagem = socketConectado;
 
-									//ServidorChat.notificarUsuario(dadoCompartilhado);
+									ServidorChat.notificarUsuario(dadoCompartilhado);
 
 									ServidorChat.enviarMensagem(socketQueReceberaMensagem, dadoCompartilhado);
 								}
@@ -110,24 +114,39 @@ public class ServidorChat {
 
 	public static void notificarUsuario(final DadoCompartilhado dadoCompartilhado) {
 
-		for (Socket socketConectado : socketsConectados) {
+		ObjectOutputStream fluxoSaidaDados;
+		try {
 
-			String ipSocketConectado = socketConectado.getInetAddress().getHostAddress();
+			fluxoSaidaDados = new ObjectOutputStream(socketServidorCentral.getOutputStream());
 
-			if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
-				ObjectOutputStream fluxoSaidaDados;
-				try {
+			fluxoSaidaDados.writeObject(dadoCompartilhado);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-					fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+	public static void conectarServidorCentral() throws UnknownHostException, IOException {
 
-					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-					dadoCompartilhadoServidor.setDadoCompartilhado(dadoCompartilhado);
+		new Thread() {
 
-					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-				} catch (IOException e) {
-					e.printStackTrace();
+			public void run() {
+				boolean conectouServidorCentral = false;
+
+				while (!conectouServidorCentral) {
+					try {
+						InetAddress inetAddressServidorCentral = InetAddress
+								.getByName(ConstantesGerais.IP_SERVIDOR_CENTRAL);
+						InetAddress inetAddressAplicacaoCorrente = InetAddress
+								.getByName(ConstantesGerais.IP_SERVIDOR_CHAT);
+
+						socketServidorCentral = new Socket(inetAddressServidorCentral,
+								ConstantesGerais.PORTA_SERVIDOR_CENTRAL, inetAddressAplicacaoCorrente, 0);
+						conectouServidorCentral = true;
+					} catch (Exception e) {
+						conectouServidorCentral = false;
+					}
 				}
 			}
-		}
+		}.start();
 	}
 }
