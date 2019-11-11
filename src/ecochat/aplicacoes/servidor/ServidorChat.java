@@ -103,6 +103,7 @@ public class ServidorChat {
 		try {
 			ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketQueReceberaMensagem.getOutputStream());
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
+			fluxoSaidaDados.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -141,6 +142,7 @@ public class ServidorChat {
 						conectouServidorCentral = true;
 					} catch (Exception e) {
 						conectouServidorCentral = false;
+						e.printStackTrace();
 					}
 				}
 			}

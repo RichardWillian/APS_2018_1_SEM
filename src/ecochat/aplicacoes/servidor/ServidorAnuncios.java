@@ -1,6 +1,5 @@
 package ecochat.aplicacoes.servidor;
 
-import java.awt.print.Printable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

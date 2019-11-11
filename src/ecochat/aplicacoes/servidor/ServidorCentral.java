@@ -21,6 +21,7 @@ public class ServidorCentral {
 	private static List<DadoAnuncio> listaAnuncios;
 	private static List<Socket> socketsConectados;
 	private static Socket socketChat;
+	private static Socket socketAnuncios;
 	private static boolean servidorCentralLigado;
 
 	public static void main(String[] args) {
@@ -55,28 +56,23 @@ public class ServidorCentral {
 			UIJanelaServidorCentral.getInstance().mostrarMensagem("        ---===== Servidor Conectado =====---");
 
 			while (true) {
+				
+				Socket socket = socketServidorCentral.accept();
+				String ipConectado = socket.getInetAddress().getHostAddress();
 
-				try {
-					Socket socket = socketServidorCentral.accept();
-					String ipConectado = socket.getInetAddress().getHostAddress();
+				if (ipConectado.equals(ConstantesGerais.IP_SERVIDOR_CHAT)) {
 
-					if (ipConectado.equals(ConstantesGerais.IP_SERVIDOR_CHAT)) {
-						socketChat = socket;
-						UIJanelaServidorCentral.getInstance().mostrarConectados("Servidor Chat");
-					} else {
+					socketChat = socket;
 
-						if (servidorCentralLigado) {
+				} else if (servidorCentralLigado) {
 
-							UIJanelaServidorCentral.getInstance().mostrarConectados(ipConectado);
-							socketsConectados.add(socket);
+					UIJanelaServidorCentral.getInstance().mostrarConectados(ipConectado);
+					socketsConectados.add(socket);
 
-							if (!ipsSocketsConectados.contains(ipConectado)) {
+					if (!ipsSocketsConectados.contains(ipConectado)) {
 
-								ipsSocketsConectados.add(ipConectado);
-							}
-						}
+						ipsSocketsConectados.add(ipConectado);
 					}
-				} catch (Exception ex) {
 				}
 			}
 		} catch (IOException ioE) {
@@ -106,6 +102,7 @@ public class ServidorCentral {
 	public static void notificarUsuario() {
 		new Thread() {
 			public void run() {
+				
 				while (true) {
 					try {
 
@@ -129,13 +126,11 @@ public class ServidorCentral {
 									fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
 								}
 							}
-						}
-						else {
+						} else {
 							System.out.println("Esperando o 'Servidor Chat' se conectar");
 							try {
-								Thread.sleep(500);
+								Thread.sleep(2000);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -143,7 +138,6 @@ public class ServidorCentral {
 						try {
 							socketChat.close();
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
