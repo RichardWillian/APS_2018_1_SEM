@@ -54,7 +54,7 @@ public class ControlePainelPrincipalAnuncios {
 		fluxoSaidaDadosServidorAnuncios.flush();
 	}
 
-	private static void conectarServidorChat() throws IOException, UnknownHostException {
+	public static void conectarServidorChat() throws IOException, UnknownHostException {
 
 		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT);
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);

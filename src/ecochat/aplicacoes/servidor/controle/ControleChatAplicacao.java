@@ -33,9 +33,9 @@ public class ControleChatAplicacao {
 			if (ControlePainelPrincipalAnuncios.getInstance().servidorCentralIsClosed()) {
 
 				if (mensagensNaoEnviadas.size() == 0) {
-					
+
 					mensagensNaoEnviadas.add(dadoCompartilhado);
-					
+
 					new Thread() {
 						@SuppressWarnings("static-access")
 						public void run() {
@@ -79,7 +79,8 @@ public class ControleChatAplicacao {
 				UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou", dadoCompartilhado.getArquivo());
 			}
 
-			ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance().getFluxoSaidaDadosServidorChat();
+			ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance()
+					.getFluxoSaidaDadosServidorChat();
 			dadoCompartilhado.setRemetente(ControlePainelPrincipalAnuncios.getInstance().getIpAplicacao());
 
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
@@ -95,8 +96,9 @@ public class ControleChatAplicacao {
 			@SuppressWarnings("static-access")
 			public void run() {
 
-				try {
-					while (true) {
+				while (true) {
+
+					try {
 
 						ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
 								ControlePainelPrincipalAnuncios.getInstance().getSocketServidorChat().getInputStream());
@@ -145,10 +147,23 @@ public class ControleChatAplicacao {
 								saidaArquivo.close();
 							}
 						}
+					} catch (Exception ex) {
+
+						System.err.println("Obtivemos um problema com o 'Servidor Chat', por favor aguarde");
+
+						while (true) {
+							try {
+								ControlePainelPrincipalAnuncios.conectarServidorChat();
+								System.err.println("O usuário se conectou ao servidor central novamente !");
+								Thread.sleep(3000);
+								break;
+							} catch (IOException | InterruptedException e) {
+
+							}
+						}
 					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
 				}
+
 			}
 		}.start();
 	}
