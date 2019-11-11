@@ -79,7 +79,7 @@ public class ControleChatAplicacao {
 				UIJanelaChat.getInstance().trocarLoadingPorImagemArquivo("Você Enviou", dadoCompartilhado.getArquivo());
 			}
 
-			ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance().getFluxoSaidaDados();
+			ObjectOutputStream fluxoSaidaDados = ControlePainelPrincipalAnuncios.getInstance().getFluxoSaidaDadosServidorChat();
 			dadoCompartilhado.setRemetente(ControlePainelPrincipalAnuncios.getInstance().getIpAplicacao());
 
 			fluxoSaidaDados.writeObject(dadoCompartilhado);

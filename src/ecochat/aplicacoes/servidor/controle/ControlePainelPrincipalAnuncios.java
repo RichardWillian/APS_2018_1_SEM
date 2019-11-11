@@ -18,7 +18,8 @@ public class ControlePainelPrincipalAnuncios {
 	private static Socket socketServidorCentral;
 	private static Socket socketServidorAnuncios;
 	private static Socket socketServidorChat;
-	private static ObjectOutputStream fluxoSaidaDados;
+	private static ObjectOutputStream fluxoSaidaDadosServidorChat;
+	private static ObjectOutputStream fluxoSaidaDadosServidorAnuncios;
 	private static ControlePainelPrincipalAnuncios instancia;
 	private static String ipMaquina;
 	private static ArrayList<String> socketsConectados;
@@ -34,26 +35,31 @@ public class ControlePainelPrincipalAnuncios {
 
 	private static void conectarServidores() throws UnknownHostException, IOException, InterruptedException {
 
-		conectarServidorCentral();
-
-		Thread.sleep(1000);
-
-		conectarServidorChat();
+		 conectarServidorCentral();
+		 Thread.sleep(1000);
 		
-		Thread.sleep(1000);
+		 conectarServidorChat();
 		
+		 Thread.sleep(1000);
+		
+		 fluxoSaidaDadosServidorChat = new
+		 ObjectOutputStream(socketServidorChat.getOutputStream());
+		 fluxoSaidaDadosServidorChat.flush();
+
 		conectarServidorAnuncios();
 
-		fluxoSaidaDados = new ObjectOutputStream(socketServidorChat.getOutputStream());
-		fluxoSaidaDados.flush();
+		Thread.sleep(1000);
+
+		fluxoSaidaDadosServidorAnuncios = new ObjectOutputStream(socketServidorAnuncios.getOutputStream());
+		fluxoSaidaDadosServidorAnuncios.flush();
 	}
 
 	private static void conectarServidorChat() throws IOException, UnknownHostException {
-		
+
 		InetAddress inetAddressServidorChat = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_CHAT);
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
-		
-		socketServidorChat = new Socket(inetAddressServidorChat, ConstantesGerais.PORTA_SERVIDOR_CHAT, 
+
+		socketServidorChat = new Socket(inetAddressServidorChat, ConstantesGerais.PORTA_SERVIDOR_CHAT,
 				inetAddressAplicacaoCorrente, 0);
 	}
 
@@ -65,13 +71,13 @@ public class ControlePainelPrincipalAnuncios {
 		socketServidorCentral = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_CENTRAL,
 				inetAddressAplicacaoCorrente, 0);
 	}
-	
-	public static void conectarServidorAnuncios() throws UnknownHostException, IOException {
 
-		InetAddress inetAddressServidorCentral = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_ANUNCIOS);
+	private static void conectarServidorAnuncios() throws UnknownHostException, IOException {
+
+		InetAddress inetAddressServidorAnuncios = InetAddress.getByName(ConstantesGerais.IP_SERVIDOR_ANUNCIOS);
 		InetAddress inetAddressAplicacaoCorrente = InetAddress.getByName(ipMaquina);
 
-		socketServidorAnuncios = new Socket(inetAddressServidorCentral, ConstantesGerais.PORTA_SERVIDOR_ANUNCIOS,
+		socketServidorAnuncios = new Socket(inetAddressServidorAnuncios, ConstantesGerais.PORTA_SERVIDOR_ANUNCIOS,
 				inetAddressAplicacaoCorrente, 0);
 	}
 
@@ -85,7 +91,6 @@ public class ControlePainelPrincipalAnuncios {
 
 					try {
 						while (true) {
-
 							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
 									socketServidorAnuncios.getInputStream());
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
@@ -117,7 +122,7 @@ public class ControlePainelPrincipalAnuncios {
 
 						System.out.println("Obtivemos um problema com o servidor, por favor aguarde");
 						try {
-							
+
 							socketServidorCentral.close();
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -129,7 +134,7 @@ public class ControlePainelPrincipalAnuncios {
 								Thread.sleep(3000);
 								break;
 							} catch (IOException | InterruptedException e) {
-								
+
 							}
 						}
 					}
@@ -138,26 +143,27 @@ public class ControlePainelPrincipalAnuncios {
 		}.start();
 	}
 
-	public void enviarAnunciosPaineis(DadoCompartilhadoServidor dadoCompartilhadoServidor){
-		
-		ObjectOutputStream fluxoSaidaAnuncio;
+	public void enviarAnunciosPaineis(DadoCompartilhadoServidor dadoCompartilhadoServidor) {
+
 		try {
-			
-			fluxoSaidaAnuncio = new ObjectOutputStream(socketServidorAnuncios.getOutputStream());
+
+			ObjectOutputStream fluxoSaidaAnuncio = getFluxoSaidaDadosServidorAnuncios();
 			fluxoSaidaAnuncio.writeObject(dadoCompartilhadoServidor);
-			
+
+			fluxoSaidaAnuncio.flush();
+
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public String getIpAplicacao() {
 		return ipMaquina;
 	}
-	
-	public boolean servidorCentralIsClosed () {
+
+	public boolean servidorCentralIsClosed() {
 		return socketServidorCentral.isClosed();
 	}
 
@@ -165,8 +171,12 @@ public class ControlePainelPrincipalAnuncios {
 		return socketServidorChat;
 	}
 
-	public ObjectOutputStream getFluxoSaidaDados() {
-		return fluxoSaidaDados;
+	public ObjectOutputStream getFluxoSaidaDadosServidorChat() {
+		return fluxoSaidaDadosServidorChat;
+	}
+
+	public ObjectOutputStream getFluxoSaidaDadosServidorAnuncios() {
+		return fluxoSaidaDadosServidorAnuncios;
 	}
 
 	public static ControlePainelPrincipalAnuncios getInstance()
