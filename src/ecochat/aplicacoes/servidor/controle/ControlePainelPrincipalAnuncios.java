@@ -30,6 +30,7 @@ public class ControlePainelPrincipalAnuncios {
 		conectarServidores();
 		UIJanelaPrincipal.getInstance(ipMaquina);
 		iniciarLeituraAtualizacoesSistema();
+		notificarUsuario();
 	}
 
 	private static void conectarServidores() throws UnknownHostException, IOException, InterruptedException {
@@ -80,6 +81,30 @@ public class ControlePainelPrincipalAnuncios {
 				inetAddressAplicacaoCorrente, 0);
 	}
 
+	private static void notificarUsuario(){
+		
+		new Thread(){
+			public void run(){
+				
+				while(true){
+					ObjectInputStream fluxoEntradaDados;
+					try {
+						fluxoEntradaDados = new ObjectInputStream(socketServidorCentral.getInputStream());
+						DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados.readObject();
+						
+						if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
+							UIJanelaPrincipal.getInstance().notificarUsuario(
+									dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
+						
+					} catch (IOException | ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
 	public static void iniciarLeituraAtualizacoesSistema() {
 
 		new Thread() {
@@ -90,8 +115,9 @@ public class ControlePainelPrincipalAnuncios {
 
 					try {
 						while (true) {
-							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(
-									socketServidorAnuncios.getInputStream());
+							
+							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketServidorAnuncios.getInputStream());
+							
 							DadoCompartilhadoServidor dadoCompartilhadoServidor = (DadoCompartilhadoServidor) fluxoEntradaDados
 									.readObject();
 
@@ -111,10 +137,6 @@ public class ControlePainelPrincipalAnuncios {
 									UIJanelaPrincipal.getInstance()
 											.adicionaPainel(dadoCompartilhadoServidor.getAnuncio());
 								}
-
-								if (dadoCompartilhadoServidor.getDadoCompartilhado() != null)
-									UIJanelaPrincipal.getInstance().notificarUsuario(
-											dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
 							}
 						}
 					} catch (Exception ex) {
