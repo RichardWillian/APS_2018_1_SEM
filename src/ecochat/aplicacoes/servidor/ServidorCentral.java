@@ -1,5 +1,6 @@
 package ecochat.aplicacoes.servidor;
 
+import java.awt.print.Printable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -108,7 +109,7 @@ public class ServidorCentral {
 				while (true) {
 					try {
 
-						if (socketChat != null) {
+						if (socketChat != null && !socketChat.isClosed()) {
 
 							ObjectInputStream fluxoEntradaDados = new ObjectInputStream(socketChat.getInputStream());
 							DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
@@ -129,8 +130,22 @@ public class ServidorCentral {
 								}
 							}
 						}
+						else {
+							System.out.println("Esperando o 'Servidor Chat' se conectar");
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					} catch (IOException | ClassNotFoundException e) {
-						e.printStackTrace();
+						try {
+							socketChat.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
