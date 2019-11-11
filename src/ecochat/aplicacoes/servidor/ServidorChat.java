@@ -114,8 +114,9 @@ public class ServidorChat {
 		try {
 
 			fluxoSaidaDados = new ObjectOutputStream(socketServidorCentral.getOutputStream());
-
 			fluxoSaidaDados.writeObject(dadoCompartilhado);
+			fluxoSaidaDados.flush();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
