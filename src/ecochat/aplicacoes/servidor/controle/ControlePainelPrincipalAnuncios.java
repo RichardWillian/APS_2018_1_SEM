@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import ecochat.entidades.DadoAnuncio;
 import ecochat.entidades.DadoCompartilhadoServidor;
 import ecochat.interfaces.telas.UIJanelaPrincipal;
 import ecochat.utilitarios.ConstantesGerais;

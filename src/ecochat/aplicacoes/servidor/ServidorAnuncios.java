@@ -1,5 +1,6 @@
 package ecochat.aplicacoes.servidor;
 
+import java.awt.print.Printable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,20 +43,23 @@ public class ServidorAnuncios {
 
 					if (ipsSocketsConectados == null || !(ipsSocketsConectados.size() > 0))
 						ipsSocketsConectados = new ArrayList<String>();
-					
-					if(listaAnuncios == null)
+
+					if (listaAnuncios == null)
 						listaAnuncios = new ArrayList<DadoAnuncio>();
 
 					while (true) {
 
 						if (!socketServidorAnuncio.isClosed()) {
+
 							Socket socket = socketServidorAnuncio.accept();
 							String ipSocket = socket.getInetAddress().getHostAddress();
 							System.out.println("(Servidor Anúncio) Ip conectou: " + ipSocket);
 
 							if (!ipsSocketsConectados.contains(ipSocket)) {
+
 								socketsConectados.add(socket);
 								ipsSocketsConectados.add(ipSocket);
+								atualizarUsuariosOnlines(ipSocket);
 							}
 
 							lerMensagemDoCliente(new ObjectInputStream(socket.getInputStream()));
@@ -69,11 +73,12 @@ public class ServidorAnuncios {
 	}
 
 	private static void lerMensagemDoCliente(final ObjectInputStream fluxoEntradaDados) {
+
 		new Thread() {
 
 			public void run() {
-
 				try {
+
 					while (true) {
 
 						DadoCompartilhadoServidor dadoCompartilhado = (DadoCompartilhadoServidor) fluxoEntradaDados
@@ -83,9 +88,10 @@ public class ServidorAnuncios {
 
 						List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
 						for (Socket socketConectado : socketsConectadosCopia) {
-							
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
-							
+
+							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
+									socketConectado.getOutputStream());
+
 							fluxoSaidaDados.writeObject(dadoCompartilhado);
 						}
 					}
@@ -95,5 +101,49 @@ public class ServidorAnuncios {
 				}
 			}
 		}.start();
+	}
+
+	public static void atualizarUsuariosOnlines(final String ipSocketConectado) {
+
+		List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
+		try {
+
+			Socket socketSeraAtualizado = null;
+
+			for (Socket socketConectado : socketsConectadosCopia) {
+
+				String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
+				if (!ipSocketLista.equals(ipSocketConectado)) {
+					ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketConectado.getOutputStream());
+
+					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+					dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketConectado);
+
+					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+				} else
+					socketSeraAtualizado = socketConectado;
+			}
+
+			for (Socket socketConectado : socketsConectadosCopia) {
+
+				String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
+				if (!ipSocketLista.equals(ipSocketConectado)) {
+					ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketSeraAtualizado.getOutputStream());
+
+					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+					dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketLista);
+
+					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+				} else {
+					ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(socketSeraAtualizado.getOutputStream());
+					DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
+					dadoCompartilhadoServidor.setAnuncio(listaAnuncios);
+					fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

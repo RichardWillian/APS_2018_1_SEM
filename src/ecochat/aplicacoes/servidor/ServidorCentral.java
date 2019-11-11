@@ -71,7 +71,6 @@ public class ServidorCentral {
 
 							if (!ipsSocketsConectados.contains(ipConectado)) {
 
-								atualizarUsuariosOnlines(ipConectado);
 								ipsSocketsConectados.add(ipConectado);
 							}
 						}
@@ -101,56 +100,6 @@ public class ServidorCentral {
 		} catch (IOException ioE) {
 			System.err.println("Falha ao desligar o servidor\n\n" + ioE.getMessage());
 		}
-	}
-
-	public static void atualizarUsuariosOnlines(final String ipSocketConectado) {
-		new Thread() {
-			public void run() {
-				List<Socket> socketsConectadosCopia = new ArrayList<Socket>(socketsConectados);
-				try {
-
-					Socket socketSeraAtualizado = null;
-
-					for (Socket socketConectado : socketsConectadosCopia) {
-
-						String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
-						if (!ipSocketLista.equals(ipSocketConectado)) {
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketConectado.getOutputStream());
-
-							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketConectado);
-
-							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-						} else
-							socketSeraAtualizado = socketConectado;
-					}
-
-					for (Socket socketConectado : socketsConectadosCopia) {
-
-						String ipSocketLista = socketConectado.getInetAddress().getHostAddress();
-						if (!ipSocketLista.equals(ipSocketConectado)) {
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketSeraAtualizado.getOutputStream());
-
-							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-							dadoCompartilhadoServidor.setIpUsuarioConectou(ipSocketLista);
-
-							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-						} else {
-							ObjectOutputStream fluxoSaidaDados = new ObjectOutputStream(
-									socketSeraAtualizado.getOutputStream());
-							DadoCompartilhadoServidor dadoCompartilhadoServidor = new DadoCompartilhadoServidor();
-							dadoCompartilhadoServidor.setAnuncio(listaAnuncios);
-							fluxoSaidaDados.writeObject(dadoCompartilhadoServidor);
-						}
-					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
 	}
 
 	public static void notificarUsuario() {

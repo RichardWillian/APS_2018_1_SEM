@@ -74,8 +74,6 @@ public class ServidorChat {
 				try {
 					while (true) {
 
-						Socket socketQueReceberaMensagem = null;
-
 						DadoCompartilhado dadoCompartilhado = (DadoCompartilhado) fluxoEntradaDados.readObject();
 
 						for (Socket socketConectado : socketsConectados) {
@@ -84,11 +82,10 @@ public class ServidorChat {
 							if (ipSocketConectado.equals(dadoCompartilhado.getDestinatario())) {
 
 								if (!socketConectado.isClosed()) {
-									socketQueReceberaMensagem = socketConectado;
-
+									
 									ServidorChat.notificarUsuario(dadoCompartilhado);
 
-									ServidorChat.enviarMensagem(socketQueReceberaMensagem, dadoCompartilhado);
+									ServidorChat.enviarMensagem(socketConectado, dadoCompartilhado);
 								}
 							}
 						}
