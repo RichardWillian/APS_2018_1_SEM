@@ -97,14 +97,34 @@ public class ControlePainelPrincipalAnuncios {
 									dadoCompartilhadoServidor.getDadoCompartilhado().getRemetente());
 						
 					} catch (IOException | ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.err.println("Deu ruim no 'Servidor Central'");
+						tratarQuedaServidor();
 					}
 				}
 			}
 		}.start();
 	}
 	
+	protected static void tratarQuedaServidor() {
+		System.err.println("Obtivemos um problema com o servidor, por favor aguarde");
+		try {
+
+			socketServidorCentral.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		while (true) {
+			try {
+				conectarServidorCentral();
+				System.err.println("O usuário se conectou ao servidor central novamente !");
+				Thread.sleep(3000);
+				break;
+			} catch (IOException | InterruptedException e) {
+
+			}
+		}
+	}
+
 	public static void iniciarLeituraAtualizacoesSistema() {
 
 		new Thread() {
@@ -141,23 +161,7 @@ public class ControlePainelPrincipalAnuncios {
 						}
 					} catch (Exception ex) {
 
-						System.out.println("Obtivemos um problema com o servidor, por favor aguarde");
-						try {
-
-							socketServidorCentral.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						while (true) {
-							try {
-								conectarServidorCentral();
-								System.out.println("O usuário se conectou ao servidor central novamente !");
-								Thread.sleep(3000);
-								break;
-							} catch (IOException | InterruptedException e) {
-
-							}
-						}
+						tratarQuedaServidor();
 					}
 				}
 			}
